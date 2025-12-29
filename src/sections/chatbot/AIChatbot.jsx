@@ -25,7 +25,7 @@ const ColumbiaIntelligencePro = () => {
     management: "Project Management active. Monitoring **BoQ accuracy** and site timeline optimization to ensure zero-overrun delivery.",
     photo: "AI Vision active. Analyzing uploaded site photos for **Progress Verification**.",
     file: "Secure File Layer active. Analyzing **BoQ / Structural Drawings** for automated site audit.",
-    default: "I am the Abraham II Assistance to Columbia Company, monitoring site logs for infrastructure development."
+    default: "I am Gitobu the boss Assistance to Columbia Company, monitoring site logs for infrastructure development."
   };
 
   useEffect(() => {
@@ -173,7 +173,7 @@ const ColumbiaIntelligencePro = () => {
               <div style={{ backgroundColor: THEME.card, borderRadius: '32px', padding: '8px 14px', display: 'flex', alignItems: 'center', gap: '10px', border: `1px solid ${THEME.border}` }}>
                 <Plus size={20} color={isMenuOpen ? THEME.accent : "#94a3b8"} style={{ cursor: 'pointer' }} onClick={() => setIsMenuOpen(!isMenuOpen)} />
                 <div style={smartPillStyle}><Sparkles size={14} color={THEME.accent} /> <span style={{ color: 'white', fontSize: '10px', fontWeight: '800' }}>CORE</span></div>
-                <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Enter command..." style={{ flex: 1, background: 'none', border: 'none', color: 'white', outline: 'none', fontSize: '14px' }} />
+                <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask me anything..." style={{ flex: 1, background: 'none', border: 'none', color: 'white', outline: 'none', fontSize: '14px' }} />
                 <Mic size={20} color="#94a3b8" />
                 {input.trim() && <Send size={20} color={THEME.accent} style={{ cursor: 'pointer' }} onClick={handleSendMessage} />}
               </div>
