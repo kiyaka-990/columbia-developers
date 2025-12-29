@@ -11,9 +11,13 @@ const Wishlist = () => {
         setIsClient(true);
     }, []);
 
-    // Prevent ANY rendering during the 'Generating static pages' phase
+    // Return a shell/loading state if not on the client
     if (!isClient) {
-        return <div className="container p-5 text-center">Loading Wishlist...</div>;
+        return (
+            <div className="container p-5 text-center">
+                <p>Loading Wishlist...</p>
+            </div>
+        );
     }
 
     return (
@@ -58,17 +62,17 @@ const Wishlist = () => {
                     </div>
                 </div>
             </div>
-            {/* Styles kept same as before */}
             <style jsx>{`
                 .custom-wishlist-table { width: 100%; border-collapse: separate; border-spacing: 0 15px; }
                 .custom-wishlist-table thead th { border-bottom: 2px solid #eee; padding-bottom: 10px; color: #1a1a1a; font-weight: 700; }
                 .wishlist_item td { background: #fff; padding: 20px; vertical-align: middle; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; }
                 .product-title-link { color: #1a1a1a; font-weight: 600; text-decoration: none; }
-                .remove-btn { border: none; background: #fff0f0; color: #e31e24; width: 35px; height: 35px; border-radius: 50%; transition: 0.3s; }
+                .remove-btn { border: none; background: #fff0f0; color: #e31e24; width: 35px; height: 35px; border-radius: 50%; transition: 0.3s; cursor: pointer; }
+                .remove-btn:hover { background: #e31e24; color: #fff; }
                 .stock-badge { font-size: 12px; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
                 .in-stock { background: #e8f5e9; color: #2e7d32; }
                 .wishlist-cart-btn { background: #1a1a1a; color: #fff; padding: 10px 15px; border-radius: 5px; text-decoration: none; font-size: 14px; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
-                .wishlist-cart-btn:hover { background: #e31e24; transform: translateY(-2px); }
+                .wishlist-cart-btn:hover { background: #e31e24; transform: translateY(-2px); color: #fff; }
             `}</style>
         </div>
     );
