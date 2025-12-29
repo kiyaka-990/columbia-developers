@@ -25,7 +25,7 @@ const ColumbiaIntelligencePro = () => {
     management: "Project Management active. Monitoring **BoQ accuracy** and site timeline optimization to ensure zero-overrun delivery.",
     photo: "AI Vision active. Analyzing uploaded site photos for **Progress Verification**.",
     file: "Secure File Layer active. Analyzing **BoQ / Structural Drawings** for automated site audit.",
-    default: "I am the Columbia Intelligence Engine, monitoring site logs for infrastructure development."
+    default: "I am the Abraham II Assistance to Columbia Company, monitoring site logs for infrastructure development."
   };
 
   useEffect(() => {
@@ -117,7 +117,7 @@ const ColumbiaIntelligencePro = () => {
             <div style={{ padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#0e1117', borderBottom: `1px solid ${THEME.border}` }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Activity size={14} color={THEME.accent} />
-                <span style={{ fontSize: '11px', fontWeight: '800', letterSpacing: '1px', color: 'white' }}>COLUMBIA INTELLIGENCE</span>
+                <span style={{ fontSize: '11px', fontWeight: '800', letterSpacing: '1px', color: 'white' }}>COLUMBIA AI ASSISTANT</span>
               </div>
               <div style={{ display: 'flex', gap: '12px', color: '#94a3b8' }}>
                 <RefreshCw size={16} onClick={resetToMain} style={{ cursor: 'pointer' }} />
