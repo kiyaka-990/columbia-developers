@@ -1,6 +1,8 @@
-export const dynamic = "force-dynamic";
+
 
 "use client"; // Critical: Prevents server-side rendering errors during build
+
+export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
