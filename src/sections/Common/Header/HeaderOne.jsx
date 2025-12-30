@@ -22,78 +22,62 @@ const HeaderOne = () => {
 
     return (
         <div className="header-decoration">
-            {/* --- IMPROVED SEARCH POPUP --- */}
+            {/* --- SEARCH POPUP --- */}
             <div className={`popup-search-box ${isPopupOpen ? 'show' : ''}`} style={{ zIndex: 9999 }}>
                 <button onClick={() => setIsPopupOpen(false)} className="searchClose"><i className="ri-close-line"></i></button>
                 <form action="#" className="search-form">
-                    <input type="text" placeholder="Search projects, services..." autoFocus />
+                    <input type="text" placeholder="Search projects..." autoFocus />
                     <button type="submit"><i className="ri-search-line"></i></button>
                 </form>
             </div>
 
-            {/* --- PREMIUM CORPORATE SIDEBAR --- */}
+            {/* --- PREMIUM ARCHITECTURAL SIDEBAR --- */}
             <div className={`sidemenu-wrapper ${isSideBarOpen ? 'show' : ''}`}>
-                <div ref={sidebarRef} className="sidemenu-content">
-                    <button onClick={() => setIsSideBarOpen(false)} className="closeButton sideMenuCls">
-                        <i className="ri-close-line"></i>
-                    </button>
+                <div ref={sidebarRef} className="sidemenu-content columbia-premium-sidebar">
                     
-                    <div className="widget mt-40">
-                        <Image src="/main-assets/img/logo.png" alt="Columbia Developers" width={200} height={60} />
-                        <p className="mt-20">Delivering world-class engineering solutions and infrastructure development across East Africa.</p>
-                        <Link href="/contact" className="btn-quote-sidebar">REQUEST A QUOTE</Link>
+                    {/* THE ENGINEERED CLOSE BUTTON (FIXED POSITION) */}
+                    <div className="close-button-anchor">
+                        <button onClick={() => setIsSideBarOpen(false)} className="premium-x-btn" type="button">
+                            <i className="ri-close-line"></i>
+                            <div className="rotating-outer-ring">
+                                <span className="arrow-top"></span>
+                                <span className="arrow-bottom"></span>
+                            </div>
+                        </button>
                     </div>
 
-                    <div className="widget">
-                        <h3 className="widget_title">Contact Details</h3>
-                        <div className="sidebar-contact">
-                            <p><i className="ri-map-pin-2-fill"></i> Westlands Business District, Nairobi</p>
-                            <p><i className="ri-phone-fill"></i> +254 714 861 896</p>
+                    <div className="sidebar-inner">
+                        <div className="sidebar-logo-block">
+                            <Image src="/main-assets/img/logo.png" alt="Logo" width={200} height={55} priority />
                         </div>
-                    </div>
 
-                    <div className="widget">
-                        <h3 className="widget_title">Follow Our Progress</h3>
-                        <div className="social-btn style3">
-                            <Link href="#"><i className="ri-facebook-fill"></i></Link>
-                            <Link href="#"><i className="ri-twitter-x-line"></i></Link>
-                            <Link href="#"><i className="ri-linkedin-box-fill"></i></Link>
-                            <Link href="#"><i className="ri-instagram-line"></i></Link>
+                        <div className="sidebar-body-content">
+                            <p className="blueprint-desc">
+                                Engineering excellence with a focus on sustainable infrastructure across East Africa.
+                            </p>
+
+                            <div className="sidebar-contact-grid">
+                                <div className="contact-card">
+                                    <span className="card-label">Headquarters</span>
+                                    <p className="card-value">Karen, Nairobi</p>
+                                </div>
+                                <div className="contact-card">
+                                    <span className="card-label">Direct Line</span>
+                                    <p className="card-value">+254 725 178209</p>
+                                </div>
+                            </div>
+
+                            <Link href="#contact" className="sidebar-action-btn" onClick={() => setIsSideBarOpen(false)}>
+                                <span>REQUEST A QUOTE</span>
+                                <i className="ri-arrow-right-line"></i>
+                            </Link>
                         </div>
                     </div>
                 </div>
             </div>
 
             <header className="nav-header header-layout1">
-                {/* --- TOP BAR: FIXED SPACING & ADDED LOGIN --- */}
-                <div className="header-top d-none d-lg-block">
-                    <div className="container">
-                        <div className="row justify-content-between align-items-center">
-                            <div className="col-auto">
-                                <div className="top-info-wrap">
-                                    <Link href="mailto:info@columbiadevelopers.co.ke" className="info-link">
-                                        <i className="ri-mail-line"></i> info@columbiadevelopers.co.ke
-                                    </Link>
-                                    <span className="info-separator">|</span>
-                                    <span className="info-text">
-                                        <i className="ri-time-line"></i> Mon - Sat: 8:00 AM - 5:00 PM
-                                    </span>
-                                </div>
-                            </div>
-                            <div className="col-auto d-flex align-items-center gap-4">
-                                <Link href="/login" className="top-portal-link">
-                                    <i className="ri-user-settings-line"></i> Client Portal Login
-                                </Link>
-                                <div className="top-social">
-                                    <Link href="#"><i className="ri-twitter-x-line"></i></Link>
-                                    <Link href="#"><i className="ri-linkedin-fill"></i></Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* --- MAIN NAVIGATION --- */}
+                {/* Main Header Content Here */}
                 <div className={`sticky-wrapper ${isSticky ? 'sticky' : ''}`}>
                     <div className="container">
                         <div className="menu-area">
@@ -103,32 +87,20 @@ const HeaderOne = () => {
                                         <Image src="/main-assets/img/logo.png" alt="Logo" width={180} height={55} priority />
                                     </Link>
                                 </div>
-                                
                                 <div className="col">
                                     <nav className="main-menu d-none d-lg-inline-block text-center">
                                         <ul>
-                                            <li><Link href="/">HOME</Link></li>
-                                            <li><Link href="/about">ABOUT</Link></li>
-                                            <li><Link href="/services">SERVICES</Link></li>
-                                            <li><Link href="/projects">PROJECTS</Link></li>
-                                            <li><Link href="/shop">SHOP</Link></li>
-                                            <li><Link href="/contact">CONTACT</Link></li>
+                                            <li><Link href="#home">HOME</Link></li>
+                                            <li><Link href="#about">ABOUT</Link></li>
+                                            <li><Link href="#projects">PROJECTS</Link></li>
+                                            <li><Link href="#contact">CONTACT</Link></li>
                                         </ul>
                                     </nav>
                                 </div>
-
                                 <div className="col-auto">
                                     <div className="header-action-btns">
-                                        <button onClick={() => setIsPopupOpen(true)} className="action-btn-circle" title="Search">
-                                            <i className="ri-search-line"></i>
-                                        </button>
-
-                                        <button onClick={() => setIsSideBarOpen(true)} className="action-btn-circle side-trigger" title="Open Menu">
+                                        <button onClick={() => setIsSideBarOpen(true)} className="action-btn-circle side-trigger">
                                             <i className="ri-menu-4-line"></i>
-                                        </button>
-
-                                        <button onClick={() => setIsMenuOpen(true)} className="menu-toggle d-lg-none">
-                                            <i className="ri-menu-line"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -138,66 +110,69 @@ const HeaderOne = () => {
                 </div>
             </header>
 
+            {/* CRITICAL CSS TO PREVENT "BOX" LOADING */}
             <style jsx>{`
-                .top-info-wrap { display: flex; align-items: center; gap: 20px; font-size: 13px; color: #666; }
-                .info-separator { color: #ddd; }
-                .info-link { color: #e31e24; text-decoration: none; transition: 0.3s; }
-                .info-link:hover { color: #000; }
-                
-                .top-portal-link { 
-                    font-size: 13px; 
-                    font-weight: 600; 
-                    color: #000; 
-                    text-decoration: none; 
-                    display: flex; 
-                    align-items: center; 
-                    gap: 5px;
-                    padding: 4px 12px;
-                    background: #f8f8f8;
-                    border-radius: 4px;
-                    transition: 0.3s;
+                .columbia-premium-sidebar {
+                    background: #fff !important;
+                    padding: 80px 40px !important;
+                    height: 100vh;
+                    position: relative;
                 }
-                .top-portal-link:hover { background: #e31e24; color: #fff; }
-
-                .header-action-btns { display: flex; align-items: center; gap: 12px; }
-                
-                .action-btn-circle {
-                    width: 45px;
-                    height: 45px;
+                .close-button-anchor {
+                    position: absolute;
+                    top: 30px;
+                    right: 30px;
+                    z-index: 100;
+                }
+                .premium-x-btn {
+                    width: 55px;
+                    height: 55px;
+                    background: #e31e24;
+                    border: none;
                     border-radius: 50%;
-                    border: 1px solid #eee;
-                    background: #fff;
+                    color: #fff;
+                    font-size: 26px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 18px;
-                    transition: all 0.3s ease;
                     cursor: pointer;
-                    z-index: 10;
+                    position: relative;
+                    box-shadow: 0 8px 20px rgba(227, 30, 36, 0.3);
+                    padding: 0;
+                    outline: none;
                 }
-
-                .action-btn-circle:hover {
-                    background: #e31e24;
-                    color: #fff;
-                    border-color: #e31e24;
-                    transform: translateY(-3px);
+                .rotating-outer-ring {
+                    position: absolute;
+                    top: -6px;
+                    left: -6px;
+                    right: -6px;
+                    bottom: -6px;
+                    border: 1.5px solid rgba(227, 30, 36, 0.2);
+                    border-top-color: #e31e24;
+                    border-radius: 50%;
+                    animation: sidebarRotate 4s linear infinite;
                 }
-
-                .side-trigger { background: #000; color: #fff; border: none; }
-
-                .btn-quote-sidebar {
-                    display: block;
-                    text-align: center;
-                    background: #e31e24;
-                    color: #fff;
-                    padding: 12px;
-                    margin-top: 20px;
-                    border-radius: 5px;
-                    font-weight: bold;
-                    text-decoration: none;
-                    transition: 0.3s;
+                .arrow-top {
+                    position: absolute;
+                    top: -4px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    border-left: 4px solid transparent;
+                    border-right: 4px solid transparent;
+                    border-bottom: 6px solid #e31e24;
                 }
-                .btn-quote-sidebar:hover { background: #000; letter-spacing: 1px; }
+                @keyframes sidebarRotate {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+                .blueprint-desc { font-size: 15px; color: #666; margin-bottom: 30px; }
+                .card-label { display: block; font-size: 10px; color: #e31e24; font-weight: 800; text-transform: uppercase; }
+                .card-value { font-size: 15px; font-weight: 600; margin-bottom: 20px; }
+                .sidebar-action-btn { 
+                    display: flex; justify-content: space-between; 
+                    background: #1a1a1a; color: #fff; padding: 18px 25px; 
+                    text-decoration: none; font-weight: 700; 
+                }
             `}</style>
             
             <MultiPageMobileMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
