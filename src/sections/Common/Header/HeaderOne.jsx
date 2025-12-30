@@ -118,7 +118,9 @@ const HeaderOne = () => {
                                         <ul>
                                             <li><Link href="#home">HOME</Link></li>
                                             <li><Link href="#about">ABOUT</Link></li>
+                                            <li><Link href="#services">SERVICES</Link></li>
                                             <li><Link href="#projects">PROJECTS</Link></li>
+                                            <li><Link href="#shop">SHOP</Link></li>
                                             <li><Link href="#contact">CONTACT</Link></li>
                                         </ul>
                                     </nav>
