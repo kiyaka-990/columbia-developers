@@ -22,7 +22,7 @@ const HeaderOne = () => {
 
     return (
         <div className="header-decoration">
-            {/* --- SEARCH POPUP --- */}
+            {/* --- SEARCH POPUP (UNTOUCHED) --- */}
             <div className={`popup-search-box ${isPopupOpen ? 'show' : ''}`} style={{ zIndex: 9999 }}>
                 <button onClick={() => setIsPopupOpen(false)} className="searchClose"><i className="ri-close-line"></i></button>
                 <form action="#" className="search-form">
@@ -31,11 +31,9 @@ const HeaderOne = () => {
                 </form>
             </div>
 
-            {/* --- SIDEBAR --- */}
+            {/* --- SIDEBAR (UNTOUCHED) --- */}
             <div className={`sidemenu-wrapper ${isSideBarOpen ? 'show' : ''}`}>
                 <div ref={sidebarRef} className="sidemenu-content columbia-premium-sidebar">
-                    
-                    {/* INLINE STYLED CLOSE BUTTON (KILLS THE LOADING BOX) */}
                     <div style={{ position: 'absolute', top: '35px', right: '35px', zIndex: 1000 }}>
                         <button 
                             onClick={() => setIsSideBarOpen(false)} 
@@ -71,7 +69,7 @@ const HeaderOne = () => {
                                     <p className="card-value">+254 725 178209</p>
                                 </div>
                             </div>
-                            <Link href="#contact" className="sidebar-action-btn" onClick={() => setIsSideBarOpen(false)}>
+                            <Link href="/contact" className="sidebar-action-btn" onClick={() => setIsSideBarOpen(false)}>
                                 <span>REQUEST A QUOTE</span>
                                 <i className="ri-arrow-right-line"></i>
                             </Link>
@@ -81,7 +79,7 @@ const HeaderOne = () => {
             </div>
 
             <header className="nav-header header-layout1">
-                {/* --- TOP BAR (RESTORED) --- */}
+                {/* --- TOP BAR (UNTOUCHED) --- */}
                 <div className="header-top d-none d-lg-block">
                     <div className="container">
                         <div className="row justify-content-between align-items-center">
@@ -103,26 +101,25 @@ const HeaderOne = () => {
                     </div>
                 </div>
 
-                {/* --- MAIN NAV --- */}
                 <div className={`sticky-wrapper ${isSticky ? 'sticky' : ''}`}>
                     <div className="container">
                         <div className="menu-area">
                             <div className="row align-items-center">
                                 <div className="col-auto">
-                                    <Link href="#home">
+                                    <Link href="/">
                                         <Image src="/main-assets/img/logo.png" alt="Logo" width={180} height={55} priority />
                                     </Link>
                                 </div>
                                 <div className="col">
                                     <nav className="main-menu d-none d-lg-inline-block text-center">
                                         <ul>
-                                            <li><Link href="#home">HOME</Link></li>
-                                            <li><Link href="#about">ABOUT</Link></li>
-                                            <li><Link href="#services">SERVICES</Link></li>
-                                            <li><Link href="#projects">PROJECTS</Link></li>
-                                            <li><Link href="#shop">SHOP</Link></li>
-                                            <li><Link href="#contact">CONTACT</Link></li>
-                                        </ul>
+    <li><Link href="/">HOME</Link></li>
+    <li><Link href="/pages/innerpage/about">ABOUT</Link></li>
+    <li><Link href="/pages/innerpage/services">SERVICES</Link></li>
+    <li><Link href="/pages/innerpage/projects">PROJECTS</Link></li>
+    <li><Link href="/pages/innerpage/shop">SHOP</Link></li>
+    <li><Link href="/pages/innerpage/contact">CONTACT</Link></li>
+</ul>
                                     </nav>
                                 </div>
                                 <div className="col-auto">
@@ -145,8 +142,6 @@ const HeaderOne = () => {
                 .action-btn-circle { width: 45px; height: 45px; border-radius: 50%; border: 1px solid #eee; background: #fff; cursor: pointer; transition: 0.3s; }
                 .action-btn-circle:hover { background: #e31e24; color: #fff; transform: translateY(-3px); }
                 .side-trigger { background: #000; color: #fff; border: none; }
-                
-                /* Sidebar Animation Styles */
                 .rotating-outer-ring {
                     position: absolute; top: -7px; left: -7px; right: -7px; bottom: -7px;
                     border: 1px solid rgba(227,30,36,0.2); border-top-color: #e31e24;
