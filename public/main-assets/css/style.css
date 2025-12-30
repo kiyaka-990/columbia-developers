@@ -20296,120 +20296,99 @@ body.high-contrast { filter: contrast(1.2) brightness(1.1); }
 body.reduce-motion * { 
     animation-duration: 0.01ms !important; 
     transition-duration: 0.01ms !important; 
-}/* ============================================================
-   COLUMBIA DEVELOPERS - SIGNATURE SIDEBAR STYLE
-   ============================================================ */
+}
 
-.columbia-premium-sidebar {
+/* --- SURGICAL SIDEBAR FIX --- */
+.sidemenu-content.exclusive-sidebar {
     background: #ffffff !important;
-    padding: 80px 50px !important;
-    position: relative !important;
-    border-left: 1px solid #f0f0f0 !important;
-    height: 100vh !important;
+    padding: 100px 40px 40px 40px !important;
+    border-left: 1px solid #eee !important;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.05) !important;
 }
 
-/* Close Button Anchor */
-.close-button-anchor {
+.exclusive-close-wrapper {
     position: absolute !important;
-    top: 40px !important;
-    right: 40px !important;
-    z-index: 999 !important;
+    top: 35px !important;
+    right: 35px !important;
+    z-index: 1000 !important;
 }
 
-/* The Solid Red Circle */
-.premium-x-btn {
+.exclusive-x-btn {
     width: 55px !important;
     height: 55px !important;
-    background: #e31e24 !important;
-    border: none !important;
+    background: #e31e24 !important; /* The Columbia Red */
     border-radius: 50% !important;
-    color: #ffffff !important;
-    font-size: 28px !important;
+    border: none !important;
+    color: white !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    font-size: 28px !important;
     cursor: pointer !important;
     position: relative !important;
-    box-shadow: 0 8px 25px rgba(227, 30, 36, 0.3) !important;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1) !important;
-    padding: 0 !important;
+    box-shadow: 0 10px 20px rgba(227, 30, 36, 0.2) !important;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
 }
 
 /* The Animated Outer Ring */
-.rotating-outer-ring {
-    position: absolute !important;
-    top: -8px !important;
-    left: -8px !important;
-    right: -8px !important;
-    bottom: -8px !important;
-    border: 1.5px solid rgba(227, 30, 36, 0.2) !important;
-    border-top-color: #e31e24 !important;
-    border-radius: 50% !important;
-    animation: sidebarRotate 4s linear infinite !important;
-    pointer-events: none !important;
+.exclusive-ring {
+    position: absolute;
+    top: -8px; left: -8px; right: -8px; bottom: -8px;
+    border: 1px solid rgba(227, 30, 36, 0.2);
+    border-top: 1px solid #e31e24;
+    border-radius: 50%;
+    animation: exRotate 6s linear infinite;
 }
 
-/* Little Arrows on the Ring */
-.arrow-top, .arrow-bottom {
-    position: absolute !important;
-    width: 0 !important;
-    height: 0 !important;
-    border-left: 4px solid transparent !important;
-    border-right: 4px solid transparent !important;
-    left: calc(50% - 4px) !important;
+.ex-arrow-t, .ex-arrow-b {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
 }
-.arrow-top { border-bottom: 6px solid #e31e24 !important; top: -4px !important; }
-.arrow-bottom { border-top: 6px solid #e31e24 !important; bottom: -4px !important; transform: rotate(180deg) !important; }
+.ex-arrow-t { border-bottom: 6px solid #e31e24; top: -4px; }
+.ex-arrow-b { border-top: 6px solid #e31e24; bottom: -4px; }
 
-@keyframes sidebarRotate {
+@keyframes exRotate {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
 
-.premium-x-btn:hover {
-    background: #1a1a1a !important;
-    transform: scale(1.05) rotate(90deg) !important;
+.exclusive-x-btn:hover {
+    transform: scale(1.1) rotate(90deg) !important;
+    background: #000 !important;
 }
 
-/* Sidebar Body Content */
-.sidebar-logo-block { margin-bottom: 50px !important; }
-
-.blueprint-desc {
-    font-size: 15px !important;
-    line-height: 1.8 !important;
-    color: #666 !important;
+/* Content Styling */
+.sidebar-mission {
+    font-size: 16px !important;
+    color: #555 !important;
+    line-height: 1.7 !important;
     margin-bottom: 40px !important;
 }
 
-.contact-card {
-    margin-bottom: 30px !important;
-    border-left: 2px solid #f0f0f0 !important;
-    padding-left: 20px !important;
-}
-
-.card-label {
+.info-item { margin-bottom: 25px !important; }
+.info-item small { 
+    color: #e31e24 !important; 
+    text-transform: uppercase !important; 
+    font-weight: 800 !important; 
+    letter-spacing: 1px !important;
     display: block !important;
-    font-size: 10px !important;
-    text-transform: uppercase !important;
-    color: #e31e24 !important;
-    font-weight: 800 !important;
-    margin-bottom: 8px !important;
 }
+.info-item p { font-weight: 700 !important; color: #111 !important; margin: 0 !important; }
 
-.card-value {
-    font-size: 15px !important;
-    color: #1a1a1a !important;
-    font-weight: 600 !important;
-    margin: 0 !important;
-}
-
-.sidebar-action-btn {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    background: #1a1a1a !important;
+.sidebar-black-button {
+    background: #111 !important;
     color: #fff !important;
-    padding: 20px 30px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: 20px !important;
     text-decoration: none !important;
     font-weight: 700 !important;
+    margin-top: 30px !important;
+    transition: 0.3s !important;
 }
+
+.sidebar-black-button:hover { background: #e31e24 !important; }
