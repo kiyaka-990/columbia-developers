@@ -102,7 +102,7 @@ const Product = () => {
                                                 <i className="ri-star-fill"></i>
                                             </span>
                                             <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Hardware Toolbox</Link></h3>
-                                            <span className="price"><del>Ksh 3000</del> Ksh 2500</span>
+                                            <span className="price"><del>$ 3000</del> $ 2500</span>
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +125,7 @@ const Product = () => {
                                                 <i className="ri-star-fill"></i>
                                             </span>
                                             <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Drill Machine</Link></h3>
-                                            <span className="price"><del>Ksh 3000</del>Ksh 2500</span>
+                                            <span className="price"><del>$ 3000</del>$ 2500</span>
                                         </div>
                                     </div>
                                 </div>
@@ -148,7 +148,7 @@ const Product = () => {
                                                 <i className="ri-star-fill"></i>
                                             </span>
                                             <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Claw Hammer</Link></h3>
-                                            <span className="price"><del>Ksh 130</del> Ksh 125</span>
+                                            <span className="price"><del>$ 130</del> $ 125</span>
                                         </div>
                                     </div>
                                 </div>
@@ -171,7 +171,7 @@ const Product = () => {
                                                 <i className="ri-star-fill"></i>
                                             </span>
                                             <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Chainsaw Machine</Link></h3>
-                                            <span className="price"><del>Ksh 1130</del> Ksh 1125</span>
+                                            <span className="price"><del>$ 1130</del> $ 1125</span>
                                         </div>
                                     </div>
                                 </div>
@@ -194,7 +194,7 @@ const Product = () => {
                                                 <i className="ri-star-fill"></i>
                                             </span>
                                             <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Construction Hat</Link></h3>
-                                            <span className="price"><del>Ksh 150</del> Ksh 125</span>
+                                            <span className="price"><del>$ 150</del> $ 125</span>
                                         </div>
                                     </div>
                                 </div>
@@ -217,7 +217,7 @@ const Product = () => {
                                                 <i className="ri-star-fill"></i>
                                             </span>
                                             <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Sparta Demolition Hammer</Link></h3>
-                                            <span className="price"><del>Ksh 1500</del> Ksh 1250</span>
+                                            <span className="price"><del>$ 1500</del> $ 1250</span>
                                         </div>
                                     </div>
                                 </div>
@@ -240,7 +240,7 @@ const Product = () => {
                                                 <i className="ri-star-fill"></i>
                                             </span>
                                             <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Hitachi Zaxis 110m</Link></h3>
-                                            <span className="price"><del>Ksh 3500</del> Ksh 2250</span>
+                                            <span className="price"><del>$ 3500</del> $ 2250</span>
                                         </div>
                                     </div>
                                 </div>
@@ -263,7 +263,7 @@ const Product = () => {
                                                 <i className="ri-star-fill"></i>
                                             </span>
                                             <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Sprayer Mowers Machine</Link></h3>
-                                            <span className="price"><del>Ksh 450</del> Ksh 320</span>
+                                            <span className="price"><del>$ 450</del> $ 320</span>
                                         </div>
                                     </div>
                                 </div>
@@ -286,7 +286,7 @@ const Product = () => {
                                                 <i className="ri-star-fill"></i>
                                             </span>
                                             <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Compaction Machine</Link></h3>
-                                            <span className="price"><del>Ksh 55,000</del> Ksh 450,000</span>
+                                            <span className="price"><del>$ 55,000</del> $ 450,000</span>
 
                                         </div>
                                     </div>

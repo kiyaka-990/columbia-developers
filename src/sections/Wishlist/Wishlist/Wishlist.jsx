@@ -49,7 +49,7 @@ const Wishlist = () => {
                                     <td className="product-name">
                                         <Link href="/pages/innerpage/shop-details" className="product-title-link">Chainsaw Machine</Link>
                                     </td>
-                                    <td className="product-price"><span className="amount">Ksh 45,000.00</span></td>
+                                    <td className="product-price"><span className="amount">$ 45,000.00</span></td>
                                     <td className="product-stock"><span className="stock-badge in-stock">Available</span></td>
                                     <td className="product-action">
                                         <Link href="/pages/innerpage/shop-details" className="wishlist-cart-btn">

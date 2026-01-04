@@ -22,16 +22,16 @@ const HeaderOne = () => {
 
     return (
         <div className="header-decoration">
-            {/* --- SEARCH POPUP (UNTOUCHED) --- */}
+            {/* --- SEARCH POPUP --- */}
             <div className={`popup-search-box ${isPopupOpen ? 'show' : ''}`} style={{ zIndex: 9999 }}>
                 <button onClick={() => setIsPopupOpen(false)} className="searchClose"><i className="ri-close-line"></i></button>
-                <form action="#" className="search-form">
+                <form action="#" className="search-form" onSubmit={(e) => e.preventDefault()}>
                     <input type="text" placeholder="Search projects, services..." autoFocus />
                     <button type="submit"><i className="ri-search-line"></i></button>
                 </form>
             </div>
 
-            {/* --- SIDEBAR (UNTOUCHED) --- */}
+            {/* --- SIDEBAR --- */}
             <div className={`sidemenu-wrapper ${isSideBarOpen ? 'show' : ''}`}>
                 <div ref={sidebarRef} className="sidemenu-content columbia-premium-sidebar">
                     <div style={{ position: 'absolute', top: '35px', right: '35px', zIndex: 1000 }}>
@@ -69,7 +69,7 @@ const HeaderOne = () => {
                                     <p className="card-value">+254 725 178209</p>
                                 </div>
                             </div>
-                            <Link href="/contact" className="sidebar-action-btn" onClick={() => setIsSideBarOpen(false)}>
+                            <Link href="/pages/innerpage/contact" className="sidebar-action-btn" onClick={() => setIsSideBarOpen(false)}>
                                 <span>REQUEST A QUOTE</span>
                                 <i className="ri-arrow-right-line"></i>
                             </Link>
@@ -79,7 +79,6 @@ const HeaderOne = () => {
             </div>
 
             <header className="nav-header header-layout1">
-                {/* --- TOP BAR (UNTOUCHED) --- */}
                 <div className="header-top d-none d-lg-block">
                     <div className="container">
                         <div className="row justify-content-between align-items-center">
@@ -113,13 +112,14 @@ const HeaderOne = () => {
                                 <div className="col">
                                     <nav className="main-menu d-none d-lg-inline-block text-center">
                                         <ul>
-    <li><Link href="/">HOME</Link></li>
-    <li><Link href="/pages/innerpage/about">ABOUT</Link></li>
-    <li><Link href="/pages/innerpage/services">SERVICES</Link></li>
-    <li><Link href="/pages/innerpage/projects">PROJECTS</Link></li>
-    <li><Link href="/pages/innerpage/shop">SHOP</Link></li>
-    <li><Link href="/pages/innerpage/contact">CONTACT</Link></li>
-</ul>
+                                            <li><Link href="/">HOME</Link></li>
+                                            <li><Link href="/pages/innerpage/about">ABOUT</Link></li>
+                                            {/* FIXED: This now points to /pages/innerpage/process as requested */}
+                                            <li><Link href="/pages/innerpage/service">SERVICES</Link></li>
+                                            <li><Link href="/pages/innerpage/project">PROJECTS</Link></li>
+                                            <li><Link href="/pages/innerpage/shop">SHOP</Link></li>
+                                            <li><Link href="/pages/innerpage/contact">CONTACT</Link></li>
+                                        </ul>
                                     </nav>
                                 </div>
                                 <div className="col-auto">

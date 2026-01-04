@@ -378,7 +378,7 @@ const ProductDetails = () => {
                                             <Link href="/pages/innerpage/shop-details">Hardware Toolbox</Link>
                                         </h3>
                                         <span className="price">
-                                            <del>Ksh 3000</del> Ksh 2500
+                                            <del>$ 3000</del> $ 2500
                                         </span>
                                     </div>
                                 </div>
@@ -409,7 +409,7 @@ const ProductDetails = () => {
                                             <Link href="/pages/innerpage/shop-details">Drill Machine</Link>
                                         </h3>
                                         <span className="price">
-                                            <del>Ksh 3000</del> Ksh 2500
+                                            <del>$ 3000</del> $ 2500
                                         </span>
                                     </div>
                                 </div>
@@ -440,7 +440,7 @@ const ProductDetails = () => {
                                             <Link href="/pages/innerpage/shop-details">Claw Hammer</Link>
                                         </h3>
                                         <span className="price">
-                                            <del>Ks 1130</del> Ksh 1125
+                                            <del>Ks 1130</del> $ 1125
                                         </span>
                                     </div>
                                 </div>
@@ -502,7 +502,7 @@ const ProductDetails = () => {
                                             <Link href="/pages/innerpage/shop-details">Construction Hat</Link>
                                         </h3>
                                         <span className="price">
-                                            <del>Ksh 150</del> Ksh 125
+                                            <del>$ 150</del> $ 125
                                         </span>
                                     </div>
                                 </div>

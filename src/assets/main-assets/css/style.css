@@ -20100,7 +20100,7 @@ input:focus-visible {
     left: 0;
     width: 280px;
     background: #15161c; /* Dark theme color from your file */
-    border: 1px solid rgba(233, 193, 18, 0.3);
+    border: 1px solid rgba(227, 30, 36, 0.4);
     border-radius: 20px;
     padding: 20px;
     display: none;
@@ -20122,7 +20122,7 @@ input:focus-visible {
     margin-bottom: 15px;
 }
 
-.status-dot { width: 8px; height: 8px; background: #e9c112; border-radius: 50%; }
+.status-dot { width: 8px; height: 8px; background: #E31E24; border-radius: 50%; }
 
 .pro-acc-grid {
     display: grid;
@@ -20140,15 +20140,15 @@ input:focus-visible {
 }
 
 .acc-item:hover { background: rgba(233, 193, 18, 0.1); }
-.acc-item i { color: #e9c112; font-size: 20px; display: block; margin-bottom: 5px; }
+.acc-item i { color: #E31E24; font-size: 20px; display: block; margin-bottom: 5px; }
 .acc-item p { color: #fff; font-size: 10px; margin: 0; }
 
 .pro-acc-reset {
     width: 100%;
     margin-top: 15px;
     background: transparent;
-    border: 1px dashed #e9c112;
-    color: #e9c112;
+    border: 1px dashed #E31E24;
+    color: #E31E24;
     padding: 8px;
     border-radius: 8px;
     cursor: pointer;
@@ -20184,7 +20184,7 @@ input:focus-visible {
     font-size: 13px;
     font-weight: 500;
     line-height: 1.4;
-    border: 1px solid rgba(233, 193, 18, 0.4);
+    border: 1px solid rgba(227, 30, 36, 0.4);
     animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 

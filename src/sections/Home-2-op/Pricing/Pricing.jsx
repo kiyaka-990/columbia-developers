@@ -9,7 +9,7 @@ const Pricing = () => {
             description: "Essential pre-construction services, ideal for project scoping and permits.",
             price: "150,000",
             duration: "Monthly Retainer",
-            currency: "Ksh",
+            currency: "$",
             features: [
                 "Detailed Site Analysis",
                 "Conceptual Design Drafts",
@@ -24,7 +24,7 @@ const Pricing = () => {
             description: "Comprehensive management of site execution and quality control.",
             price: "280,000",
             duration: "Monthly Retainer",
-            currency: "Ksh",
+            currency: "$",
             features: [
                 "Detailed Site Analysis",
                 "Project Scheduling & Logistics",
@@ -39,7 +39,7 @@ const Pricing = () => {
             description: "Full Engineering, Procurement, and Construction management for complex projects.",
             price: "500,000",
             duration: "Monthly Retainer",
-            currency: "Ksh",
+            currency: "$",
             features: [
                 "Full Feasibility Study & Design",
                 "Procurement & Supply Chain Management",
