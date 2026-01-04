@@ -22,109 +22,98 @@ const LoginModal = ({ onClose }) => {
     const [showPass, setShowPass] = useState(false);
     const [username, setUsername] = useState("");
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(""); 
+    const [success, setSuccess] = useState("");
 
     const handleSignIn = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setError(""); 
+        setSuccess("");
 
         try {
             const response = await fetch("http://localhost:4000/api/login", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username: username }),
             });
-
             const data = await response.json();
 
             if (response.ok) {
-                alert(`Success: ${data.message}`);
-                onClose();
+                setSuccess(`Welcome, ${username}!`);
+                setTimeout(() => onClose(), 1500);
             } else {
-                alert("Login failed. Please check your credentials.");
+                setError(data.message || "Invalid credentials");
             }
-        } catch (error) {
-            console.error("Connection Error:", error);
-            alert("Could not connect to the Rust server. Make sure it is running on port 4000.");
+        } catch (err) {
+            setError("Server offline. Please start the Rust backend.");
         } finally {
             setLoading(false);
         }
     };
     
     return (
-      <div className="fixed inset-0 z-[20000] flex items-center justify-center p-4 md:p-6 bg-black/60 backdrop-blur-sm">
-        <div className="absolute inset-0" onClick={onClose}></div>
+      <div style={{ position: 'fixed', inset: 0, zIndex: 99999, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(8px)' }}>
+        <div style={{ position: 'absolute', inset: 0 }} onClick={onClose}></div>
         
-        <div className="w-full max-w-[380px] bg-[#121212] border border-white/10 rounded-[2rem] relative z-10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden animate-in fade-in zoom-in duration-300">
-          <div className="p-8 md:p-10">
-            <div className="flex justify-center mb-8">
-               <Image 
-                  src="/main-assets/img/logo.png" 
-                  alt="Columbia" 
-                  width={140} 
-                  className="brightness-0 invert opacity-100"
-               />
-            </div>
-
-            <div className="text-center mb-8">
-              <h2 className="text-xl font-bold text-white tracking-tight">Client Portal</h2>
-              <p className="text-gray-400 text-[10px] font-semibold uppercase tracking-[0.25em] mt-2">Secure Authentication</p>
+        <div style={{ position: 'relative', width: '100%', maxWidth: '380px', backgroundColor: '#121212', borderRadius: '2rem', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', color: 'white', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
+            
+            {/* Logo Section */}
+            <div style={{ padding: '40px 40px 20px 40px', textAlign: 'center' }}>
+                <img 
+                    src="/main-assets/img/logo.png" 
+                    alt="Columbia Logo" 
+                    style={{ 
+                        width: '140px', 
+                        height: 'auto', 
+                        filter: 'brightness(0) invert(1)', // Forces black logo to white
+                        marginBottom: '20px'
+                    }} 
+                />
+               <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', margin: '0' }}>Client Portal</h2>
+               <p style={{ color: '#666', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.2em', marginTop: '8px' }}>Secure Authentication</p>
             </div>
     
-            <form className="space-y-4" onSubmit={handleSignIn}>
-              <div className="relative group">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 group-focus-within:border-red-500/50 transition-colors">
-                    <User className="text-gray-400 group-focus-within:text-red-500" size={14} />
-                </div>
+            {/* Form Section */}
+            <form style={{ padding: '0 40px 20px 40px', display: 'flex', flexDirection: 'column', gap: '15px' }} onSubmit={handleSignIn}>
+              <div style={{ position: 'relative' }}>
                 <input 
                   type="text" 
                   required
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Username / Email" 
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl py-3.5 pl-14 pr-4 text-black placeholder:text-gray-600 focus:outline-none focus:border-red-600/50 focus:bg-white/[0.05] transition-all text-sm"
+                  style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '1rem', padding: '14px 20px', color: 'white', outline: 'none', fontSize: '14px' }}
                 />
               </div>
     
-              <div className="relative group">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 group-focus-within:border-red-500/50 transition-colors">
-                    <Lock className="text-gray-400 group-focus-within:text-red-500" size={14} />
-                </div>
+              <div style={{ position: 'relative' }}>
                 <input 
                   type={showPass ? "text" : "password"} 
                   placeholder="Password" 
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl py-3.5 pl-14 pr-12 text-black placeholder:text-gray-600 focus:outline-none focus:border-red-600/50 focus:bg-white/[0.05] transition-all text-sm"
+                  style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '1rem', padding: '14px 20px', color: 'white', outline: 'none', fontSize: '14px' }}
                 />
-                <button 
-                  type="button"
-                  onClick={() => setShowPass(!showPass)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors border-none bg-transparent cursor-pointer p-2 rounded-lg hover:bg-white/5"
-                >
-                  {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
               </div>
+
+              {success && <div style={{ backgroundColor: 'rgba(34,197,94,0.1)', padding: '10px', borderRadius: '0.75rem', border: '1px solid rgba(34,197,94,0.2)', color: '#22c55e', fontSize: '11px', textAlign: 'center', fontWeight: 'bold' }}>{success}</div>}
+              {error && <div style={{ backgroundColor: 'rgba(239,68,68,0.1)', padding: '10px', borderRadius: '0.75rem', border: '1px solid rgba(239,68,68,0.2)', color: '#ef4444', fontSize: '11px', textAlign: 'center', fontWeight: 'bold' }}>{error}</div>}
     
               <button 
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#e31e24] hover:bg-[#ff2a31] text-white font-bold py-4 rounded-2xl transition-all active:scale-[0.96] border-none cursor-pointer mt-6 text-[12px] uppercase tracking-widest shadow-[0_10px_20px_rgba(227,30,36,0.3)] hover:shadow-[0_15px_30px_rgba(227,30,36,0.4)] disabled:opacity-50"
+                style={{ width: '100%', backgroundColor: '#e31e24', color: 'white', fontWeight: 'bold', padding: '16px', borderRadius: '1rem', border: 'none', cursor: 'pointer', marginTop: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '12px', transition: '0.3s' }}
               >
                 {loading ? "Authenticating..." : "Sign In"}
               </button>
             </form>
 
-            <button 
-                onClick={onClose}
-                className="absolute top-6 right-6 text-gray-500 hover:text-white transition-colors border-none bg-white/5 hover:bg-white/10 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
-            >
-                <X size={16} />
-            </button>
-          </div>
-          
-          <div className="bg-white/[0.02] border-t border-white/5 py-5 text-center">
-             <a href="#" className="text-[11px] text-gray-500 hover:text-red-500 transition-colors uppercase font-bold tracking-widest no-underline">Forgot Password?</a>
-          </div>
+            {/* Footer Section */}
+            <div style={{ padding: '20px', borderTop: '1px solid rgba(255,255,255,0.05)', backgroundColor: 'rgba(255,255,255,0.01)', textAlign: 'center' }}>
+                <a href="#" style={{ color: '#555', fontSize: '11px', textDecoration: 'none', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Forgot Password?</a>
+            </div>
+
+            {/* Close Button */}
+            <button onClick={onClose} style={{ position: 'absolute', top: '20px', right: '20px', background: 'rgba(255,255,255,0.05)', color: 'white', border: 'none', borderRadius: '50%', width: '32px', height: '32px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
         </div>
       </div>
     );
