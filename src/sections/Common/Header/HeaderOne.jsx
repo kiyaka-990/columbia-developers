@@ -83,7 +83,7 @@ const LoginModal = ({ onClose }) => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Username / Email" 
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl py-3.5 pl-14 pr-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-red-600/50 focus:bg-white/[0.05] transition-all text-sm"
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl py-3.5 pl-14 pr-4 text-black placeholder:text-gray-600 focus:outline-none focus:border-red-600/50 focus:bg-white/[0.05] transition-all text-sm"
                 />
               </div>
     
