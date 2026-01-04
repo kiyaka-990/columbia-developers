@@ -82,10 +82,10 @@ const CheckoutArea = () => {
                     <div className="form-group">
                       <label>Year</label>
                       <select className="form-control">
-                        <option>2023</option>
-                        <option>2022</option>
-                        <option>2020</option>
-                        <option selected="selected">2021</option>
+                        <option>2027</option>
+                        <option>2028</option>
+                        <option>2029</option>
+                        <option selected="selected">2026</option>
                       </select>
                     </div>
                   </div>

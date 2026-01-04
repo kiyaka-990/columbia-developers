@@ -9,11 +9,13 @@ const ContactDropdown = () => {
   }, []);
   const defaultValue = 'Your Inquiry';
   const options = [
-    { value: 'Web Design', label: 'Web Design' },
-    { value: 'Web Development', label: 'Web Development' },
-    { value: 'Engine Diagnostics', label: 'Engine Diagnostics' },
-    { value: 'Digital Marketing', label: 'Digital Marketing' }
-  ];
+    { value: 'Civil Engineering', label: 'Civil Engineering' },
+    { value: 'Structural Design', label: 'Structural Design' },
+    { value: 'Infrastructure Development', label: 'Infrastructure Development' },
+    { value: 'Project Management', label: 'Project Management' },
+    { value: 'Water Engineering', label: 'Water Engineering' },
+    { value: 'Road Construction', label: 'Road Construction' }
+];
   return (
 
     <div className="col-md-6">
