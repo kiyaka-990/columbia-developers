@@ -94,7 +94,7 @@ const LoginModal = ({ onClose }) => {
                 <input 
                   type={showPass ? "text" : "password"} 
                   placeholder="Password" 
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl py-3.5 pl-14 pr-12 text-white placeholder:text-gray-600 focus:outline-none focus:border-red-600/50 focus:bg-white/[0.05] transition-all text-sm"
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl py-3.5 pl-14 pr-12 text-black placeholder:text-gray-600 focus:outline-none focus:border-red-600/50 focus:bg-white/[0.05] transition-all text-sm"
                 />
                 <button 
                   type="button"
