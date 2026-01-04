@@ -6,7 +6,7 @@ const ScrollTopButton = () => {
     const [scrollProgress, setScrollProgress] = useState(0);
 
     const updateScrollProgress = () => {
-        if (typeof window !== undefined) {
+        if (typeof window !== 'undefined') {
             const scrollTop = window.scrollY;
             const scrollHeight = document.documentElement.scrollHeight;
             const clientHeight = window.innerHeight;
@@ -19,23 +19,20 @@ const ScrollTopButton = () => {
 
     useEffect(() => {
         window.addEventListener('scroll', updateScrollProgress);
-        return () => {
-            window.removeEventListener('scroll', updateScrollProgress);
-        };
+        return () => window.removeEventListener('scroll', updateScrollProgress);
     }, []);
 
     const scrollToTop = () => {
-        if (typeof window !== undefined) {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+        if (typeof window !== 'undefined') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
     const strokeDashoffset = (307.919 * (100 - scrollProgress)) / 100;
 
-    return ( typeof window !== undefined &&
+    // We check window inside useEffect, so we can just return the JSX 
+    // The 'show' class will handle visibility
+    return (
         <a
             href="#"
             className={`scroll-top ${scrollProgress > 1 ? 'show' : ''}`}
@@ -43,30 +40,41 @@ const ScrollTopButton = () => {
                 e.preventDefault();
                 scrollToTop();
             }}
+            style={{
+                position: 'fixed',
+                bottom: '30px',      // Distance from bottom
+                left: '30px',        // Moved from right to left
+                right: 'auto',       // Ensure right is unset
+                zIndex: 9999,
+                width: '50px',
+                height: '50px',
+                cursor: 'pointer',
+                display: 'block'
+            }}
         >
             <svg className="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
                 <path
                     d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"
                     style={{
+                        fill: 'none',
+                        stroke: '#e31e24', // Your brand color
+                        strokeWidth: '8',
                         transition: 'stroke-dashoffset 10ms linear',
                         strokeDasharray: '307.919, 307.919',
                         strokeDashoffset: strokeDashoffset
                     }}
                 ></path>
             </svg>
+            {/* Optional: Add an upward arrow icon in the center */}
+            <i className="ri-arrow-up-line" style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                fontSize: '20px'
+            }}></i>
         </a>
     );
 };
 
 export default ScrollTopButton;
-
-
-
-
-
-
-
-
-
-
-
