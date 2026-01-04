@@ -20,6 +20,37 @@ const Image = ({ src, alt, width, height, className, style }) => (
 // --- CENTERED PREMIUM LOGIN MODAL ---
 const LoginModal = ({ onClose }) => {
     const [showPass, setShowPass] = useState(false);
+    const [username, setUsername] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const handleSignIn = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            const response = await fetch("http://localhost:4000/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ username: username }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(`Success: ${data.message}`);
+                onClose();
+            } else {
+                alert("Login failed. Please check your credentials.");
+            }
+        } catch (error) {
+            console.error("Connection Error:", error);
+            alert("Could not connect to the Rust server. Make sure it is running on port 4000.");
+        } finally {
+            setLoading(false);
+        }
+    };
     
     return (
       <div className="fixed inset-0 z-[20000] flex items-center justify-center p-4 md:p-6 bg-black/60 backdrop-blur-sm">
@@ -41,13 +72,16 @@ const LoginModal = ({ onClose }) => {
               <p className="text-gray-400 text-[10px] font-semibold uppercase tracking-[0.25em] mt-2">Secure Authentication</p>
             </div>
     
-            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-4" onSubmit={handleSignIn}>
               <div className="relative group">
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 group-focus-within:border-red-500/50 transition-colors">
                     <User className="text-gray-400 group-focus-within:text-red-500" size={14} />
                 </div>
                 <input 
                   type="text" 
+                  required
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   placeholder="Username / Email" 
                   className="w-full bg-white/[0.03] border border-white/10 rounded-2xl py-3.5 pl-14 pr-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-red-600/50 focus:bg-white/[0.05] transition-all text-sm"
                 />
@@ -71,8 +105,12 @@ const LoginModal = ({ onClose }) => {
                 </button>
               </div>
     
-              <button className="w-full bg-[#e31e24] hover:bg-[#ff2a31] text-white font-bold py-4 rounded-2xl transition-all active:scale-[0.96] border-none cursor-pointer mt-6 text-[12px] uppercase tracking-widest shadow-[0_10px_20px_rgba(227,30,36,0.3)] hover:shadow-[0_15px_30px_rgba(227,30,36,0.4)]">
-                Sign In
+              <button 
+                type="submit"
+                disabled={loading}
+                className="w-full bg-[#e31e24] hover:bg-[#ff2a31] text-white font-bold py-4 rounded-2xl transition-all active:scale-[0.96] border-none cursor-pointer mt-6 text-[12px] uppercase tracking-widest shadow-[0_10px_20px_rgba(227,30,36,0.3)] hover:shadow-[0_15px_30px_rgba(227,30,36,0.4)] disabled:opacity-50"
+              >
+                {loading ? "Authenticating..." : "Sign In"}
               </button>
             </form>
 
