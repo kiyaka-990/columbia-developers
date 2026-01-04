@@ -35,7 +35,7 @@ const BlogThree = () => {
                         <div className="title-area blog-area-content-text-extra-style">
                             <span className="sub-title">
                                 <Image src="/main-assets/img/icon/section-subtitle-icon.svg" alt="img" width={60} height={60}/>
-                                GA&apos;ALS INSIGHTS
+                                COLUMBIA DEVELOPERS INSIGHTS
                             </span> {/* Personalized Subtitle */}
                             <h2 className="sec-title">Industry news and building tips</h2> {/* Personalized Title */}
                         </div>
@@ -66,7 +66,7 @@ const BlogThree = () => {
                             </div>
                             <div className="blog-content">
                                 <div className="blog-meta">
-                                    <Link href="/pages/innerpage/blog">By Ga&apos;als Team</Link> {/* Personalized Author */}
+                                    <Link href="/pages/innerpage/blog">By Columbia Developers Team</Link> {/* Personalized Author */}
                                     <Link href="/pages/innerpage/blog">Safety</Link> {/* Personalized Tag */}
                                 </div>
                                 <h3 className="blog-title">
@@ -125,7 +125,7 @@ const BlogThree = () => {
                                     <Link href="/pages/innerpage/blog">
                                         <span>01</span>NOV
                                     </Link>
-                                    <div className="year">2024</div>
+                                    <div className="year">2025</div>
                                 </div>
                             </div>
                             <div className="blog-content">
@@ -194,7 +194,7 @@ const BlogThree = () => {
                             </div>
                             <div className="blog-content">
                                 <div className="blog-meta">
-                                    <Link href="/pages/innerpage/blog">By Ga&apos;als Team</Link>
+                                    <Link href="/pages/innerpage/blog">By Columbia Developers Team</Link>
                                     <Link href="/pages/innerpage/blog">Residential</Link> {/* Personalized Tag */}
                                 </div>
                                 <h3 className="blog-title">
@@ -221,7 +221,7 @@ const BlogThree = () => {
                                     <Link href="/pages/innerpage/blog">
                                         <span>15</span>SEP
                                     </Link>
-                                    <div className="year">2024</div>
+                                    <div className="year">2025</div>
                                 </div>
                             </div>
                             <div className="blog-content">
