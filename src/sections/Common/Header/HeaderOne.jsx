@@ -216,16 +216,17 @@ const App = () => {
                                     </a>
                                 </div>
                                 <div className="col text-center">
-                                    <nav className="main-menu d-none d-lg-inline-block">
-                                        <ul className="m-0 p-0" style={{ listStyle: 'none', display: 'flex', justifyContent: 'center', gap: '25px' }}>
-                                            <li><a href="/pages/homepage/home-5" onClick={(e) => handleNavClick(e, '/')}>HOME</a></li>
-                                            <li><a href="/pages/innerpage/about" onClick={(e) => handleNavClick(e, '/about')}>ABOUT</a></li>
-                                            <li><a href="/pages/innerpage/service" onClick={(e) => handleNavClick(e, '/service')}>SERVICES</a></li>
-                                            <li><a href="/pages/innerpage/project" onClick={(e) => handleNavClick(e, '/project')}>PROJECTS</a></li>
-                                            <li><a href="/pages/innerpage/shop" onClick={(e) => handleNavClick(e, '/shop')}>SHOP</a></li>
-                                            <li><a href="/pages/innerpage/contact" onClick={(e) => handleNavClick(e, '/contact')}>CONTACT</a></li>
-                                        </ul>
-                                    </nav>
+                                    <nav className="main-menu d-none d-lg-block">
+                                    <ul className="m-0 p-0" style={{ listStyle: 'none', display: 'flex', gap: '30px' }}>
+                                        {/* Home Link updated to point to the root / */}
+                                        <li><a href="/" onClick={(e) => handleNavClick(e, '/')}>HOME</a></li>
+                                        <li><a href="/pages/innerpage/about" onClick={(e) => handleNavClick(e, '/about')}>ABOUT</a></li>
+                                        <li><a href="/pages/innerpage/service" onClick={(e) => handleNavClick(e, '/service')}>SERVICES</a></li>
+                                        <li><a href="/pages/innerpage/project" onClick={(e) => handleNavClick(e, '/project')}>PROJECTS</a></li>
+                                        <li><a href="/pages/innerpage/shop" onClick={(e) => handleNavClick(e, '/shop')}>SHOP</a></li>
+                                        <li><a href="/pages/innerpage/contact" onClick={(e) => handleNavClick(e, '/contact')}>CONTACT</a></li>
+                                    </ul>
+                                </nav>
                                 </div>
                                 <div className="col-auto">
                                     <div className="header-action-btns">
