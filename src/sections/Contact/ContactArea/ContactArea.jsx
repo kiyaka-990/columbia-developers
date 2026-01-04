@@ -19,9 +19,9 @@ const ContactArea = () => {
                   <i className="ri-phone-line"></i>
                   <Link
                     className="contact-page-card_link"
-                    href="tel:+254714861896"
+                    href="tel:+254725178209"
                   >
-                    +254 714 861 896
+                    +254 725 178209
                   </Link>
                 </div>
                 <div className="contact-page-card-text">
@@ -63,7 +63,7 @@ const ContactArea = () => {
                     className="contact-page-card_link"
                     href="tel:+254700000000" 
                   >
-                    +254 20 236 5478
+                    +254 725 178209
                   </Link>
                 </div>
                 <div className="contact-page-card-text">
@@ -72,7 +72,7 @@ const ContactArea = () => {
                     className="contact-page-card_link"
                     href="mailto:mombasa@columbiadevelopers.co.ke"
                   >
-                    msa@columbiadevelopers.co.ke
+                    info@columbiadevelopers.co.ke
                   </Link>
                 </div>
                 <div className="contact-page-card-text">
@@ -97,15 +97,15 @@ const ContactArea = () => {
                 <h4 className="contact-page-card_title">Tendering & Logistics</h4>
                 <div className="contact-page-card-text">
                   <i className="ri-file-list-3-line"></i>
-                  <span>NCA Registration & Tenders</span>
+                  <span>Registration & Tenders</span>
                 </div>
                 <div className="contact-page-card-text">
                   <i className="ri-phone-line"></i>
                   <Link
                     className="contact-page-card_link"
-                    href="tel:+254714861896"
+                    href="tel:+254725178209"
                   >
-                    +254 714 861 896
+                    +254 725 178209
                   </Link>
                 </div>
                 <div className="contact-page-card-text">
@@ -114,7 +114,7 @@ const ContactArea = () => {
                     className="contact-page-card_link"
                     href="mailto:tenders@columbiadevelopers.co.ke"
                   >
-                    tenders@columbiadevelopers.co.ke
+                    info@columbiadevelopers.co.ke
                   </Link>
                 </div>
                 <div className="contact-page-card-text">

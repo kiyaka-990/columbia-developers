@@ -33,11 +33,13 @@ const ContactFive = () => {
                                         <div className="col-md-6">
                                             <div className="form-group">
                                                 <select name="subject" id="subject" className="single-select nice-select form-select">
-                                                    <option value="" disabled selected hidden>Your Inquiry</option>
-                                                    <option value="Web Design">Web Design</option>
-                                                    <option value="Web Development">Web Development</option>
-                                                    <option value="Engine Diagnostics">Engine Diagnostics</option>
-                                                    <option value="Digital Marketing">Digital Marketing</option>
+                                                <option value="" disabled selected hidden>Your Inquiry</option>
+                                                 <option value="Residential Development">Residential Development</option>
+                                                  <option value="Commercial Construction">Commercial Construction</option>
+                                                  <option value="Project Management">Project Management</option>
+                                                   <option value="Real Estate Consultancy">Real Estate Consultancy</option>
+                                                    <option value="Joint Venture Opportunities">Joint Venture Opportunities</option>
+                                                    <option value="Interior Design & Fit-out">Interior Design & Fit-out</option>
                                                 </select>
                                             </div>
                                         </div>
