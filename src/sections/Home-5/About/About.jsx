@@ -57,7 +57,7 @@ const About = () => {
                                                 <i className="ri-phone-fill" style={{color: '#E31E24'}}></i>
                                             </div>
                                             <div className="media-body">
-                                                <Link className="link" href="tel:+254700000000">+254 7XX XXX XXX</Link>
+                                                <Link className="link" href="tel:+254700000000">+254 725 178209</Link>
                                                 <h6 className="title">Need Engineering Consultation?</h6>
                                             </div>
                                         </div>

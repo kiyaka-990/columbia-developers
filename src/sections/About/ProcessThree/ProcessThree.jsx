@@ -113,7 +113,7 @@ const ProcessThree = () => {
                     Final assembly and project handover
                   </h4>
                   <p className="process-card-text">
-                    Electronic typesetting conta the popularised in the 1960s
+                    Electronic typesetting conta the popularised in the 1990s
                   </p>
                 </div>
               </div>

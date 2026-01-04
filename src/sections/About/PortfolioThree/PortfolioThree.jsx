@@ -74,7 +74,7 @@ const PortfolioThree = () => {
                       </Link>
                     </h4>
                     <p className="portofolio-card-text">
-                      Building since 09,01,2024
+                      Building since 09,01,1992
                     </p>
                   </div>
                 </div>
@@ -103,7 +103,7 @@ const PortfolioThree = () => {
                       </Link>
                     </h4>
                     <p className="portofolio-card-text">
-                      Building since 09,01,2024
+                      Building since 09,01,1992
                     </p>
                   </div>
                 </div>
@@ -132,7 +132,7 @@ const PortfolioThree = () => {
                       </Link>
                     </h4>
                     <p className="portofolio-card-text">
-                      Building since 09,01,2024
+                      Building since 09,01,1992
                     </p>
                   </div>
                 </div>
@@ -161,7 +161,7 @@ const PortfolioThree = () => {
                       </Link>
                     </h4>
                     <p className="portofolio-card-text">
-                      Building since 09,01,2024
+                      Building since 09,01,1992
                     </p>
                   </div>
                 </div>
@@ -190,7 +190,7 @@ const PortfolioThree = () => {
                       </Link>
                     </h4>
                     <p className="portofolio-card-text">
-                      Building since 09,01,2024
+                      Building since 09,01,1992
                     </p>
                   </div>
                 </div>
@@ -219,7 +219,7 @@ const PortfolioThree = () => {
                       </Link>
                     </h4>
                     <p className="portofolio-card-text">
-                      Building since 09,01,2024
+                      Building since 09,01,1992
                     </p>
                   </div>
                 </div>
