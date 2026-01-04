@@ -30,7 +30,7 @@ const ColumbiaIntelligencePro = () => {
     management: "Project Management active. Monitoring **BoQ accuracy** and site timeline optimization to ensure zero-overrun delivery.",
     photo: "AI Vision active. Analyzing uploaded site photos for **Progress Verification**.",
     file: "Secure File Layer active. Analyzing **BoQ / Structural Drawings** for automated site audit.",
-    default: "I am Gitobu, the Executive Assistant at Columbia Developers (K) Ltd. I support our Project Management team, led by Okullu and Kiyaka, in delivering our infrastructure development projects."
+    default: "I am Gitobu, the Executive Assistant at Columbia Developers (K) Ltd. I support our Project Management team,in delivering our infrastructure development projects."
   };
 
   useEffect(() => {
