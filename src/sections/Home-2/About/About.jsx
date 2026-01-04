@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const About = () => {
     // Adjusting the counter value to reflect relevant construction experience (e.g., number of completed projects or years of experience relevant to the region)
-    const yearsOfExperience = 7; // Ga'als mentioned 7 years of expertise in the previous service component description
+    const yearsOfExperience = 7; // Columbia mentioned 7 years of expertise in the previous service component description
     const projectsCompleted = 45; // Placeholder for completed projects
     
     return (

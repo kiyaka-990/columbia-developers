@@ -13,7 +13,7 @@ const FooterTwo = () => {
                         <div className="footer-logo">
                             <Link href="/pages/homepage/home-1">
                                 {/* LOGO ALT TEXT UPDATE */}
-                                <Image src="/main-assets/img/logo.png" alt="Ga'als Agencies Limited Logo" width={120} height={60} />
+                                <Image src="/main-assets/img/logo.png" alt="Columbia Agencies Limited Logo" width={120} height={60} />
                             </Link>
                         </div>
                         <div className="subscribe-box">

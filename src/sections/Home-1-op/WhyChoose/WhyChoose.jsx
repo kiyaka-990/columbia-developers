@@ -10,7 +10,7 @@ const WhyChoose = () => {
       ></div>
       <div className="container">
         <div className="title-area text-center">
-          <div className="shadow-title">WHY GA'ALS</div>
+          <div className="shadow-title">WHY Columbia</div>
           <span className="sub-title">
             <Image src="/main-assets/img/icon/section-subtitle-icon.svg" alt="icon" width={60} height={60} />
             Your Trusted Partner

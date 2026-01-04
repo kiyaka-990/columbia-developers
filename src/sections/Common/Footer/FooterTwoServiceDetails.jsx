@@ -8,7 +8,7 @@ const FooterTwo = () => {
             <div className="container">
                 <div className="footer-top-1">
                     <div className="footer-logo">
-                        <Link href="/pages/homepage/home-1"><Image src="/main-assets/img/logo-white.svg" alt="Ga'als" width={120} height={60}/></Link>
+                        <Link href="/pages/homepage/home-1"><Image src="/main-assets/img/logo-white.svg" alt="Columbia" width={120} height={60}/></Link>
                     </div>
                     <div className="subscribe-box">
                         <p className="subscribe-box_text">Subscribe for the latest news. Stay updated on the latest trends.</p>

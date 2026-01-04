@@ -1,10 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 const BlogTwo = () => {
-    // Dummy Blog Data for Ga'als
+    // Dummy Blog Data for Columbia
     const currentMonth = "DEC";
     const currentYear = 2025;
-    const authorName = "Ga'als Team";
+    const authorName = "Columbia Team";
 
     const blogPosts = [
         {
@@ -31,7 +31,7 @@ const BlogTwo = () => {
             year: currentYear,
             category: "Infrastructure",
             title: "Key Challenges and Innovations in Road Works in Rural Kenya",
-            text: "An overview of how Ga'als addresses logistical and engineering hurdles in regional infrastructure development.",
+            text: "An overview of how Columbia addresses logistical and engineering hurdles in regional infrastructure development.",
             image: "/main-assets/img/blog/blog_1_3.png",
         },
     ];

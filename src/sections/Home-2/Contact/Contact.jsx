@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 const Contact = () => {
-    // Ga'als Specific Contact Information
+    // Columbia Specific Contact Information
     const mainOfficeCity = "Nairobi, Kenya";
     const officeAddress = "Kipande Road, Westlands, Nairobi, Kenya"; // Example address
     const officePhoneNumber = "+254 714 861 896"; // CEO's number used as primary contact

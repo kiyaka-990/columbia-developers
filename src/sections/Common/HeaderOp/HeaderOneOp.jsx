@@ -74,12 +74,12 @@ const HeaderOneOp = () => {
                         <div className="footer-logo footer-img">
                             <Link href="/pages/homepage/home-1">
                                 {/* NAME/LOGO ALT UPDATE */}
-                                <img src="/main-assets/img/logo.svg" alt="Ga'als Agencies Limited Logo" width={100} height={50} />
+                                <img src="/main-assets/img/logo.svg" alt="Columbia Agencies Limited Logo" width={100} height={50} />
                             </Link>
                         </div>
                         <p className="about-text mb-4">
                             {/* TEXT UPDATE */}
-                            **Ga'als Agencies Limited** is a reputable construction services company in Nairobi, Kenya. We are committed to delivering high-quality, reliable, and innovative building and construction solutions.
+                            **Columbia Agencies Limited** is a reputable construction services company in Nairobi, Kenya. We are committed to delivering high-quality, reliable, and innovative building and construction solutions.
                         </p>
 
                         <p className="footer-text">
@@ -118,7 +118,7 @@ const HeaderOneOp = () => {
                                     </h4>
                                     <div className="recent-post-meta">
                                         {/* AUTHOR UPDATE */}
-                                        <Link href="/pages/innerpage/blog">By Ga'als Team</Link>
+                                        <Link href="/pages/innerpage/blog">By Columbia Team</Link>
                                         <Link href="/pages/innerpage/blog">30 min ago</Link>
                                     </div>
                                 </div>
@@ -136,7 +136,7 @@ const HeaderOneOp = () => {
                                     </h4>
                                     <div className="recent-post-meta">
                                         {/* AUTHOR UPDATE */}
-                                        <Link href="/pages/innerpage/blog">By Ga'als Team</Link>
+                                        <Link href="/pages/innerpage/blog">By Columbia Team</Link>
                                         <Link href="/pages/innerpage/blog">2 days ago</Link>
                                     </div>
                                 </div>
@@ -154,7 +154,7 @@ const HeaderOneOp = () => {
                                     </h4>
                                     <div className="recent-post-meta">
                                         {/* AUTHOR UPDATE */}
-                                        <Link href="/pages/innerpage/blog">By Ga'als Team</Link>
+                                        <Link href="/pages/innerpage/blog">By Columbia Team</Link>
                                         <Link href="/pages/innerpage/blog">3 week ago</Link>
                                     </div>
                                 </div>
@@ -205,7 +205,7 @@ const HeaderOneOp = () => {
                     <div className="menu-area">
                         <div className="header-navbar-logo">
                             {/* NAME/LOGO ALT UPDATE */}
-                            <Link href="/pages/homepage/home-1"><img src="/main-assets/img/logo.svg" alt="Ga'als Agencies Limited Logo" /></Link>
+                            <Link href="/pages/homepage/home-1"><img src="/main-assets/img/logo.svg" alt="Columbia Agencies Limited Logo" /></Link>
                         </div>
                         <div className="logo-bg"></div>
                         <div className="container">
@@ -213,7 +213,7 @@ const HeaderOneOp = () => {
                                 <div className="col-auto d-xxl-none d-block">
                                     <div className="header-logo">
                                         {/* NAME/LOGO ALT UPDATE */}
-                                        <Link href="/pages/homepage/home-1"><img src="/main-assets/img/logo.svg" alt="Ga'als Agencies Limited Logo" /></Link>
+                                        <Link href="/pages/homepage/home-1"><img src="/main-assets/img/logo.svg" alt="Columbia Agencies Limited Logo" /></Link>
                                     </div>
                                 </div>
                                 <div className="col-auto menu-bar ms-xxl-0">

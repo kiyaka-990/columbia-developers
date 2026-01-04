@@ -36,7 +36,7 @@ const TeamThree = () => {
             >
               <div className="team-card_content max-width-reset-team">
                 <h4 className="team-card_title">
-                  <Link href="/pages/innerpage/team-details">Abbass Salat</Link>
+                  <Link href="/pages/innerpage/team-details">Brian Gitobu</Link>
                 </h4>
                 <span className="team-card_desig">CEO</span>
                 <div className="team-social_wrap">
@@ -57,7 +57,7 @@ const TeamThree = () => {
                 <Image src="/main-assets/img/team/team-1-1.png" alt="img" width={330} height={474}/>
               </div>
               <Link href="tel:0023745671379" className="contact-btn-wrap">
-                <span className="number">+254714861896 </span>
+                <span className="number">+254 725 178209 </span>
                 <div className="icon-btn">
                   <i className="ri-phone-fill"></i>
                 </div>
@@ -71,7 +71,7 @@ const TeamThree = () => {
             >
               <div className="team-card_content max-width-reset-team">
                 <h4 className="team-card_title">
-                  <Link href="/pages/innerpage/team-details">Eng Mark Nyagah</Link>
+                  <Link href="/pages/innerpage/team-details">Eng Anne Kagoh</Link>
                 </h4>
                 <span className="team-card_desig">Sr. Engineer</span>
                 <div className="team-social_wrap">

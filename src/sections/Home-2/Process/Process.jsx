@@ -22,7 +22,7 @@ const Process = () => {
                         </div>
                         <div className="process-thumb2-1">
                             {/* Consider updating this image to one that better represents construction/logistics */}
-                            <Image src="/main-assets/img/normal/process-thumb2-1.png" alt="Ga'als Project Timeline Visualization" width={606} height={450}/>
+                            <Image src="/main-assets/img/normal/process-thumb2-1.png" alt="Columbia Project Timeline Visualization" width={606} height={450}/>
                         </div>
                     </div>
                     <div className="col-lg-6">

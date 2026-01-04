@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 
 const ContactTwo = () => {
-    // Ga'als Specific Contact Information
+    // Columbia Specific Contact Information
     const officeLocation = {
         city: "Nairobi, Kenya",
         address: "4th Floor, Standard Building, Standard Street, Nairobi",
@@ -32,7 +32,7 @@ const ContactTwo = () => {
             <div className="contact-thumb1-1">
                 {/* Visual context for Contact Section: A professional construction image */}
                 
-              <Image src="/main-assets/img/normal/contact_1-1.png" alt="Ga'als Construction Office Image" width={606} height={450}/>
+              <Image src="/main-assets/img/normal/contact_1-1.png" alt="Columbia Construction Office Image" width={606} height={450}/>
             </div>
             
           </div>

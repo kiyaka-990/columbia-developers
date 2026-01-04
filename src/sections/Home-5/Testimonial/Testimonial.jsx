@@ -5,24 +5,24 @@ import Slider from "react-slick";
 import Image from "next/image";
 
 const Testimonial = () => {
-    // Structured Testimonial Data for Ga'als
+    // Structured Testimonial Data for Columbia
     const testimonialsData = [
         {
             name: "Eng. Caleb Juma",
             designation: "Project Lead, Mzima Holdings",
-            text: "Ga'als delivered our multi-story commercial building on time and significantly under budget. Their rigorous quality control and local supply chain expertise were key to the project's success. Highly professional and reliable.",
+            text: "Columbia delivered our multi-story commercial building on time and significantly under budget. Their rigorous quality control and local supply chain expertise were key to the project's success. Highly professional and reliable.",
             image: "/main-assets/img/testimonial/testi_5_1.png", // Retaining original image path
         },
         {
             name: "Ms. Amina Hassan",
             designation: "CEO, Safarisha Developers",
-            text: "The execution of our infrastructure project required complex logistics and strict safety adherence. Ga'als' project management team handled every challenge seamlessly, demonstrating their commitment to engineering excellence.",
+            text: "The execution of our infrastructure project required complex logistics and strict safety adherence. Columbia' project management team handled every challenge seamlessly, demonstrating their commitment to engineering excellence.",
             image: "/main-assets/img/testimonial/testi_5_1.png", // Retaining original image path
         },
         {
             name: "Mr. David Kimani",
             designation: "Director, Kilimani Residencies",
-            text: "We chose Ga'als for their comprehensive Turnkey EPC solution. They managed everything from design approval in Nairobi to final finishing. The transparency and communication throughout the build were exceptional.",
+            text: "We chose Columbia for their comprehensive Turnkey EPC solution. They managed everything from design approval in Nairobi to final finishing. The transparency and communication throughout the build were exceptional.",
             image: "/main-assets/img/testimonial/testi_5_1.png", // Retaining original image path
         },
     ];

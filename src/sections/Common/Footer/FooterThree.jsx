@@ -12,7 +12,7 @@ const FooterThree = () => {
                         <div className="col-md-6 col-xl-4">
                             <div className="widget widget-about footer-widget">
                                 <div className="footer-logo">
-                                    <a href="/pages/homepage/home-1"><img src="/main-assets/img/logo-white.svg" alt="Ga'als" /></a>
+                                    <a href="/pages/homepage/home-1"><img src="/main-assets/img/logo-white.svg" alt="Columbia" /></a>
                                 </div>
                                 <p className="about-text">Holisticly underwhelm ethical solutions whereas maintainable strategic theme areas. Uniquely optimize quality interface before resource.</p>
                                 <h4 className="about-year">Since 2000</h4>

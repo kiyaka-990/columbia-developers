@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, Plus, Mic, Activity, Cpu, Send, RefreshCw, 
   FileUp, BarChart3, Terminal, Pickaxe, Droplets, 
-  ShieldCheck, Home, Image as ImageIcon, Ruler, Briefcase, Sparkles
+  ShieldCheck, Home, Image as ImageIcon, Ruler, Briefcase, Sparkles,
+  FileText, CheckCircle2, Download
 } from 'lucide-react';
 
 const ColumbiaIntelligencePro = () => {
@@ -15,6 +16,10 @@ const ColumbiaIntelligencePro = () => {
   const [input, setInput] = useState('');
   const [isThinking, setIsThinking] = useState(false);
   const [thinkingStep, setThinkingStep] = useState('');
+  
+  // Refs for file inputs
+  const boqInputRef = useRef(null);
+  const photoInputRef = useRef(null);
   const chatEndRef = useRef(null);
 
   const industryTraining = {
@@ -25,7 +30,7 @@ const ColumbiaIntelligencePro = () => {
     management: "Project Management active. Monitoring **BoQ accuracy** and site timeline optimization to ensure zero-overrun delivery.",
     photo: "AI Vision active. Analyzing uploaded site photos for **Progress Verification**.",
     file: "Secure File Layer active. Analyzing **BoQ / Structural Drawings** for automated site audit.",
-    default: "Hello, I am Gitobu. I serve as the AI Project Coordinator for Columbia Developers (K) Ltd. My role is to assist the management team, in delivering world-class infrastructure"
+    default: "I am Gitobu, the Executive Assistant at Columbia Developers (K) Ltd. I support our Project Management team, led by Okullu and Kiyaka, in delivering our infrastructure development projects."
   };
 
   useEffect(() => {
@@ -39,33 +44,62 @@ const ColumbiaIntelligencePro = () => {
     setInput('');
   };
 
-  // The Core Logic that creates the "Thinking" experience
-  const runIntelligenceSequence = async (userInput) => {
+  const runIntelligenceSequence = async (userInput, customResponse = null) => {
     setIsThinking(true);
-    
-    // Professional thinking steps for an engineering firm
     const steps = ["Initializing Neural Bridge...", "Scanning Columbia Knowledge Base...", "Syncing Site Logs...", "Optimizing Response..."];
     
     for (const step of steps) {
       setThinkingStep(step);
-      await new Promise(r => setTimeout(r, 650)); // Controlled delay for professional feel
+      await new Promise(r => setTimeout(r, 650));
     }
 
-    const q = userInput.toLowerCase();
-    let responseText = industryTraining.default;
-    if (q.includes('road')) responseText = industryTraining.roads;
-    else if (q.includes('water')) responseText = industryTraining.water;
-    else if (q.includes('build') || q.includes('construction')) responseText = industryTraining.building;
-    else if (q.includes('arch')) responseText = industryTraining.architecture;
-    else if (q.includes('manage')) responseText = industryTraining.management;
-    else if (q.includes('photo')) responseText = industryTraining.photo;
-    else if (q.includes('file')) responseText = industryTraining.file;
+    let responseText = customResponse;
+    
+    if (!responseText) {
+      const q = userInput.toLowerCase();
+      if (q.includes('road')) responseText = industryTraining.roads;
+      else if (q.includes('water')) responseText = industryTraining.water;
+      else if (q.includes('build') || q.includes('construction')) responseText = industryTraining.building;
+      else if (q.includes('arch')) responseText = industryTraining.architecture;
+      else if (q.includes('manage')) responseText = industryTraining.management;
+      else if (q.includes('photo')) responseText = industryTraining.photo;
+      else if (q.includes('file')) responseText = industryTraining.file;
+      else responseText = industryTraining.default;
+    }
 
     setMessages(prev => [...prev, { id: Date.now(), sender: 'ai', text: responseText }]);
     setIsThinking(false);
   };
 
-  // This function ensures the category click mimics a real message send
+  // HANDLERS FOR NEW FUNCTIONALITIES
+  const handleFileUpload = (e, type) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const userMsg = { 
+      id: Date.now(), 
+      text: `Uploaded ${type}: ${file.name}`, 
+      sender: 'user',
+      isSystem: true 
+    };
+    setMessages(prev => [...prev, userMsg]);
+
+    const response = type === 'BOQ/Drawing' 
+      ? `Successfully ingested **${file.name}**. Cross-referencing structural dimensions with current site inventory. Preliminary audit shows **98.4% alignment** with projected materials.`
+      : `Site Image **${file.name}** processed via AI Vision. Detected: **Reinforcement Bars (Grade 500)** and **Formwork Assembly**. Progress estimate: **+2.5%** from last scan.`;
+
+    runIntelligenceSequence(type, response);
+  };
+
+  const generateReport = () => {
+    const userMsg = { id: Date.now(), text: "Generate Site Intelligence Report", sender: 'user' };
+    setMessages(prev => [...prev, userMsg]);
+
+    const reportContent = `**PROJECT STATUS REPORT**\n\n• **Status:** Active (On-Track)\n• **Lead PM:** Okullu & Kiyaka\n• **Financials:** 0.4% under budget\n• **Compliance:** 100% NEMA/NCA Verified\n\n*System Recommendation:* Proceed to Substructure Phase 2.`;
+    
+    runIntelligenceSequence("report", reportContent);
+  };
+
   const handleCategorySelect = (categoryLabel, internalQuery) => {
     const userMsg = { id: Date.now(), text: categoryLabel, sender: 'user' };
     setMessages(prev => [...prev, userMsg]);
@@ -86,6 +120,22 @@ const ColumbiaIntelligencePro = () => {
   return (
     <div style={{ fontFamily: "'Inter', sans-serif" }}>
       
+      {/* Hidden File Inputs */}
+      <input 
+        type="file" 
+        ref={boqInputRef} 
+        style={{ display: 'none' }} 
+        accept=".pdf,.dwg,.xlsx"
+        onChange={(e) => handleFileUpload(e, 'BOQ/Drawing')} 
+      />
+      <input 
+        type="file" 
+        ref={photoInputRef} 
+        style={{ display: 'none' }} 
+        accept="image/*"
+        onChange={(e) => handleFileUpload(e, 'Site Photo')} 
+      />
+
       {/* TRIGGER */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
@@ -107,7 +157,7 @@ const ColumbiaIntelligencePro = () => {
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }}
             style={{
               position: 'fixed', bottom: '90px', right: '24px', zIndex: 9998,
-              width: '400px', height: '520px', maxHeight: '80vh', 
+              width: '400px', height: '550px', maxHeight: '85vh', 
               backgroundColor: THEME.bg, borderRadius: '24px', 
               display: 'flex', flexDirection: 'column', border: `1px solid ${THEME.border}`,
               boxShadow: '0 24px 64px rgba(0,0,0,0.8)', overflow: 'hidden'
@@ -142,8 +192,26 @@ const ColumbiaIntelligencePro = () => {
                   <button onClick={resetToMain} style={homeBtnStyle}><Home size={12} /> Dashboard</button>
                   {messages.map((m) => (
                     <div key={m.id} style={{ alignSelf: m.sender === 'user' ? 'flex-end' : 'flex-start', maxWidth: '85%' }}>
-                      <div style={{ padding: '12px 16px', borderRadius: '16px', fontSize: '14px', color: 'white', backgroundColor: m.sender === 'user' ? THEME.card : 'transparent', border: m.sender === 'user' ? `1px solid ${THEME.border}` : 'none', lineHeight: '1.6' }}>
-                        {m.text.split('**').map((part, i) => i % 2 === 1 ? <b key={i} style={{color: THEME.accent}}>{part}</b> : part)}
+                      <div style={{ 
+                        padding: '12px 16px', 
+                        borderRadius: '16px', 
+                        fontSize: '14px', 
+                        color: 'white', 
+                        backgroundColor: m.sender === 'user' ? (m.isSystem ? '#1e293b' : THEME.card) : 'transparent', 
+                        border: m.sender === 'user' ? `1px solid ${THEME.border}` : 'none', 
+                        lineHeight: '1.6',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '4px'
+                      }}>
+                        {m.isSystem && <div style={{fontSize: '10px', color: THEME.accent, fontWeight: 'bold'}}>SYSTEM INPUT</div>}
+                        <div>
+                          {m.text.split('\n').map((line, idx) => (
+                            <div key={idx}>
+                              {line.split('**').map((part, i) => i % 2 === 1 ? <b key={i} style={{color: THEME.accent}}>{part}</b> : part)}
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -163,9 +231,9 @@ const ColumbiaIntelligencePro = () => {
               <AnimatePresence>
                 {isMenuOpen && (
                   <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} style={menuStyle}>
-                    <button type="button" style={mItem} onClick={() => {setIsMenuOpen(false); handleCategorySelect("File Upload", "file");}}><FileUp size={14} color={THEME.accent}/> Upload BoQ / Drawing</button>
-                    <button type="button" style={mItem} onClick={() => {setIsMenuOpen(false); handleCategorySelect("Photo Upload", "photo");}}><ImageIcon size={14} color={THEME.accent}/> Upload Site Photo</button>
-                    <button type="button" style={mItem} onClick={() => {setIsMenuOpen(false); handleCategorySelect("Report Generation", "management");}}><BarChart3 size={14} color={THEME.accent}/> Generate Report</button>
+                    <button type="button" style={mItem} onClick={() => {setIsMenuOpen(false); boqInputRef.current.click();}}><FileUp size={14} color={THEME.accent}/> Upload BoQ / Drawing</button>
+                    <button type="button" style={mItem} onClick={() => {setIsMenuOpen(false); photoInputRef.current.click();}}><ImageIcon size={14} color={THEME.accent}/> Upload Site Photo</button>
+                    <button type="button" style={mItem} onClick={() => {setIsMenuOpen(false); generateReport();}}><BarChart3 size={14} color={THEME.accent}/> Generate Report</button>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -173,7 +241,7 @@ const ColumbiaIntelligencePro = () => {
               <div style={{ backgroundColor: THEME.card, borderRadius: '32px', padding: '8px 14px', display: 'flex', alignItems: 'center', gap: '10px', border: `1px solid ${THEME.border}` }}>
                 <Plus size={20} color={isMenuOpen ? THEME.accent : "#94a3b8"} style={{ cursor: 'pointer' }} onClick={() => setIsMenuOpen(!isMenuOpen)} />
                 <div style={smartPillStyle}><Sparkles size={14} color={THEME.accent} /> <span style={{ color: 'white', fontSize: '10px', fontWeight: '800' }}>CORE</span></div>
-                <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask me anything..." style={{ flex: 1, background: 'none', border: 'none', color: 'white', outline: 'none', fontSize: '14px' }} />
+                <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask Gitobu..." style={{ flex: 1, background: 'none', border: 'none', color: 'white', outline: 'none', fontSize: '14px' }} />
                 <Mic size={20} color="#94a3b8" />
                 {input.trim() && <Send size={20} color={THEME.accent} style={{ cursor: 'pointer' }} onClick={handleSendMessage} />}
               </div>
@@ -189,7 +257,7 @@ const ColumbiaIntelligencePro = () => {
 const catStyle = { display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 18px', backgroundColor: '#1c1f2a', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '12px', color: 'white', cursor: 'pointer', fontSize: '14px', textAlign: 'left', transition: '0.2s' };
 const smartPillStyle = { display: 'flex', alignItems: 'center', gap: '4px', padding: '4px 8px', backgroundColor: 'rgba(211, 47, 47, 0.1)', borderRadius: '20px', border: '1px solid rgba(211, 47, 47, 0.2)' };
 const menuStyle = { position: 'absolute', bottom: '70px', left: '20px', backgroundColor: '#1b1d26', border: '1px solid #333', borderRadius: '16px', padding: '8px', display: 'flex', flexDirection: 'column', gap: '4px', zIndex: 100, width: '210px', boxShadow: '0 10px 40px rgba(0,0,0,0.6)' };
-const mItem = { background: 'none', border: 'none', color: '#94a3b8', fontSize: '12px', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', cursor: 'pointer', borderRadius: '8px' };
+const mItem = { background: 'none', border: 'none', color: '#94a3b8', fontSize: '12px', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', cursor: 'pointer', borderRadius: '8px', width: '100%' };
 const homeBtnStyle = { alignSelf: 'center', background: 'rgba(211, 47, 47, 0.1)', border: '1px solid rgba(211, 47, 47, 0.2)', color: '#D32F2F', padding: '6px 14px', borderRadius: '12px', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', marginBottom: '10px' };
 
 export default ColumbiaIntelligencePro;

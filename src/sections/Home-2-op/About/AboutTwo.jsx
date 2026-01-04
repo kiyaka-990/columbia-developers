@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 const AboutTwo = () => {
-    // Ga'als Specific Data
+    // Columbia Specific Data
     const yearsExperience = 15; // Placeholder for established experience
-    const aboutText = "Ga'als is dedicated to delivering high-quality, sustainable construction and project management solutions across Kenya. Our expertise spans residential, commercial, and essential infrastructure projects, prioritizing efficiency and client satisfaction.";
+    const aboutText = "Columbia is dedicated to delivering high-quality, sustainable construction and project management solutions across Kenya. Our expertise spans residential, commercial, and essential infrastructure projects, prioritizing efficiency and client satisfaction.";
     const missionText = "To be the construction partner of choice in Kenya by upholding the highest standards of quality, safety, and integrity in every structure we build.";
     const visionText = "To lead the transformation of the Kenyan construction landscape through innovative building methods and commitment to environmental and social responsibility.";
 

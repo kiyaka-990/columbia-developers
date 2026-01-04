@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 const PortfolioTwo = () => {
-    // Ga'als Specific Project Data (Replacing placeholder content)
+    // Columbia Specific Project Data (Replacing placeholder content)
     const projects = [
         {
             id: 1,

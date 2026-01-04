@@ -27,7 +27,7 @@ const ProcessTwo = () => {
             </div>
             <div className="process-thumb2-1">
               {/* NOTE: Consider updating this image to one that represents construction or logistics */}
-              <Image src="/main-assets/img/normal/process-thumb2-1.png" alt="Ga'als Project Visualization" width={606} height={450}/>
+              <Image src="/main-assets/img/normal/process-thumb2-1.png" alt="Columbia Project Visualization" width={606} height={450}/>
             </div>
             
           </div>

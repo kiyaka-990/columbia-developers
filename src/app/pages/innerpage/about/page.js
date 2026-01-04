@@ -9,7 +9,6 @@ import WhyChooseThree from "~/sections/About/WhyChooseThree";
 import HeaderOne from "~/sections/Common/Header/HeaderOne";
 import FooterFive from "~/sections/Common/Footer/FooterFive";
 import CounterThree from "~/sections/Common/Counter/CounterThree";
-import TestimonialThree from "~/sections/Common/Testimonial/TestimonialThree";
 import Scroll from "~/sections/Common/Scroll";
 import Portfolio from "~/sections/Home-1/Portfolio";
 export default function AboutPage() {
@@ -22,7 +21,7 @@ export default function AboutPage() {
       <ProcessThree />
       <Portfolio />
       <CounterThree />
-      <TestimonialThree />
+      
       <TeamThree />
       <ClientThree />
       <BlogThree />
