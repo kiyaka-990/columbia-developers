@@ -23,12 +23,10 @@ const LoginModal = ({ onClose }) => {
     
     return (
       <div className="fixed inset-0 z-[20000] flex items-center justify-center p-4 md:p-6 bg-black/60 backdrop-blur-sm">
-        {/* Click outside to close */}
         <div className="absolute inset-0" onClick={onClose}></div>
         
         <div className="w-full max-w-[380px] bg-[#121212] border border-white/10 rounded-[2rem] relative z-10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden animate-in fade-in zoom-in duration-300">
           <div className="p-8 md:p-10">
-            {/* Logo Section */}
             <div className="flex justify-center mb-8">
                <Image 
                   src="/main-assets/img/logo.png" 
@@ -115,14 +113,6 @@ const App = () => {
         setShowLoginModal(true);
     };
 
-    const handleNavClick = (e, path) => {
-        if (path === '/') {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        setIsSideBarOpen(false);
-    };
-
     const cssStyles = `
         .top-info-wrap { display: flex; gap: 20px; font-size: 13px; color: #666; }
         .info-link { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 6px; }
@@ -171,7 +161,7 @@ const App = () => {
                         </div>
                         <div className="sidebar-body-content">
                             <p className="blueprint-desc">Engineering excellence with a focus on sustainable infrastructure across East Africa.</p>
-                            <a href="/pages/innerpage/contact" className="sidebar-action-btn" onClick={(e) => handleNavClick(e, '/contact')}>
+                            <a href="/pages/innerpage/contact" className="sidebar-action-btn">
                                 <span>GET IN TOUCH</span>
                                 <i className="ri-arrow-right-line"></i>
                             </a>
@@ -211,20 +201,19 @@ const App = () => {
                         <div className="menu-area">
                             <div className="row align-items-center">
                                 <div className="col-auto">
-                                    <a href="#" onClick={(e) => handleNavClick(e, '/')}>
+                                    <a href="/">
                                         <Image src="/main-assets/img/logo.png" alt="Logo" width={160} />
                                     </a>
                                 </div>
                                 <div className="col text-center">
                                     <nav className="main-menu d-none d-lg-block">
                                     <ul className="m-0 p-0" style={{ listStyle: 'none', display: 'flex', gap: '30px' }}>
-                                        {/* Home Link updated to point to the root / */}
-                                        <li><a href="/" onClick={(e) => handleNavClick(e, '/')}>HOME</a></li>
-                                        <li><a href="/pages/innerpage/about" onClick={(e) => handleNavClick(e, '/about')}>ABOUT</a></li>
-                                        <li><a href="/pages/innerpage/service" onClick={(e) => handleNavClick(e, '/service')}>SERVICES</a></li>
-                                        <li><a href="/pages/innerpage/project" onClick={(e) => handleNavClick(e, '/project')}>PROJECTS</a></li>
-                                        <li><a href="/pages/innerpage/shop" onClick={(e) => handleNavClick(e, '/shop')}>SHOP</a></li>
-                                        <li><a href="/pages/innerpage/contact" onClick={(e) => handleNavClick(e, '/contact')}>CONTACT</a></li>
+                                        <li><a href="/">HOME</a></li>
+                                        <li><a href="/pages/innerpage/about">ABOUT</a></li>
+                                        <li><a href="/pages/innerpage/service">SERVICES</a></li>
+                                        <li><a href="/pages/innerpage/project">PROJECTS</a></li>
+                                        <li><a href="/pages/innerpage/shop">SHOP</a></li>
+                                        <li><a href="/pages/innerpage/contact">CONTACT</a></li>
                                     </ul>
                                 </nav>
                                 </div>
