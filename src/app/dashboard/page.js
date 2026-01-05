@@ -14,19 +14,28 @@ import {
 
 export default function Dashboard() {
   const [user, setUser] = useState("Client");
+  const [mounted, setMounted] = useState(false);
 
- useEffect(() => {
-  const savedUser = localStorage.getItem("user");
-  if (!savedUser) {
-    // If someone tries to type /dashboard manually without logging in
-    window.location.href = "/"; 
-  }
-}, []);
+  useEffect(() => {
+    // 1. Set mounted to true to handle the Date hydration error
+    setMounted(true);
+
+    // 2. Check for logged in user
+    const savedUser = localStorage.getItem("user");
+    if (!savedUser) {
+      window.location.href = "/"; 
+    } else {
+      setUser(savedUser);
+    }
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
     window.location.href = "/";
   };
+
+  // Prevent rendering date/specific client content until mounted
+  if (!mounted) return null;
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8f9fa', fontFamily: 'sans-serif' }}>
@@ -52,11 +61,16 @@ export default function Dashboard() {
       <main style={{ flex: 1, padding: '40px' }}>
         <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
           <div>
-            <h1 style={{ fontSize: '28px', fontWeight: '800', color: '#1a1a1a', margin: 0 }}>Welcome back, {user}!</h1>
+            <h1 style={{ fontSize: '28px', fontWeight: '800', color: '#1a1a1a', margin: 0 }}>
+              Welcome back, {user}!
+            </h1>
             <p style={{ color: '#666' }}>Here is the latest update on your construction projects.</p>
           </div>
           <div style={{ backgroundColor: '#fff', padding: '10px 20px', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
-            <span style={{ fontWeight: 'bold' }}>{new Date().toLocaleDateString()}</span>
+            <span style={{ fontWeight: 'bold' }}>
+               {/* This now matches perfectly between server and client */}
+              {new Date().toLocaleDateString()}
+            </span>
           </div>
         </header>
 
@@ -67,7 +81,7 @@ export default function Dashboard() {
           <div style={cardStyle()}><AlertCircle color="#f59e0b" size={30} /> <h3>2</h3> <p>Pending Approvals</p></div>
         </div>
 
-        {/* Project Table Placeholder */}
+        {/* Project Table */}
         <div style={{ backgroundColor: '#fff', borderRadius: '15px', padding: '30px', boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }}>
           <h3 style={{ marginBottom: '20px', fontWeight: '800' }}>Recent Milestone Updates</h3>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -79,9 +93,21 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              <tr style={tableRowStyle}><td style={{ fontWeight: '600' }}>Foundation Concrete Pour</td><td><span style={badgeStyle('#dcfce7', '#166534')}>Completed</span></td><td>Jan 04, 2026</td></tr>
-              <tr style={tableRowStyle}><td style={{ fontWeight: '600' }}>Structural Steel Framing</td><td><span style={badgeStyle('#fef3c7', '#92400e')}>In Progress</span></td><td>Estimated Jan 15</td></tr>
-              <tr style={tableRowStyle}><td style={{ fontWeight: '600' }}>Electrical Rough-in</td><td><span style={badgeStyle('#f1f1f1', '#666')}>Upcoming</span></td><td>Feb 01, 2026</td></tr>
+              <tr style={tableRowStyle}>
+                <td style={{ fontWeight: '600', padding: '15px 0' }}>Foundation Concrete Pour</td>
+                <td><span style={badgeStyle('#dcfce7', '#166534')}>Completed</span></td>
+                <td>Jan 04, 2026</td>
+              </tr>
+              <tr style={tableRowStyle}>
+                <td style={{ fontWeight: '600', padding: '15px 0' }}>Structural Steel Framing</td>
+                <td><span style={badgeStyle('#fef3c7', '#92400e')}>In Progress</span></td>
+                <td>Estimated Jan 15</td>
+              </tr>
+              <tr style={tableRowStyle}>
+                <td style={{ fontWeight: '600', padding: '15px 0' }}>Electrical Rough-in</td>
+                <td><span style={badgeStyle('#f1f1f1', '#666')}>Upcoming</span></td>
+                <td>Feb 01, 2026</td>
+              </tr>
             </tbody>
           </table>
         </div>
