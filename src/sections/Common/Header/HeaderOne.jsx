@@ -137,6 +137,41 @@ const MultiPageMobileMenu = ({ isMenuOpen, setIsMenuOpen }) => (
 );
 
 const LoginModal = ({ onClose }) => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError("");
+        setSuccess("");
+
+        try {
+            const response = await fetch("https://login-api-production-d351.up.railway.app/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                setSuccess(data.message);
+                // Optional: Redirect or close modal after success
+                setTimeout(() => onClose(), 2000);
+            } else {
+                setError(data.message || "Login failed");
+            }
+        } catch (err) {
+            setError("Server connection failed. Please try again later.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="modal-overlay" style={{
             position: 'fixed',
@@ -162,11 +197,11 @@ const LoginModal = ({ onClose }) => {
                     position: 'absolute',
                     top: '20px',
                     right: '20px',
-                    background: 'rgba(255,255,255,0.1)',
+                    background: '#e31e24',
                     border: 'none',
                     borderRadius: '50%',
-                    width: '35px',
-                    height: '35px',
+                    width: '30px',
+                    height: '30px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -174,7 +209,7 @@ const LoginModal = ({ onClose }) => {
                     zIndex: 2,
                     color: '#fff'
                 }}>
-                    <X size={20} />
+                    <X size={18} />
                 </button>
 
                 <div style={{
@@ -201,20 +236,27 @@ const LoginModal = ({ onClose }) => {
                 </div>
 
                 <div style={{ padding: '40px 30px' }}>
-                    <form onSubmit={(e) => { e.preventDefault(); }}>
+                    <form onSubmit={handleLogin}>
                         <div style={{ marginBottom: '20px' }}>
                             <label style={{ display: 'block', marginBottom: '8px', fontSize: '12px', fontWeight: '700', color: '#666' }}>USERNAME / EMAIL</label>
                             <div style={{ position: 'relative' }}>
                                 <User size={18} style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: '#999' }} />
-                                <input type="text" placeholder="Enter your username" style={{
-                                    width: '100%',
-                                    padding: '12px 15px 12px 45px',
-                                    borderRadius: '8px',
-                                    border: '2px solid #f0f0f0',
-                                    outline: 'none',
-                                    fontSize: '14px',
-                                    transition: '0.3s'
-                                }} />
+                                <input 
+                                    type="text" 
+                                    required
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    placeholder="Enter your username" 
+                                    style={{
+                                        width: '100%',
+                                        padding: '12px 15px 12px 45px',
+                                        borderRadius: '8px',
+                                        border: '2px solid #f0f0f0',
+                                        outline: 'none',
+                                        fontSize: '14px',
+                                        transition: '0.3s'
+                                    }} 
+                                />
                             </div>
                         </div>
 
@@ -222,31 +264,45 @@ const LoginModal = ({ onClose }) => {
                             <label style={{ display: 'block', marginBottom: '8px', fontSize: '12px', fontWeight: '700', color: '#666' }}>PASSWORD</label>
                             <div style={{ position: 'relative' }}>
                                 <Lock size={18} style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: '#999' }} />
-                                <input type="password" placeholder="••••••••" style={{
-                                    width: '100%',
-                                    padding: '12px 15px 12px 45px',
-                                    borderRadius: '8px',
-                                    border: '2px solid #f0f0f0',
-                                    outline: 'none',
-                                    fontSize: '14px'
-                                }} />
+                                <input 
+                                    type="password" 
+                                    required
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="••••••••" 
+                                    style={{
+                                        width: '100%',
+                                        padding: '12px 15px 12px 45px',
+                                        borderRadius: '8px',
+                                        border: '2px solid #f0f0f0',
+                                        outline: 'none',
+                                        fontSize: '14px'
+                                    }} 
+                                />
                             </div>
                         </div>
 
-                        <button style={{
-                            width: '100%',
-                            backgroundColor: '#e31e24',
-                            color: '#fff',
-                            padding: '15px',
-                            border: 'none',
-                            borderRadius: '8px',
-                            fontWeight: '800',
-                            fontSize: '14px',
-                            cursor: 'pointer',
-                            transition: '0.3s',
-                            boxShadow: '0 10px 15px -3px rgba(227, 30, 36, 0.3)'
-                        }}>
-                            SIGN IN NOW
+                        {error && <p style={{ color: '#e31e24', fontSize: '13px', textAlign: 'center', marginBottom: '15px', fontWeight: '600' }}>{error}</p>}
+                        {success && <p style={{ color: '#22c55e', fontSize: '13px', textAlign: 'center', marginBottom: '15px', fontWeight: '600' }}>{success}</p>}
+
+                        <button 
+                            disabled={loading}
+                            type="submit"
+                            style={{
+                                width: '100%',
+                                backgroundColor: loading ? '#999' : '#e31e24',
+                                color: '#fff',
+                                padding: '15px',
+                                border: 'none',
+                                borderRadius: '8px',
+                                fontWeight: '800',
+                                fontSize: '14px',
+                                cursor: loading ? 'not-allowed' : 'pointer',
+                                transition: '0.3s',
+                                boxShadow: '0 10px 15px -3px rgba(227, 30, 36, 0.3)'
+                            }}
+                        >
+                            {loading ? "AUTHENTICATING..." : "SIGN IN NOW"}
                         </button>
                     </form>
                     
