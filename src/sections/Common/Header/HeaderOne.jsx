@@ -162,7 +162,6 @@ if (response.ok && data.success) {
     setSuccess(data.message);
     localStorage.setItem("user", username); 
     
-    // This must match the folder name in src/app/
     setTimeout(() => {
         window.location.href = "/dashboard"; 
     }, 1000);

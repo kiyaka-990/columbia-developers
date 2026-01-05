@@ -2,439 +2,278 @@
 import Link from "next/link";
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import niceSelect from "react-nice-select";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import Image from "next/image";
+import { useShop } from "/src/app/context/ShopContext";
 
+const productData = [
+    { id: 1, title: "Hardware Toolbox", price: 2500, oldPrice: 3000, img: "/main-assets/img/product/product_1_1.jpg", popularity: 5, category: "Hand Tools", tags: ["New", "Tools"] },
+    { id: 2, title: "Drill Machine", price: 2500, oldPrice: 3000, img: "/main-assets/img/product/product_1_2.jpg", popularity: 4, category: "Power Tools", tags: ["Electric", "Heavy"] },
+    { id: 3, title: "Claw Hammer", price: 125, oldPrice: 130, img: "/main-assets/img/product/product_1_3.jpg", popularity: 3, category: "Hand Tools", tags: ["Basic"] },
+    { id: 4, title: "Chainsaw Machine", price: 1125, oldPrice: 1130, img: "/main-assets/img/product/product_1_4.jpg", popularity: 5, category: "Power Tools", tags: ["Heavy", "Woodwork"] },
+    { id: 5, title: "Construction Hat", price: 125, oldPrice: 150, img: "/main-assets/img/product/product_1_5.jpg", popularity: 2, category: "Safety Gear", tags: ["Safety", "New"] },
+    { id: 6, title: "Sparta Demolition Hammer", price: 1250, oldPrice: 1500, img: "/main-assets/img/product/product_1_6.jpg", popularity: 4, category: "Power Tools", tags: ["Heavy"] },
+    { id: 7, title: "Hitachi Zaxis 110m", price: 2250, oldPrice: 3500, img: "/main-assets/img/product/product_1_7.jpg", popularity: 5, category: "Machinery", tags: ["Industrial"] },
+    { id: 8, title: "Sprayer Mowers Machine", price: 320, oldPrice: 450, img: "/main-assets/img/product/product_1_8.jpg", popularity: 1, category: "Garden Tools", tags: ["New"] },
+    { id: 9, title: "Compaction Machine", price: 4500, oldPrice: 5500, img: "/main-assets/img/product/product_1_9.jpg", popularity: 3, category: "Machinery", tags: ["Heavy"] },
+];
 
 const Product = () => {
-    const [priceRange, setPriceRange] = useState([0, 70]);
+    const { addToWishlist, addToCart, wishlist, removeFromWishlist } = useShop();
+
+    // Filtering & Sorting State
+    const [priceRange, setPriceRange] = useState([0, 5000]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [sortBy, setSortBy] = useState("menu_order");
+    const [selectedCategory, setSelectedCategory] = useState("All");
+    const [selectedTag, setSelectedTag] = useState("All");
+
+    // Modal State
     const [isOpen, setIsOpen] = useState(false);
     const [quantity, setQuantity] = useState(1);
-    const handleSliderChange = (value) => {
-        setPriceRange(value);
-    };
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
     useEffect(() => {
         niceSelect();
     }, []);
 
-    const handleOpenMagnificPopup = () => {
-        setIsOpen(true);
-    }
-    const handleClosePopup = () => {
-        setIsOpen(false);
-    }
+    // Extract unique Categories and Tags for UI
+    const categories = useMemo(() => ["All", ...new Set(productData.map(p => p.category))], []);
+    const allTags = useMemo(() => ["All", ...new Set(productData.flatMap(p => p.tags || []))], []);
 
+    // Filter Logic
+    const filteredProducts = useMemo(() => {
+        return productData
+            .filter(product => {
+                const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
+                const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
+                const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
+                const matchesTag = selectedTag === "All" || product.tags?.includes(selectedTag);
+                return matchesPrice && matchesSearch && matchesCategory && matchesTag;
+            })
+            .sort((a, b) => {
+                if (sortBy === "price") return a.price - b.price;
+                if (sortBy === "popularity") return b.popularity - a.popularity;
+                return 0;
+            });
+    }, [priceRange, searchQuery, sortBy, selectedCategory, selectedTag]);
 
+    const isInWishlist = (id) => wishlist.some(item => item.id === id);
 
-    const handleQuantityChange = (e) => {
-        const value = parseInt(e.target.value, 10);
-        if (value >= 1 && value <= 100) {
-            setQuantity(value);
+    const handleWishlistClick = (product) => {
+        if (isInWishlist(product.id)) {
+            removeFromWishlist(product.id);
+        } else {
+            addToWishlist(product);
         }
     };
 
-    const incrementQuantity = () => {
-        setQuantity((prevQuantity) => (prevQuantity < 100 ? prevQuantity + 1 : 100));
+    const handleOpenModal = (product) => {
+        setSelectedProduct(product);
+        setQuantity(1);
+        setIsOpen(true);
     };
 
-    const decrementQuantity = () => {
-        setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+    const handleClosePopup = () => {
+        setIsOpen(false);
+        setSelectedProduct(null);
     };
 
     return (
-        <>
-            <section className="space-top space-extra-bottom shop-page-select-contain">
-                <div className="container">
-                    <div className="row flex-row-reverse">
-                        <div className="col-xl-9 col-lg-8">
-                            <div className="shop-sort-bar">
-                                <div className="row justify-content-between align-items-center">
-                                    <div className="col-md">
-                                        <p className="woocommerce-result-count">Showing 1–15 of 52 results</p>
-                                    </div>
-
-                                    <div className="col-md-auto">
-                                        <form
-                                            className="woocommerce-ordering shop-page-select-width"
-                                            method="get"
-                                        // style={{ width: "200px" }}
-                                        >
-                                            <div className="form-group mb-0">
-                                                <select
-                                                    name="orderby"
-                                                    className="single-select orderby"
-                                                    aria-label="Shop order"
-                                                >
-                                                    <option value="menu_order" selected="selected">
-                                                        Default Sorting
-                                                    </option>
-                                                    <option value="popularity">Sort by popularity</option>
-                                                    <option value="rating">Sort by average rating</option>
-                                                    <option value="date">Sort by latest</option>
-                                                    <option value="price">Sort by price: low to high</option>
-                                                    <option value="price-desc">Sort by price: high to low</option>
-                                                </select>
-                                            </div>
-                                        </form>
-                                    </div>
+        <section className="space-top space-extra-bottom shop-page-select-contain">
+            <div className="container">
+                <div className="row flex-row-reverse">
+                    <div className="col-xl-9 col-lg-8">
+                        {/* Sort Bar */}
+                        <div className="shop-sort-bar">
+                            <div className="row justify-content-between align-items-center">
+                                <div className="col-md">
+                                    <p className="woocommerce-result-count">
+                                        Showing 1–{filteredProducts.length} of {productData.length} results
+                                    </p>
+                                </div>
+                                <div className="col-md-auto">
+                                    <select 
+                                        className="single-select orderby" 
+                                        value={sortBy} 
+                                        onChange={(e) => setSortBy(e.target.value)}
+                                    >
+                                        <option value="menu_order">Default Sorting</option>
+                                        <option value="popularity">Sort by popularity</option>
+                                        <option value="price">Sort by price: low to high</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div className="row gy-40">
-                                <div className="col-xl-4 col-md-6 product-space-none">
-                                    <div className="product-card">
-                                        <div className="product-img">
-                                            <Image src="/main-assets/img/product/product_1_1.jpg" alt="Product Image" width={580} height={580}/>
-                                            <div className="actions">
-                                                <button onClick={handleOpenMagnificPopup} className="icon-btn popup-content"><i className="ri-eye-line"></i></button>
-                                                <Link href="/pages/innerpage/cart" className="icon-btn"><i className="ri-shopping-cart-line"></i></Link>
-                                                <Link href="/pages/innerpage/wishlist" className="icon-btn"><i className="ri-heart-line"></i></Link>
-                                            </div>
-                                        </div>
-                                        <div className="product-content">
-                                            <span className="star-rating">
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                            </span>
-                                            <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Hardware Toolbox</Link></h3>
-                                            <span className="price"><del>$ 3000</del> $ 2500</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xl-4 col-md-6 product-space-none">
-                                    <div className="product-card">
-                                        <div className="product-img">
-                                            <Image src="/main-assets/img/product/product_1_2.jpg" alt="Product Image" width={580} height={580}/>
-                                            <div className="actions">
-                                                <button onClick={handleOpenMagnificPopup} className="icon-btn popup-content"><i className="ri-eye-line"></i></button>
-                                                <Link href="/pages/innerpage/cart" className="icon-btn"><i className="ri-shopping-cart-line"></i></Link>
-                                                <Link href="/pages/innerpage/wishlist" className="icon-btn"><i className="ri-heart-line"></i></Link>
-                                            </div>
-                                        </div>
-                                        <div className="product-content">
-                                            <span className="star-rating">
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                            </span>
-                                            <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Drill Machine</Link></h3>
-                                            <span className="price"><del>$ 3000</del>$ 2500</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xl-4 col-md-6 product-space-none">
-                                    <div className="product-card">
-                                        <div className="product-img">
-                                            <Image src="/main-assets/img/product/product_1_3.jpg" alt="Product Image" width={580} height={580}/>
-                                            <div className="actions">
-                                                <button onClick={handleOpenMagnificPopup} className="icon-btn popup-content"><i className="ri-eye-line"></i></button>
-                                                <Link href="/pages/innerpage/cart" className="icon-btn"><i className="ri-shopping-cart-line"></i></Link>
-                                                <Link href="/pages/innerpage/wishlist" className="icon-btn"><i className="ri-heart-line"></i></Link>
-                                            </div>
-                                        </div>
-                                        <div className="product-content">
-                                            <span className="star-rating">
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                            </span>
-                                            <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Claw Hammer</Link></h3>
-                                            <span className="price"><del>$ 130</del> $ 125</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xl-4 col-md-6 product-space-none">
-                                    <div className="product-card">
-                                        <div className="product-img">
-                                            <Image src="/main-assets/img/product/product_1_4.jpg" alt="Product Image" width={580} height={580} />
-                                            <div className="actions">
-                                                <button onClick={handleOpenMagnificPopup} className="icon-btn popup-content"><i className="ri-eye-line"></i></button>
-                                                <Link href="/pages/innerpage/cart" className="icon-btn"><i className="ri-shopping-cart-line"></i></Link>
-                                                <Link href="/pages/innerpage/wishlist" className="icon-btn"><i className="ri-heart-line"></i></Link>
-                                            </div>
-                                        </div>
-                                        <div className="product-content">
-                                            <span className="star-rating">
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                            </span>
-                                            <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Chainsaw Machine</Link></h3>
-                                            <span className="price"><del>$ 1130</del> $ 1125</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xl-4 col-md-6 product-space-none">
-                                    <div className="product-card">
-                                        <div className="product-img">
-                                            <Image src="/main-assets/img/product/product_1_5.jpg" alt="Product Image" width={580} height={580}/>
-                                            <div className="actions">
-                                                <button onClick={handleOpenMagnificPopup} className="icon-btn popup-content"><i className="ri-eye-line"></i></button>
-                                                <Link href="/pages/innerpage/cart" className="icon-btn"><i className="ri-shopping-cart-line"></i></Link>
-                                                <Link href="/pages/innerpage/wishlist" className="icon-btn"><i className="ri-heart-line"></i></Link>
-                                            </div>
-                                        </div>
-                                        <div className="product-content">
-                                            <span className="star-rating">
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                            </span>
-                                            <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Construction Hat</Link></h3>
-                                            <span className="price"><del>$ 150</del> $ 125</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xl-4 col-md-6 product-space-none">
-                                    <div className="product-card">
-                                        <div className="product-img">
-                                            <Image src="/main-assets/img/product/product_1_6.jpg" alt="Product Image" width={580} height={580}/>
-                                            <div className="actions">
-                                                <button onClick={handleOpenMagnificPopup} className="icon-btn popup-content"><i className="ri-eye-line"></i></button>
-                                                <Link href="/pages/innerpage/cart" className="icon-btn"><i className="ri-shopping-cart-line"></i></Link>
-                                                <Link href="/pages/innerpage/wishlist" className="icon-btn"><i className="ri-heart-line"></i></Link>
-                                            </div>
-                                        </div>
-                                        <div className="product-content">
-                                            <span className="star-rating">
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                            </span>
-                                            <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Sparta Demolition Hammer</Link></h3>
-                                            <span className="price"><del>$ 1500</del> $ 1250</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xl-4 col-md-6 product-space-none">
-                                    <div className="product-card">
-                                        <div className="product-img">
-                                            <Image src="/main-assets/img/product/product_1_7.jpg" alt="Product Image" width={580} height={580}/>
-                                            <div className="actions">
-                                                <button onClick={handleOpenMagnificPopup} className="icon-btn popup-content"><i className="ri-eye-line"></i></button>
-                                                <Link href="/pages/innerpage/cart" className="icon-btn"><i className="ri-shopping-cart-line"></i></Link>
-                                                <Link href="/pages/innerpage/wishlist" className="icon-btn"><i className="ri-heart-line"></i></Link>
-                                            </div>
-                                        </div>
-                                        <div className="product-content">
-                                            <span className="star-rating">
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                            </span>
-                                            <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Hitachi Zaxis 110m</Link></h3>
-                                            <span className="price"><del>$ 3500</del> $ 2250</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xl-4 col-md-6 product-space-none">
-                                    <div className="product-card">
-                                        <div className="product-img">
-                                            <Image src="/main-assets/img/product/product_1_8.jpg" alt="Product Image" width={580} height={580}/>
-                                            <div className="actions">
-                                                <button onClick={handleOpenMagnificPopup} className="icon-btn popup-content"><i className="ri-eye-line"></i></button>
-                                                <Link href="/pages/innerpage/cart" className="icon-btn"><i className="ri-shopping-cart-line"></i></Link>
-                                                <Link href="/pages/innerpage/wishlist" className="icon-btn"><i className="ri-heart-line"></i></Link>
-                                            </div>
-                                        </div>
-                                        <div className="product-content">
-                                            <span className="star-rating">
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                            </span>
-                                            <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Sprayer Mowers Machine</Link></h3>
-                                            <span className="price"><del>$ 450</del> $ 320</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xl-4 col-md-6 product-space-none">
-                                    <div className="product-card">
-                                        <div className="product-img">
-                                            <Image src="/main-assets/img/product/product_1_9.jpg" alt="Product Image" width={580} height={580}/>
-                                            <div className="actions">
-                                                <button onClick={handleOpenMagnificPopup} className="icon-btn popup-content"><i className="ri-eye-line"></i></button>
-                                                <Link href="/pages/innerpage/cart" className="icon-btn"><i className="ri-shopping-cart-line"></i></Link>
-                                                <Link href="/pages/innerpage/wishlist" className="icon-btn"><i className="ri-heart-line"></i></Link>
-                                            </div>
-                                        </div>
-                                        <div className="product-content">
-                                            <span className="star-rating">
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                            </span>
-                                            <h3 className="product-title"><Link href="/pages/innerpage/shop-details">Compaction Machine</Link></h3>
-                                            <span className="price"><del>$ 55,000</del> $ 450,000</span>
+                        </div>
 
+                        {/* Product Grid */}
+                        <div className="row gy-40">
+                            {filteredProducts.length > 0 ? (
+                                filteredProducts.map((product) => (
+                                    <div key={product.id} className="col-xl-4 col-md-6 product-space-none">
+                                        <div className="product-card">
+                                            <div className="product-img">
+                                                <Image src={product.img} alt={product.title} width={580} height={580} />
+                                                <div className="actions">
+                                                    <button onClick={() => handleOpenModal(product)} className="icon-btn" title="Quick View"><i className="ri-eye-line"></i></button>
+                                                    <button onClick={() => addToCart(product, 1)} className="icon-btn" title="Add to Cart"><i className="ri-shopping-cart-line"></i></button>
+                                                    <button 
+                                                        onClick={() => handleWishlistClick(product)} 
+                                                        className="icon-btn" 
+                                                        style={{ color: isInWishlist(product.id) ? '#EA5501' : 'inherit' }}
+                                                    >
+                                                        <i className={isInWishlist(product.id) ? "ri-heart-fill" : "ri-heart-line"}></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div className="product-content">
+                                                <div className="star-rating">
+                                                    {[...Array(5)].map((_, i) => <i key={i} className="ri-star-fill"></i>)}
+                                                </div>
+                                                <h3 className="product-title">
+                                                    <Link href={`/shop/${product.id}`}>{product.title}</Link>
+                                                </h3>
+                                                <span className="price">
+                                                    <del>${product.oldPrice}</del> ${product.price}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
+                                ))
+                            ) : (
+                                <div className="col-12 text-center py-5">
+                                    <h4>No products found matching your criteria.</h4>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Sidebar Filters */}
+                    <div className="col-xl-3 col-lg-4">
+                        <aside className="sidebar-area">
+                            {/* Search */}
+                            <div className="widget widget_search">
+                                <h3 className="widget_title">Search Here</h3>
+                                <div className="search-form">
+                                    <input 
+                                        type="text" 
+                                        placeholder="Search..." 
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                    />
+                                    <button type="button"><i className="ri-search-line"></i></button>
                                 </div>
                             </div>
-                            <div className="pagination justify-content-center">
-                                <ul>
-                                    <li><Link className="active" href="landing-assets/blog">01</Link></li>
-                                    <li><Link href="/pages/innerpage/blog">02</Link></li>
-                                    <li><Link href="/pages/innerpage/blog">03</Link></li>
-                                    <li><Link href="/pages/innerpage/blog"><i className="ri-arrow-right-line"></i></Link></li>
+
+                            {/* Product Categories */}
+                            <div className="widget">
+                                <h3 className="widget_title">Categories</h3>
+                                <ul className="list-unstyled">
+                                    {categories.map(cat => (
+                                        <li key={cat} className="mb-2">
+                                            <button 
+                                                onClick={() => setSelectedCategory(cat)}
+                                                className="border-0 bg-transparent p-0 text-start w-100"
+                                                style={{ color: selectedCategory === cat ? '#EA5501' : 'inherit', fontWeight: selectedCategory === cat ? 'bold' : 'normal' }}
+                                            >
+                                                {cat}
+                                            </button>
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
-                        </div>
-                        <div className="col-xl-3 col-lg-4">
-                            <aside className="sidebar-area">
-                                <div className="widget widget_search">
-                                    <h3 className="widget_title">Search Here</h3>
-                                    <form className="search-form">
-                                        <input type="text" placeholder="Search..." />
-                                        <button type="submit"><i className="ri-search-line"></i></button>
-                                    </form>
-                                </div>
 
-                                <div className="widget widget_categories">
-                                    <h3 className="widget_title">Product Categories</h3>
-                                    <ul>
-                                        <li>
-                                            <Link href="/pages/innerpage/blog">Construction <span>12</span></Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/pages/innerpage/blog">Architecture <span>7</span></Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/pages/innerpage/blog">Business <span>5</span></Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/pages/innerpage/blog">Engineering <span>3</span></Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/pages/innerpage/blog">Building <span>2</span></Link>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div className="widget widget_price_filter">
-                                    <h4 className="widget_title">Filter By Price</h4>
-                                    <div className="price_slider_wrapper">
-                                        <div className="">
-                                            <Slider
-                                                range
-                                                min={0}
-                                                max={100}
-                                                defaultValue={[0, 70]}
-                                                value={priceRange}
-                                                onChange={handleSliderChange}
-                                                trackStyle={[{ backgroundColor: '#EA5501' }]}
-                                                handleStyle={[
-                                                    { borderColor: '#EA5501' },
-                                                    { borderColor: '#EA5501' }
-                                                ]}
-                                                railStyle={{ backgroundColor: '#e0e0e0' }}
-                                                className=""
-                                            />
-                                        </div>
-                                        <div className="price_label">
-                                            Price: <span className="from">${priceRange[0]}</span> — <span className="to">${priceRange[1]}</span>
-                                            <button type="submit" className="button btn">Filter</button>
-                                        </div>
+                            {/* Price Filter */}
+                            <div className="widget widget_price_filter">
+                                <h4 className="widget_title">Filter By Price</h4>
+                                <div className="price_slider_wrapper">
+                                    <Slider
+                                        range min={0} max={5000}
+                                        value={priceRange}
+                                        onChange={(val) => setPriceRange(val)}
+                                        trackStyle={[{ backgroundColor: '#EA5501' }]}
+                                        handleStyle={[{ borderColor: '#EA5501' }, { borderColor: '#EA5501' }]}
+                                    />
+                                    <div className="price_label mt-3">
+                                        Price: ${priceRange[0]} — ${priceRange[1]}
                                     </div>
                                 </div>
+                            </div>
 
-                                <div className="widget widget_tag_cloud">
-                                    <h3 className="widget_title">Popular Tags</h3>
-                                    <div className="tagcloud">
-                                        <Link href="/pages/innerpage/blog">Architecture</Link>
-                                        <Link href="/pages/innerpage/blog">Building</Link>
-                                        <Link href="/pages/innerpage/blog">Home</Link>
-                                        <Link href="/pages/innerpage/blog">Factory</Link>
-                                        <Link href="/pages/innerpage/blog">Construction</Link>
-                                        <Link href="/pages/innerpage/blog">Business</Link>
-                                        <Link href="/pages/innerpage/blog">Design</Link>
-                                        <Link href="/pages/innerpage/blog">Industry</Link>
-                                    </div>
+                            {/* Popular Tags */}
+                            <div className="widget">
+                                <h3 className="widget_title">Popular Tags</h3>
+                                <div className="tagcloud">
+                                    {allTags.map(tag => (
+                                        <button 
+                                            key={tag}
+                                            onClick={() => setSelectedTag(tag)}
+                                            className="btn btn-sm m-1"
+                                            style={{ 
+                                                backgroundColor: selectedTag === tag ? '#EA5501' : '#f5f5f5',
+                                                color: selectedTag === tag ? '#fff' : '#333',
+                                                border: '1px solid #ddd'
+                                            }}
+                                        >
+                                            {tag}
+                                        </button>
+                                    ))}
                                 </div>
-                            </aside>
-                        </div>
+                            </div>
+
+                            {/* Reset Button */}
+                            <button 
+                                className="btn btn-outline-dark btn-sm w-100 mt-4"
+                                onClick={() => {
+                                    setSelectedCategory("All");
+                                    setSelectedTag("All");
+                                    setPriceRange([0, 5000]);
+                                    setSearchQuery("");
+                                }}
+                            >
+                                Reset All Filters
+                            </button>
+                        </aside>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <Modal open={isOpen} onClose={handleClosePopup}>
-                <div className="mfp-content space-top-none-card">
-                    <div id="QuickView" className={`white-popup ${isOpen ? '' : 'mfp-hide'}`}>
-                        <div className="container bg-white">
-                            <div className="row gx-60">
-                                <div className="col-lg-6">
-                                    <div className="product-big-img">
-                                        <div className="img"><Image src="/main-assets/img/product/product_details_1_1.jpg" alt="Product Image" width={580} height={580}/></div>
+            {/* Quick View Modal */}
+            <Modal open={isOpen} onClose={handleClosePopup} center classNames={{ modal: 'custom-modal' }}>
+                {selectedProduct && (
+                    <div className="container bg-white p-4" style={{ maxWidth: '800px', borderRadius: '15px' }}>
+                        <div className="row align-items-center">
+                            <div className="col-lg-6">
+                                <Image src={selectedProduct.img} alt={selectedProduct.title} width={500} height={500} className="img-fluid rounded" />
+                            </div>
+                            <div className="col-lg-6">
+                                <h2 className="product-title mb-2">{selectedProduct.title}</h2>
+                                <p className="price h3 text-primary mb-3">${selectedProduct.price}</p>
+                                <div className="actions mt-4">
+                                    <div className="quantity d-flex align-items-center mb-4">
+                                        <button onClick={() => setQuantity(q => Math.max(1, q - 1))} className="btn btn-outline-secondary">-</button>
+                                        <input type="number" className="form-control mx-2 text-center" style={{ width: '70px' }} value={quantity} readOnly />
+                                        <button onClick={() => setQuantity(q => q + 1)} className="btn btn-outline-secondary">+</button>
                                     </div>
-                                </div>
-                                <div className="col-lg-6 align-self-center">
-                                    <div className="product-about">
-                                        <p className="price">$180.85<del>$350.99</del></p>
-                                        <h2 className="product-title">Drill Machine</h2>
-                                        <div className="product-rating">
-                                            <span className="star-rating">
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                                <i className="ri-star-fill"></i>
-                                            </span>
-                                            (5 Reviews)
-                                        </div>
-                                        <p className="text">Syndicate customized growth strategies prospective human capital leverage others optimal e-markets without transparent catalysts for change. Credibly coordinate highly efficient methods of empowerment cross unit solutions.</p>
-                                        <div className="checklist">
-                                            <ul>
-                                                <li><i className="ri-checkbox-circle-line"></i> Lifetime structural, one year finish warranty</li>
-                                                <li><i className="ri-checkbox-circle-line"></i> Mapped from “Center Caps” under ” tment” tab</li>
-                                                <li><i className="ri-checkbox-circle-line"></i> Fully copatible with OEM equimpent</li>
-                                            </ul>
-                                        </div>
-                                        <div className="actions">
-                                            <div className="quantity">
-                                                <button onClick={decrementQuantity} className="quantity-minus qty-btn"><i className="ri-subtract-line"></i></button>
-                                                <input
-                                                    onChange={handleQuantityChange}
-                                                    type="number" className="qty-input" step="1" min="1" max="100" name="quantity" value={quantity} title="Qty" />
-                                                <button onClick={incrementQuantity} className="quantity-plus qty-btn"><i className="ri-add-line"></i></button>
-                                            </div>
-                                            <Link href="/pages/innerpage/cart">
-                                                <button className="btn">Add to Cart</button>
-                                            </Link>
-                                        </div>
-                                        <div className="product_meta">
-                                            <span className="sku_wrapper">SKU: <span className="sku">wheel-fits-chevy-camaro</span></span>
-                                            <span className="posted_in">Category: <Link href="/pages/innerpage/shop" rel="tag">Tires & Wheels</Link></span>
-                                            <span>Tags: <Link href="/pages/innerpage/shop">automotive parts</Link><Link href="/pages/innerpage/shop">wheels</Link></span>
-                                        </div>
-                                    </div>
+                                    <button 
+                                        className="btn btn-primary w-100 py-3"
+                                        onClick={() => {
+                                            addToCart(selectedProduct, quantity);
+                                            handleClosePopup();
+                                        }}
+                                    >
+                                        Add to Cart
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                )}
             </Modal>
-        </>
+        </section>
     );
 };
 
