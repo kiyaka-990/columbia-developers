@@ -24,7 +24,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
             position: 'fixed',
             inset: 0,
             backgroundColor: 'rgba(26, 26, 26, 0.98)',
-            zIndex: 1000002,
+            zIndex: 1000005,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -137,30 +137,125 @@ const MultiPageMobileMenu = ({ isMenuOpen, setIsMenuOpen }) => (
 );
 
 const LoginModal = ({ onClose }) => {
-    const [loading, setLoading] = useState(false);
-    
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setTimeout(() => { setLoading(false); onClose(); }, 1000);
-    };
-
     return (
-      <div style={{ position: 'fixed', inset: 0, zIndex: 1000001, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.8)' }}>
-        <div style={{ position: 'relative', width: '90%', maxWidth: '400px', backgroundColor: '#fff', borderRadius: '10px', overflow: 'hidden' }}>
-            <div style={{ padding: '30px', textAlign: 'center', backgroundColor: '#1a1a1a', color: 'white' }}>
-                <h3 style={{ margin: 0 }}>Portal Login</h3>
+        <div className="modal-overlay" style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(0,0,0,0.85)',
+            zIndex: 1000001,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+            backdropFilter: 'blur(5px)'
+        }}>
+            <div className="login-modal-content" style={{
+                width: '100%',
+                maxWidth: '450px',
+                backgroundColor: '#fff',
+                borderRadius: '15px',
+                overflow: 'hidden',
+                position: 'relative',
+                boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)'
+            }}>
+                <button onClick={onClose} style={{
+                    position: 'absolute',
+                    top: '20px',
+                    right: '20px',
+                    background: 'rgba(255,255,255,0.1)',
+                    border: 'none',
+                    borderRadius: '50%',
+                    width: '35px',
+                    height: '35px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    zIndex: 2,
+                    color: '#fff'
+                }}>
+                    <X size={20} />
+                </button>
+
+                <div style={{
+                    backgroundColor: '#1a1a1a',
+                    padding: '40px 30px',
+                    textAlign: 'center',
+                    color: '#fff',
+                    position: 'relative'
+                }}>
+                    <div style={{
+                        width: '60px',
+                        height: '60px',
+                        backgroundColor: '#e31e24',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: '0 auto 15px'
+                    }}>
+                        <Lock size={28} />
+                    </div>
+                    <h3 style={{ margin: 0, fontSize: '24px', fontWeight: '800' }}>CLIENT PORTAL</h3>
+                    <p style={{ margin: '5px 0 0', opacity: 0.7, fontSize: '14px' }}>Secure access to your project dashboard</p>
+                </div>
+
+                <div style={{ padding: '40px 30px' }}>
+                    <form onSubmit={(e) => { e.preventDefault(); }}>
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={{ display: 'block', marginBottom: '8px', fontSize: '12px', fontWeight: '700', color: '#666' }}>USERNAME / EMAIL</label>
+                            <div style={{ position: 'relative' }}>
+                                <User size={18} style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: '#999' }} />
+                                <input type="text" placeholder="Enter your username" style={{
+                                    width: '100%',
+                                    padding: '12px 15px 12px 45px',
+                                    borderRadius: '8px',
+                                    border: '2px solid #f0f0f0',
+                                    outline: 'none',
+                                    fontSize: '14px',
+                                    transition: '0.3s'
+                                }} />
+                            </div>
+                        </div>
+
+                        <div style={{ marginBottom: '25px' }}>
+                            <label style={{ display: 'block', marginBottom: '8px', fontSize: '12px', fontWeight: '700', color: '#666' }}>PASSWORD</label>
+                            <div style={{ position: 'relative' }}>
+                                <Lock size={18} style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: '#999' }} />
+                                <input type="password" placeholder="••••••••" style={{
+                                    width: '100%',
+                                    padding: '12px 15px 12px 45px',
+                                    borderRadius: '8px',
+                                    border: '2px solid #f0f0f0',
+                                    outline: 'none',
+                                    fontSize: '14px'
+                                }} />
+                            </div>
+                        </div>
+
+                        <button style={{
+                            width: '100%',
+                            backgroundColor: '#e31e24',
+                            color: '#fff',
+                            padding: '15px',
+                            border: 'none',
+                            borderRadius: '8px',
+                            fontWeight: '800',
+                            fontSize: '14px',
+                            cursor: 'pointer',
+                            transition: '0.3s',
+                            boxShadow: '0 10px 15px -3px rgba(227, 30, 36, 0.3)'
+                        }}>
+                            SIGN IN NOW
+                        </button>
+                    </form>
+                    
+                    <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                        <a href="#" style={{ color: '#666', fontSize: '13px', textDecoration: 'none' }}>Forgot password?</a>
+                    </div>
+                </div>
             </div>
-            <form style={{ padding: '30px' }} onSubmit={handleSubmit}>
-              <input type="text" placeholder="Username" style={{ width: '100%', marginBottom: '15px', padding: '12px', borderRadius: '5px', border: '1px solid #ddd' }} />
-              <input type="password" placeholder="Password" style={{ width: '100%', marginBottom: '20px', padding: '12px', borderRadius: '5px', border: '1px solid #ddd' }} />
-              <button type="submit" style={{ width: '100%', backgroundColor: '#e31e24', color: 'white', padding: '12px', border: 'none', borderRadius: '5px', fontWeight: 'bold' }}>
-                {loading ? "Authenticating..." : "Login"}
-              </button>
-            </form>
-            <button onClick={onClose} style={{ position: 'absolute', top: '15px', right: '15px', background: 'none', color: 'white', border: 'none', cursor: 'pointer' }}><X /></button>
         </div>
-      </div>
     );
 };
 
