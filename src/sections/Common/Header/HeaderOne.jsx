@@ -158,11 +158,16 @@ const LoginModal = ({ onClose }) => {
 
             const data = await response.json();
 
-            if (response.ok && data.success) {
-                setSuccess(data.message);
-                // Optional: Redirect or close modal after success
-                setTimeout(() => onClose(), 2000);
-            } else {
+           if (response.ok && data.success) {
+    setSuccess(data.message);
+    // Save the username to local storage so the dashboard knows who is logged in
+    localStorage.setItem("user", username); 
+    
+    // Redirect to the dashboard after 1 second
+    setTimeout(() => {
+        window.location.href = "/dashboard";
+    }, 1000);
+       }else {
                 setError(data.message || "Login failed");
             }
         } catch (err) {
