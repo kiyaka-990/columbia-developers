@@ -15,13 +15,11 @@ import {
 export default function Dashboard() {
   const [user, setUser] = useState("Client");
 
-  useEffect(() => {
+ useEffect(() => {
   const savedUser = localStorage.getItem("user");
   if (!savedUser) {
-    // No user found, send them back to home
-    window.location.href = "/";
-  } else {
-    setUser(savedUser);
+    // If someone tries to type /dashboard manually without logging in
+    window.location.href = "/"; 
   }
 }, []);
 

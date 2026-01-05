@@ -158,18 +158,17 @@ const LoginModal = ({ onClose }) => {
 
             const data = await response.json();
 
-           if (response.ok && data.success) {
+if (response.ok && data.success) {
     setSuccess(data.message);
-    // Save the username to local storage so the dashboard knows who is logged in
     localStorage.setItem("user", username); 
     
-    // Redirect to the dashboard after 1 second
+    // This must match the folder name in src/app/
     setTimeout(() => {
-        window.location.href = "/dashboard";
+        window.location.href = "/dashboard"; 
     }, 1000);
-       }else {
-                setError(data.message || "Login failed");
-            }
+} else {
+    setError(data.message || "Login failed");
+}
         } catch (err) {
             setError("Server connection failed. Please try again later.");
         } finally {
