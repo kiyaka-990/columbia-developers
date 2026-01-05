@@ -22,7 +22,17 @@ const productData = [
 ];
 
 const Product = () => {
-    const { addToWishlist, addToCart, wishlist, removeFromWishlist } = useShop();
+    // 1. Pulling state from ShopContext
+    const { 
+        addToWishlist, 
+        addToCart, 
+        wishlist, 
+        removeFromWishlist, 
+        cart, 
+        isCartOpen, 
+        setIsCartOpen,
+        removeFromCart 
+    } = useShop();
 
     // Filtering & Sorting State
     const [priceRange, setPriceRange] = useState([0, 5000]);
@@ -31,7 +41,7 @@ const Product = () => {
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [selectedTag, setSelectedTag] = useState("All");
 
-    // Modal State
+    // Quick View Modal State
     const [isOpen, setIsOpen] = useState(false);
     const [quantity, setQuantity] = useState(1);
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -40,11 +50,9 @@ const Product = () => {
         niceSelect();
     }, []);
 
-    // Extract unique Categories and Tags for UI
     const categories = useMemo(() => ["All", ...new Set(productData.map(p => p.category))], []);
     const allTags = useMemo(() => ["All", ...new Set(productData.flatMap(p => p.tags || []))], []);
 
-    // Filter Logic
     const filteredProducts = useMemo(() => {
         return productData
             .filter(product => {
@@ -60,6 +68,8 @@ const Product = () => {
                 return 0;
             });
     }, [priceRange, searchQuery, sortBy, selectedCategory, selectedTag]);
+
+    const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
     const isInWishlist = (id) => wishlist.some(item => item.id === id);
 
@@ -84,6 +94,56 @@ const Product = () => {
 
     return (
         <section className="space-top space-extra-bottom shop-page-select-contain">
+            
+            {/* --- CART SIDEBAR UI --- */}
+            <div className={`cart-overlay ${isCartOpen ? "show" : ""}`} onClick={() => setIsCartOpen(false)}></div>
+            <div className={`cart-sidebar ${isCartOpen ? "open" : ""}`}>
+                <div className="sidebar-header">
+                    <h4 className="mb-0">Shopping Cart ({cart.length})</h4>
+                    <button className="close-btn" onClick={() => setIsCartOpen(false)}>
+                        <i className="ri-close-line"></i>
+                    </button>
+                </div>
+                <div className="sidebar-body">
+                    {cart.length === 0 ? (
+                        <div className="text-center py-5">
+                            <i className="ri-shopping-cart-line" style={{fontSize: '3rem', opacity: 0.2}}></i>
+                            <p className="mt-3">Your cart is empty</p>
+                        </div>
+                    ) : (
+                        cart.map((item) => (
+                            <div key={item.id} className="sidebar-cart-item">
+                                <div className="item-img">
+                                    <Image src={item.img} alt={item.title} width={60} height={60} />
+                                </div>
+                                <div className="item-details">
+                                    <h6>{item.title}</h6>
+                                    <p>{item.quantity} × <span>${item.price}</span></p>
+                                </div>
+                                <button className="remove-btn" onClick={() => removeFromCart(item.id)}>
+                                    <i className="ri-delete-bin-line"></i>
+                                </button>
+                            </div>
+                        ))
+                    )}
+                </div>
+                {cart.length > 0 && (
+                    <div className="sidebar-footer">
+    <div className="d-flex justify-content-between mb-3">
+        <strong>Subtotal:</strong>
+        <strong style={{color: '#EA5501'}}>${subtotal}</strong>
+    </div>
+    {/* Corrected: Link to the URL, not the file path */}
+    <Link href="/cart" className="btn btn-outline-dark w-100 mb-2" onClick={() => setIsCartOpen(false)}>
+        View Cart
+    </Link>
+    <Link href="/checkout" className="btn btn-primary w-100" onClick={() => setIsCartOpen(false)} style={{backgroundColor: '#EA5501', border: 'none'}}>
+        Proceed to Checkout
+    </Link>
+</div>
+                )}
+            </div>
+
             <div className="container">
                 <div className="row flex-row-reverse">
                     <div className="col-xl-9 col-lg-8">
@@ -154,7 +214,6 @@ const Product = () => {
                     {/* Sidebar Filters */}
                     <div className="col-xl-3 col-lg-4">
                         <aside className="sidebar-area">
-                            {/* Search */}
                             <div className="widget widget_search">
                                 <h3 className="widget_title">Search Here</h3>
                                 <div className="search-form">
@@ -168,7 +227,6 @@ const Product = () => {
                                 </div>
                             </div>
 
-                            {/* Product Categories */}
                             <div className="widget">
                                 <h3 className="widget_title">Categories</h3>
                                 <ul className="list-unstyled">
@@ -186,7 +244,6 @@ const Product = () => {
                                 </ul>
                             </div>
 
-                            {/* Price Filter */}
                             <div className="widget widget_price_filter">
                                 <h4 className="widget_title">Filter By Price</h4>
                                 <div className="price_slider_wrapper">
@@ -203,7 +260,6 @@ const Product = () => {
                                 </div>
                             </div>
 
-                            {/* Popular Tags */}
                             <div className="widget">
                                 <h3 className="widget_title">Popular Tags</h3>
                                 <div className="tagcloud">
@@ -224,7 +280,6 @@ const Product = () => {
                                 </div>
                             </div>
 
-                            {/* Reset Button */}
                             <button 
                                 className="btn btn-outline-dark btn-sm w-100 mt-4"
                                 onClick={() => {
@@ -264,6 +319,7 @@ const Product = () => {
                                             addToCart(selectedProduct, quantity);
                                             handleClosePopup();
                                         }}
+                                        style={{backgroundColor: '#EA5501', border: 'none'}}
                                     >
                                         Add to Cart
                                     </button>
@@ -273,6 +329,36 @@ const Product = () => {
                     </div>
                 )}
             </Modal>
+
+            {/* Custom Styles for Sidebar */}
+            <style jsx global>{`
+                .cart-overlay {
+                    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                    background: rgba(0,0,0,0.5); z-index: 9991;
+                    visibility: hidden; opacity: 0; transition: 0.4s;
+                }
+                .cart-overlay.show { visibility: visible; opacity: 1; }
+                
+                .cart-sidebar {
+                    position: fixed; top: 0; right: -400px; width: 380px; height: 100%;
+                    background: white; z-index: 9992; transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                    box-shadow: -10px 0 30px rgba(0,0,0,0.1); display: flex; flex-direction: column;
+                }
+                .cart-sidebar.open { right: 0; }
+                
+                .sidebar-header { padding: 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+                .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #333; }
+                
+                .sidebar-body { flex: 1; overflow-y: auto; padding: 25px; }
+                .sidebar-cart-item { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #f9f9f9; pb-3; }
+                .item-img { background: #f4f4f4; border-radius: 5px; }
+                .item-details h6 { font-size: 14px; margin-bottom: 5px; font-weight: 700; color: #1a1a1a; }
+                .item-details p { font-size: 13px; margin: 0; color: #777; }
+                .item-details span { color: #EA5501; font-weight: 700; }
+                .remove-btn { background: none; border: none; color: #ff5a5a; font-size: 18px; margin-left: auto; cursor: pointer; }
+
+                .sidebar-footer { padding: 25px; border-top: 1px solid #eee; }
+            `}</style>
         </section>
     );
 };
