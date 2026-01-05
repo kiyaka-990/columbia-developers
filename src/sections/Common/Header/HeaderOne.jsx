@@ -1,119 +1,164 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Lock, User, Eye, EyeOff, X } from 'lucide-react';
+import { 
+  Lock, 
+  User, 
+  Search, 
+  Menu, 
+  X, 
+  Clock, 
+  Mail, 
+  MapPin, 
+  Phone,
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin
+} from 'lucide-react';
 
-// Mocking external components
+const SearchOverlay = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+    return (
+        <div style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(26, 26, 26, 0.98)',
+            zIndex: 1000002,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+            animation: 'fadeIn 0.3s ease-out'
+        }}>
+            <button 
+                onClick={onClose}
+                style={{
+                    position: 'absolute',
+                    top: '40px',
+                    right: '40px',
+                    background: 'none',
+                    border: 'none',
+                    color: '#fff',
+                    cursor: 'pointer'
+                }}
+            >
+                <X size={40} />
+            </button>
+            <div style={{ width: '100%', maxWidth: '800px' }}>
+                <h2 style={{ color: '#fff', marginBottom: '30px', textAlign: 'center', fontWeight: '800' }}>SEARCH OUR SITE</h2>
+                <form 
+                    onSubmit={(e) => { e.preventDefault(); onClose(); }}
+                    style={{ position: 'relative', display: 'flex', alignItems: 'center' }}
+                >
+                    <input 
+                        autoFocus
+                        type="text" 
+                        placeholder="Type keywords and hit enter..." 
+                        style={{
+                            width: '100%',
+                            background: 'transparent',
+                            border: 'none',
+                            borderBottom: '3px solid #e31e24',
+                            padding: '15px 0',
+                            fontSize: '32px',
+                            color: '#fff',
+                            outline: 'none',
+                            fontWeight: '300'
+                        }}
+                    />
+                    <button type="submit" style={{ background: 'none', border: 'none', color: '#e31e24', position: 'absolute', right: '0' }}>
+                        <Search size={32} />
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
+};
+
 const MultiPageMobileMenu = ({ isMenuOpen, setIsMenuOpen }) => (
-    <div className={`mobile-menu-overlay ${isMenuOpen ? 'show' : ''}`} onClick={() => setIsMenuOpen(false)}></div>
+    <>
+        <div 
+            style={{
+                position: 'fixed',
+                inset: 0,
+                backgroundColor: 'rgba(0,0,0,0.7)',
+                zIndex: 999998,
+                display: isMenuOpen ? 'block' : 'none',
+                backdropFilter: 'blur(2px)'
+            }}
+            onClick={() => setIsMenuOpen(false)}
+        />
+        
+        <div 
+            style={{
+                position: 'fixed',
+                top: 0,
+                right: isMenuOpen ? '0' : '-100%',
+                width: '85%',
+                maxWidth: '350px',
+                height: '100%',
+                backgroundColor: '#ffffff',
+                zIndex: 999999,
+                transition: '0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                boxShadow: '-10px 0 30px rgba(0,0,0,0.2)',
+                display: 'flex',
+                flexDirection: 'column'
+            }}
+        >
+            <div style={{ padding: '25px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #eee' }}>
+                <img src="/main-assets/img/logo.png" alt="Logo" style={{ height: '40px' }} />
+                <button onClick={() => setIsMenuOpen(false)} style={{ background: '#e31e24', color: 'white', border: 'none', borderRadius: '50%', width: '35px', height: '35px', cursor: 'pointer' }}>
+                    <X size={20} />
+                </button>
+            </div>
+            
+            <nav style={{ flex: 1, padding: '20px' }}>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                    {[
+                        { name: 'HOME', link: '/' },
+                        { name: 'ABOUT', link: '/pages/innerpage/about' },
+                        { name: 'SERVICES', link: '/pages/innerpage/service' },
+                        { name: 'PROJECTS', link: '/pages/innerpage/project' },
+                        { name: 'SHOP', link: '/pages/innerpage/shop' },
+                        { name: 'CONTACT', link: '/pages/innerpage/contact' }
+                    ].map((item) => (
+                        <li key={item.name} style={{ marginBottom: '10px' }}>
+                            <a href={item.link} style={{ display: 'block', padding: '12px 15px', textDecoration: 'none', color: '#1a1a1a', fontWeight: '700', fontSize: '14px', borderBottom: '1px solid #f0f0f0' }}>
+                                {item.name}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
+        </div>
+    </>
 );
 
-const Image = ({ src, alt, width, height, className, style }) => (
-    <img 
-        src={src} 
-        alt={alt} 
-        style={{ width: width ? `${width}px` : 'auto', height: height ? `${height}px` : 'auto', ...style }} 
-        className={className} 
-    />
-);
-
-// --- CENTERED PREMIUM LOGIN MODAL ---
 const LoginModal = ({ onClose }) => {
-    const [showPass, setShowPass] = useState(false);
-    const [username, setUsername] = useState("");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(""); 
-    const [success, setSuccess] = useState("");
-
-    const handleSignIn = async (e) => {
+    
+    const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
-        setError(""); 
-        setSuccess("");
-
-        try {
-            const response = await fetch("http://localhost:4000/api/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username: username }),
-            });
-            const data = await response.json();
-
-            if (response.ok) {
-                setSuccess(`Welcome, ${username}!`);
-                setTimeout(() => onClose(), 1500);
-            } else {
-                setError(data.message || "Invalid credentials");
-            }
-        } catch (err) {
-            setError("Server offline. Please start the Rust backend.");
-        } finally {
-            setLoading(false);
-        }
+        setTimeout(() => { setLoading(false); onClose(); }, 1000);
     };
-    
-    return (
-      <div style={{ position: 'fixed', inset: 0, zIndex: 99999, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(8px)' }}>
-        <div style={{ position: 'absolute', inset: 0 }} onClick={onClose}></div>
-        
-        <div style={{ position: 'relative', width: '100%', maxWidth: '380px', backgroundColor: '#121212', borderRadius: '2rem', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', color: 'white', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
-            
-            {/* Logo Section */}
-            <div style={{ padding: '40px 40px 20px 40px', textAlign: 'center' }}>
-                <img 
-                    src="/main-assets/img/logo.png" 
-                    alt="Columbia Logo" 
-                    style={{ 
-                        width: '140px', 
-                        height: 'auto', 
-                        filter: 'brightness(0) invert(1)', // Forces black logo to white
-                        marginBottom: '20px'
-                    }} 
-                />
-               <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', margin: '0' }}>Client Portal</h2>
-               <p style={{ color: '#666', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.2em', marginTop: '8px' }}>Secure Authentication</p>
-            </div>
-    
-            {/* Form Section */}
-            <form style={{ padding: '0 40px 20px 40px', display: 'flex', flexDirection: 'column', gap: '15px' }} onSubmit={handleSignIn}>
-              <div style={{ position: 'relative' }}>
-                <input 
-                  type="text" 
-                  required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Username / Email" 
-                  style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '1rem', padding: '14px 20px', color: 'white', outline: 'none', fontSize: '14px' }}
-                />
-              </div>
-    
-              <div style={{ position: 'relative' }}>
-                <input 
-                  type={showPass ? "text" : "password"} 
-                  placeholder="Password" 
-                  style={{ width: '100%', backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '1rem', padding: '14px 20px', color: 'white', outline: 'none', fontSize: '14px' }}
-                />
-              </div>
 
-              {success && <div style={{ backgroundColor: 'rgba(34,197,94,0.1)', padding: '10px', borderRadius: '0.75rem', border: '1px solid rgba(34,197,94,0.2)', color: '#22c55e', fontSize: '11px', textAlign: 'center', fontWeight: 'bold' }}>{success}</div>}
-              {error && <div style={{ backgroundColor: 'rgba(239,68,68,0.1)', padding: '10px', borderRadius: '0.75rem', border: '1px solid rgba(239,68,68,0.2)', color: '#ef4444', fontSize: '11px', textAlign: 'center', fontWeight: 'bold' }}>{error}</div>}
-    
-              <button 
-                type="submit"
-                disabled={loading}
-                style={{ width: '100%', backgroundColor: '#e31e24', color: 'white', fontWeight: 'bold', padding: '16px', borderRadius: '1rem', border: 'none', cursor: 'pointer', marginTop: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '12px', transition: '0.3s' }}
-              >
-                {loading ? "Authenticating..." : "Sign In"}
+    return (
+      <div style={{ position: 'fixed', inset: 0, zIndex: 1000001, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.8)' }}>
+        <div style={{ position: 'relative', width: '90%', maxWidth: '400px', backgroundColor: '#fff', borderRadius: '10px', overflow: 'hidden' }}>
+            <div style={{ padding: '30px', textAlign: 'center', backgroundColor: '#1a1a1a', color: 'white' }}>
+                <h3 style={{ margin: 0 }}>Portal Login</h3>
+            </div>
+            <form style={{ padding: '30px' }} onSubmit={handleSubmit}>
+              <input type="text" placeholder="Username" style={{ width: '100%', marginBottom: '15px', padding: '12px', borderRadius: '5px', border: '1px solid #ddd' }} />
+              <input type="password" placeholder="Password" style={{ width: '100%', marginBottom: '20px', padding: '12px', borderRadius: '5px', border: '1px solid #ddd' }} />
+              <button type="submit" style={{ width: '100%', backgroundColor: '#e31e24', color: 'white', padding: '12px', border: 'none', borderRadius: '5px', fontWeight: 'bold' }}>
+                {loading ? "Authenticating..." : "Login"}
               </button>
             </form>
-
-            {/* Footer Section */}
-            <div style={{ padding: '20px', borderTop: '1px solid rgba(255,255,255,0.05)', backgroundColor: 'rgba(255,255,255,0.01)', textAlign: 'center' }}>
-                <a href="#" style={{ color: '#555', fontSize: '11px', textDecoration: 'none', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Forgot Password?</a>
-            </div>
-
-            {/* Close Button */}
-            <button onClick={onClose} style={{ position: 'absolute', top: '20px', right: '20px', background: 'rgba(255,255,255,0.05)', color: 'white', border: 'none', borderRadius: '50%', width: '32px', height: '32px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+            <button onClick={onClose} style={{ position: 'absolute', top: '15px', right: '15px', background: 'none', color: 'white', border: 'none', cursor: 'pointer' }}><X /></button>
         </div>
       </div>
     );
@@ -121,135 +166,119 @@ const LoginModal = ({ onClose }) => {
 
 const App = () => {
     const [isSticky, setIsSticky] = useState(false);
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isSideBarOpen, setIsSideBarOpen] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 100) setIsSticky(true);
-            else setIsSticky(false);
-        };
+        const handleScroll = () => setIsSticky(window.scrollY > 100);
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const handleLoginClick = (e) => {
-        e.preventDefault();
-        setShowLoginModal(true);
-    };
-
     const cssStyles = `
-        .top-info-wrap { display: flex; gap: 20px; font-size: 13px; color: #666; }
-        .info-link { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 6px; }
-        .top-portal-link { background: #f8f8f8; padding: 4px 12px; border-radius: 4px; font-weight: 700; font-size: 11px; color: #000; display: flex; align-items: center; gap: 5px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s; }
-        .top-portal-link:hover { background: #e31e24; color: #fff; }
-        .header-action-btns { display: flex; gap: 8px; }
-        .action-btn-circle { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #eee; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .action-btn-circle:hover { background: #e31e24; color: #fff; }
-        .side-trigger { background: #000; color: #fff; border: none; }
-        .main-menu a { text-decoration: none; color: inherit; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; }
-        .main-menu a:hover { color: #e31e24; }
-        .sidebar-close-btn { width: 50px; height: 50px; background: #e31e24; border-radius: 50%; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-        .sidebar-action-btn { background: #e31e24; color: #fff; text-decoration: none; padding: 12px; display: flex; justify-content: space-between; align-items: center; border-radius: 4px; font-weight: 700; margin-top: 20px; font-size: 12px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .top-info-list { display: flex; gap: 25px; list-style: none; margin: 0; padding: 0; font-size: 13px; color: #666; }
+        .top-info-list li { display: flex; align-items: center; gap: 8px; }
+        .top-info-list i { color: #e31e24; }
         
-        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes zoom-in { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .animate-in { animation: zoom-in 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .portal-btn { background: #1a1a1a; color: #fff; border: none; padding: 6px 15px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.3s; }
+        .portal-btn:hover { background: #e31e24; }
+
+        .nav-link { text-decoration: none; color: #1a1a1a; font-weight: 700; font-size: 14px; transition: 0.3s; }
+        .nav-link:hover { color: #e31e24; }
+
+        .action-circle { width: 45px; height: 45px; border-radius: 50%; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; background: #fff; border: none; outline: none; }
+        .action-circle:hover { background: #e31e24; color: #fff; border-color: #e31e24; }
+        .menu-btn { background: #e31e24; color: #fff; }
+
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99999; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .sidebar-overlay.active { opacity: 1; visibility: visible; }
+        .sidebar-panel { position: fixed; right: -400px; top: 0; width: 400px; height: 100%; background: #fff; z-index: 100000; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); padding: 50px 40px; overflow-y: auto; }
+        .sidebar-panel.active { right: 0; }
+        
+        .social-box { display: flex; gap: 10px; margin-top: 30px; }
+        .social-icon { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; color: #666; transition: 0.3s; text-decoration: none; }
+        .social-icon:hover { background: #e31e24; color: #fff; }
     `;
 
     return (
-        <div className="header-decoration">
+        <div className="main-wrapper">
             <style dangerouslySetInnerHTML={{ __html: cssStyles }} />
-            
-            <div className={`popup-search-box ${isPopupOpen ? 'show' : ''}`} style={{ zIndex: 9999 }}>
-                <button onClick={() => setIsPopupOpen(false)} className="searchClose"><i className="ri-close-line"></i></button>
-                <form action="#" className="search-form" onSubmit={(e) => e.preventDefault()}>
-                    <input type="text" placeholder="Search projects..." autoFocus />
-                    <button type="submit"><i className="ri-search-line"></i></button>
-                </form>
-            </div>
 
-            <div className={`sidemenu-wrapper ${isSideBarOpen ? 'show' : ''}`}>
-                <div className="sidemenu-content columbia-premium-sidebar">
-                    <div style={{ position: 'absolute', top: '35px', right: '35px', zIndex: 1000 }}>
-                        <button 
-                            onClick={() => setIsSideBarOpen(false)} 
-                            className="sidebar-close-btn"
-                        >
-                            <i className="ri-close-line"></i>
-                        </button>
-                    </div>
+            {/* Sidebar */}
+            <div className={`sidebar-overlay ${isSideBarOpen ? 'active' : ''}`} onClick={() => setIsSideBarOpen(false)} />
+            <div className={`sidebar-panel ${isSideBarOpen ? 'active' : ''}`}>
+                <button onClick={() => setIsSideBarOpen(false)} style={{ position: 'absolute', top: '25px', right: '25px', border: 'none', background: '#e31e24', color: '#fff', padding: '10px', borderRadius: '5px', cursor: 'pointer' }}>
+                    <X size={24} />
+                </button>
+                <div style={{ marginBottom: '40px' }}>
+                    <img src="/main-assets/img/logo.png" alt="Columbia" style={{ width: '200px' }} />
+                </div>
+                <h4 style={{ fontWeight: '800', marginBottom: '20px' }}>About Columbia</h4>
+                <p style={{ color: '#666', lineHeight: '1.7', fontSize: '15px' }}>
+                    We provide high-quality construction and engineering solutions, committed to excellence and sustainable infrastructure across the region.
+                </p>
+                
+                <h4 style={{ fontWeight: '800', marginTop: '40px', marginBottom: '20px' }}>Contact Info</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                    <div style={{ display: 'flex', gap: '12px' }}><MapPin size={20} color="#e31e24"/> <span>Nairobi, Kenya</span></div>
+                    <div style={{ display: 'flex', gap: '12px' }}><Phone size={20} color="#e31e24"/> <span>+254 700 000 000</span></div>
+                    <div style={{ display: 'flex', gap: '12px' }}><Mail size={20} color="#e31e24"/> <span>info@columbiadevelopers.co.ke</span></div>
+                </div>
 
-                    <div className="sidebar-inner">
-                        <div className="sidebar-logo-block">
-                            <Image src="/main-assets/img/logo.png" alt="Columbia" width={220} />
-                        </div>
-                        <div className="sidebar-body-content">
-                            <p className="blueprint-desc">Engineering excellence with a focus on sustainable infrastructure across East Africa.</p>
-                            <a href="/pages/innerpage/contact" className="sidebar-action-btn">
-                                <span>GET IN TOUCH</span>
-                                <i className="ri-arrow-right-line"></i>
-                            </a>
-                        </div>
-                    </div>
+                <div className="social-box">
+                    <a href="#" className="social-icon"><Facebook size={18} /></a>
+                    <a href="#" className="social-icon"><Twitter size={18} /></a>
+                    <a href="#" className="social-icon"><Instagram size={18} /></a>
+                    <a href="#" className="social-icon"><Linkedin size={18} /></a>
                 </div>
             </div>
 
-            <header className="nav-header header-layout1">
-                <div className="header-top d-none d-lg-block">
+            <header className="site-header">
+                {/* Top Bar */}
+                <div className="header-top d-none d-lg-block" style={{ borderBottom: '1px solid #eee', padding: '12px 0' }}>
                     <div className="container">
                         <div className="row justify-content-between align-items-center">
                             <div className="col-auto">
-                                <div className="top-info-wrap">
-                                    <a href="mailto:info@columbiadevelopers.co.ke" className="info-link">
-                                        <i className="ri-mail-line"></i> info@columbiadevelopers.co.ke
-                                    </a>
-                                    <span className="info-link">
-                                        <i className="ri-time-line"></i> Mon - Fri: 8:00 AM - 5:00 PM
-                                    </span>
-                                </div>
+                                <ul className="top-info-list">
+                                    <li><Clock size={16} /> <span>Mon - Sat: 8:00 - 18:00</span></li>
+                                    <li><Mail size={16} /> <span>info@columbiadevelopers.co.ke</span></li>
+                                </ul>
                             </div>
                             <div className="col-auto">
-                                <button 
-                                    onClick={handleLoginClick} 
-                                    className="top-portal-link"
-                                >
-                                    <i className="ri-user-settings-line"></i> Client Portal Login
-                                </button>
+                                <button onClick={() => setShowLoginModal(true)} className="portal-btn"><Lock size={14} /> CLIENT PORTAL</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div className={`sticky-wrapper ${isSticky ? 'sticky' : ''}`}>
+                {/* Main Nav */}
+                <div className={`navigation-area ${isSticky ? 'sticky-active' : ''}`} style={{ background: '#fff', padding: '15px 0', boxShadow: isSticky ? '0 5px 20px rgba(0,0,0,0.05)' : 'none' }}>
                     <div className="container">
-                        <div className="menu-area">
-                            <div className="row align-items-center">
-                                <div className="col-auto">
-                                    <a href="/">
-                                        <Image src="/main-assets/img/logo.png" alt="Logo" width={160} />
-                                    </a>
-                                </div>
-                                <div className="col text-center">
-                                    <nav className="main-menu d-none d-lg-block">
-                                    <ul className="m-0 p-0" style={{ listStyle: 'none', display: 'flex', gap: '30px' }}>
-                                        <li><a href="/">HOME</a></li>
-                                        <li><a href="/pages/innerpage/about">ABOUT</a></li>
-                                        <li><a href="/pages/innerpage/service">SERVICES</a></li>
-                                        <li><a href="/pages/innerpage/project">PROJECTS</a></li>
-                                        <li><a href="/pages/innerpage/shop">SHOP</a></li>
-                                        <li><a href="/pages/innerpage/contact">CONTACT</a></li>
-                                    </ul>
+                        <div className="row align-items-center justify-content-between">
+                            <div className="col-auto">
+                                <a href="/"><img src="/main-assets/img/logo.png" alt="Logo" style={{ width: '170px' }} /></a>
+                            </div>
+                            
+                            <div className="col-auto d-none d-lg-block">
+                                <nav style={{ display: 'flex', gap: '35px' }}>
+                                    <a href="/" className="nav-link">HOME</a>
+                                    <a href="/pages/innerpage/about" className="nav-link">ABOUT</a>
+                                    <a href="/pages/innerpage/service" className="nav-link">SERVICES</a>
+                                    <a href="/pages/innerpage/project" className="nav-link">PROJECTS</a>
+                                    <a href="/pages/innerpage/shop" className="nav-link">SHOP</a>
+                                    <a href="/pages/innerpage/contact" className="nav-link">CONTACT</a>
                                 </nav>
-                                </div>
-                                <div className="col-auto">
-                                    <div className="header-action-btns">
-                                        <button onClick={() => setIsPopupOpen(true)} className="action-btn-circle"><i className="ri-search-line"></i></button>
-                                        <button onClick={() => setIsSideBarOpen(true)} className="action-btn-circle side-trigger"><i className="ri-menu-4-line"></i></button>
-                                        <button onClick={() => setIsMenuOpen(true)} className="menu-toggle d-lg-none"><i className="ri-menu-line"></i></button>
-                                    </div>
+                            </div>
+
+                            <div className="col-auto">
+                                <div style={{ display: 'flex', gap: '10px' }}>
+                                    {/* Search Trigger */}
+                                    <button onClick={() => setIsSearchOpen(true)} className="action-circle"><Search size={20} /></button>
+                                    <button onClick={() => setIsSideBarOpen(true)} className="action-circle d-none d-sm-flex"><Menu size={20} /></button>
+                                    <button onClick={() => setIsMenuOpen(true)} className="action-circle menu-btn d-lg-none"><Menu size={20} /></button>
                                 </div>
                             </div>
                         </div>
@@ -257,10 +286,8 @@ const App = () => {
                 </div>
             </header>
 
-            {showLoginModal && (
-                <LoginModal onClose={() => setShowLoginModal(false)} />
-            )}
-            
+            {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
+            <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
             <MultiPageMobileMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         </div>
     );
