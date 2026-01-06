@@ -7,7 +7,7 @@ import niceSelect from "react-nice-select";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import Image from "next/image";
-import { useShop } from "./context/ShopContext";
+import { useShop } from "@/context/ShopContext";
 
 const Product = () => {
     // 1. Pulling state from ShopContext
