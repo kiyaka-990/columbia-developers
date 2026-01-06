@@ -1,25 +1,28 @@
 export const dynamic = 'force-dynamic';
-import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
-export async function GET(request) {
-    // If we are currently building, skip the DB call entirely
-    if (process.env.NEXT_PHASE === 'phase-production-build') {
+export async function GET() {
+    // If we are in the build phase, exit immediately without loading Prisma
+    if (process.env.NEXT_PHASE === 'phase-production-build' || process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
         return NextResponse.json([]);
     }
 
     try {
+        // Dynamically import prisma only when the function runs
+        const { prisma } = await import('@/lib/prisma');
         const products = await prisma.product.findMany();
         return NextResponse.json(products || []);
     } catch (error) {
-        console.error("Database error:", error.message);
+        console.error("Database connection failed:", error.message);
         return NextResponse.json([], { status: 200 }); 
     }
 }
 
 export async function POST(req) {
     try {
+        const { prisma } = await import('@/lib/prisma');
         const body = await req.json();
+        
         const newProduct = await prisma.product.create({
             data: {
                 title: body.title,
