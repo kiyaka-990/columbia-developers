@@ -1,28 +1,23 @@
-import { PrismaClient } from '@prisma/client';
+export const dynamic = 'force-dynamic';
+import { prisma } from '@/lib/prisma'; // Import from the new file
 import { NextResponse } from 'next/server';
 
-const prisma = new PrismaClient();
-
-export async function POST(req) {
+export async function GET(req, { params }) {
     try {
-        const body = await req.json();
-        
-        const newProduct = await prisma.product.create({
-            data: {
-                title: body.title,
-                price: parseFloat(body.price),
-                oldPrice: body.oldPrice ? parseFloat(body.oldPrice) : null,
-                img: body.img, // This will be the https://res.cloudinary.com/... URL
-                category: body.category,
-                // Tags are handled as a string for simplicity in the DB
-                tags: body.tags, 
-                popularity: 5,
-            },
+        const { id } = params;
+
+        const product = await prisma.product.findUnique({
+            where: { id: id },
         });
 
-        return NextResponse.json(newProduct, { status: 201 });
+        if (!product) {
+            return NextResponse.json({ error: "Product not found" }, { status: 404 });
+        }
+
+        return NextResponse.json(product);
     } catch (error) {
-        console.error("Prisma Create Error:", error);
-        return NextResponse.json({ error: "Failed to create product" }, { status: 500 });
+        return NextResponse.json({ error: "Database error" }, { status: 500 });
     }
 }
+
+// Keep your POST function here too, but use 'prisma.product.create'
