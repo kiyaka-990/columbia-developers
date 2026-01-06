@@ -2,29 +2,24 @@ export const dynamic = 'force-dynamic';
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
-// GET all products
-export async function GET() {
+export async function GET(request) {
+    // If we are currently building, skip the DB call entirely
+    if (process.env.NEXT_PHASE === 'phase-production-build') {
+        return NextResponse.json([]);
+    }
+
     try {
-        // Attempt to fetch products
         const products = await prisma.product.findMany();
         return NextResponse.json(products || []);
     } catch (error) {
-        console.error("Database connection check failed during build:", error.message);
-        // Returning a 200 with an empty array during build-time 
-        // prevents the 'Failed to collect page data' crash.
+        console.error("Database error:", error.message);
         return NextResponse.json([], { status: 200 }); 
     }
 }
 
-// POST new product
 export async function POST(req) {
     try {
         const body = await req.json();
-        
-        if (!body.title || !body.price) {
-            return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
-        }
-
         const newProduct = await prisma.product.create({
             data: {
                 title: body.title,
@@ -37,7 +32,6 @@ export async function POST(req) {
         });
         return NextResponse.json(newProduct, { status: 201 });
     } catch (error) {
-        console.error("POST Error:", error.message);
         return NextResponse.json({ error: "Save failed" }, { status: 500 });
     }
 }
