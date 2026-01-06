@@ -7,6 +7,8 @@
  */
 
 import Product from "~/sections/Shop/Product/Product";
+// Add one more '../'
+import ProductDetails from '~/sections/Shop/Product/ProductDetails';
 import FooterFive from "~/sections/Common/Footer/FooterFive";
 import HeaderOne from "~/sections/Common/Header/HeaderOne";
 import Scroll from "~/sections/Common/Scroll";
@@ -19,6 +21,7 @@ export default function ShopPage() {
                 Ensure you are using the component you intended to render.
             */}
             <Product /> 
+            <ProductDetails />
             <FooterFive />
             <Scroll />
         </main>

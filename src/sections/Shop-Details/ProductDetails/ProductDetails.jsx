@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 // 1. Import the global shop hook
 // Since layout.js and the context folder are both inside the 'app' folder
-import { useShop } from "/src/app/context/ShopContext";
+import { useShop } from "../../context/ShopContext";
 
 const ProductDetails = () => {
     const { id } = useParams();

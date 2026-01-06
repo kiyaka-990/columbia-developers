@@ -1,249 +1,292 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  LayoutDashboard, 
-  FileText, 
-  Settings, 
-  LogOut, 
-  Clock, 
-  CheckCircle, 
-  AlertCircle,
-  TrendingUp,
-  ChevronRight,
-  Download
+  LayoutDashboard, Clock, CheckCircle, AlertCircle, TrendingUp, Download, 
+  ShieldCheck, Users, BarChart3, Search, Building2, Hammer, Briefcase, 
+  Activity, Globe, Zap, FilePlus, DollarSign, Eye, Server, Lock, 
+  ShieldAlert, Bell, Plus, X, Video, Camera, HardHat, Construction, 
+  Thermometer, Wind, ChevronRight, ArrowUpRight, UserCheck, HardDrive, 
+  CloudLightning, Droplets, Sun, LogOut, Smartphone, Laptop, ExternalLink, 
+  Shield, FileText, Box, BarChart, Layers, Map, Calendar, Cloud, Info, FileDown, Image as ImageIcon
 } from 'lucide-react';
 
-export default function ColumbiaDashboard() {
+export default function ColumbiaFinalOS() {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [user, setUser] = useState("Client");
+  const [vaultView, setVaultView] = useState('list');
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-    const savedUser = localStorage.getItem("user");
-    if (!savedUser) {
-      // In a real Next.js app, use useRouter()
-      // window.location.href = "/"; 
-      setUser("Developer Admin"); // Mock user for demo
-    } else {
-      setUser(savedUser);
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    window.location.href = "/";
-  };
-
+  useEffect(() => { setMounted(true); }, []);
   if (!mounted) return null;
 
-  // --- Sub-Components for Different Views ---
+  const handleLogout = () => setIsLoggedIn(false);
+  const handleLogin = () => setIsLoggedIn(true);
+  const redirectToVercelHome = () => { window.location.href = "https://columbia-developers.vercel.app/"; };
 
-  const DashboardHome = () => (
-    <>
-      <div style={gridStyle}>
-        <div style={cardStyle()}><Clock color="#e31e24" size={24} /> <h3>24</h3> <p>Days to Deadline</p></div>
-        <div style={cardStyle()}><CheckCircle color="#22c55e" size={24} /> <h3>85%</h3> <p>Project Completion</p></div>
-        <div style={cardStyle()}><AlertCircle color="#f59e0b" size={24} /> <h3>2</h3> <p>Pending Approvals</p></div>
+  // --- NEW COMPONENT: WEATHER ALERT BANNER (INDEPENDENT) ---
+  const WeatherAlertBanner = () => (
+    <div style={alertBannerStyle}>
+      <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
+        <CloudLightning size={20} />
+        <span style={{fontWeight: '800', fontSize: '13px'}}>CRITICAL WEATHER ALERT:</span>
+        <span style={{fontWeight: '500', fontSize: '13px'}}>High winds (42km/h) detected for Wednesday. Suspend all crane operations.</span>
       </div>
+      <ShieldAlert size={20} />
+    </div>
+  );
 
-      <div style={sectionStyle}>
-        <h3 style={{ marginBottom: '20px', fontWeight: '800' }}>Recent Milestone Updates</h3>
-        <table style={tableStyle}>
-          <thead>
-            <tr style={tableHeaderStyle}>
-              <th>TASK</th>
-              <th>STATUS</th>
-              <th>DATE</th>
-            </tr>
-          </thead>
+  // --- 1. DASHBOARD VIEW (RESTORED & PRESERVED) ---
+  const DashboardView = () => (
+    <div style={contentFadeIn}>
+      <div style={metricsGrid}>
+        <MetricCard label="Portfolio Value" value="$428.5M" sub="12 Active Sites" icon={<Globe color="#3b82f6"/>} trend="+4.2%" />
+        <MetricCard label="Weather Intel" value="24°C / Sunny" sub="Wind: 12km/h" icon={<Sun color="#f59e0b"/>} trend="Safe" />
+        <MetricCard label="Safety Rating" value="A+" sub="Zero Incidents" icon={<ShieldCheck color="#e31e24"/>} trend="Elite" />
+      </div>
+      <div style={enterpriseCard}>
+        <h3 style={cardTitle}>5-Day Weather Outlook</h3>
+        <div style={forecastContainer}>
+          <ForecastDay day="MON" icon={<Sun color="#f59e0b"/>} temp="24°C" wind="12km/h" risk="Low" />
+          <ForecastDay day="TUE" icon={<Cloud color="#94a3b8"/>} temp="21°C" wind="18km/h" risk="Low" />
+          <ForecastDay day="WED" icon={<CloudLightning color="#3b82f6"/>} temp="19°C" wind="42km/h" risk="High" active />
+          <ForecastDay day="THU" icon={<Droplets color="#0ea5e9"/>} temp="20°C" wind="22km/h" risk="Med" />
+          <ForecastDay day="FRI" icon={<Sun color="#f59e0b"/>} temp="23°C" wind="10km/h" risk="Low" />
+        </div>
+      </div>
+    </div>
+  );
+
+  // --- 2. SAFETY & OSHA (PRESERVED) ---
+  const SafetyView = () => (
+    <div style={contentFadeIn}>
+      <div style={metricsGrid}>
+        <MetricCard label="Days Incident Free" value="184" sub="Last: July 2025" icon={<ShieldCheck color="#22c55e"/>} trend="Safe" />
+        <MetricCard label="Open Permits" value="14" sub="All Verified" icon={<FileText color="#3b82f6"/>} trend="Active" />
+        <MetricCard label="Compliance" value="100%" sub="OSHA Standards" icon={<HardHat color="#e31e24"/>} trend="Elite" />
+      </div>
+      <div style={enterpriseCard}>
+        <h3 style={cardTitle}>Safety Inspection Log</h3>
+        <table style={enterpriseTable}>
+          <thead><tr><th>ZONE</th><th>INSPECTOR</th><th>STATUS</th><th>RESULT</th></tr></thead>
           <tbody>
-            <tr style={tableRowStyle}>
-              <td style={tdStyle}>Foundation Concrete Pour</td>
-              <td><span style={badgeStyle('#dcfce7', '#166534')}>Completed</span></td>
-              <td>Jan 04, 2026</td>
-            </tr>
-            <tr style={tableRowStyle}>
-              <td style={tdStyle}>Structural Steel Framing</td>
-              <td><span style={badgeStyle('#fef3c7', '#92400e')}>In Progress</span></td>
-              <td>Estimated Jan 15</td>
-            </tr>
+            <tr><td style={boldTd}>Sector 7-G</td><td>Miller, D.</td><td><span style={badgeStyle('#dcfce7', '#166534')}>PASSED</span></td><td>No Hazards</td></tr>
+            <tr><td style={boldTd}>Tower Crane 1</td><td>Jensen, S.</td><td><span style={badgeStyle('#dcfce7', '#166534')}>PASSED</span></td><td>Hydraulics OK</td></tr>
+            <tr><td style={boldTd}>Sub-Level 2</td><td>Hart, K.</td><td><span style={badgeStyle('#fef9c3', '#854d0e')}>PENDING</span></td><td>Ventilation Check</td></tr>
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 
-  const FilesView = () => (
-    <div style={sectionStyle}>
-      <h3 style={{ marginBottom: '20px', fontWeight: '800' }}>Blueprint & Project Documentation</h3>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        {['Site_Plan_Final.pdf', 'Electrical_Schematics_V2.dwg', 'Structural_Permit.pdf'].map((file, i) => (
-          <div key={i} style={fileItemStyle}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              <FileText size={20} color="#666" />
-              <span style={{ fontWeight: '500' }}>{file}</span>
+  // --- 3. LABOR FORCE (PRESERVED) ---
+  const LaborView = () => (
+    <div style={contentFadeIn}>
+      <div style={metricsGrid}>
+        <MetricCard label="Active Count" value="342" sub="Current Shift" icon={<Users color="#3b82f6"/>} trend="+12" />
+        <MetricCard label="Efficiency" value="96.2%" sub="Work-to-Hour" icon={<Zap color="#f59e0b"/>} trend="High" />
+        <MetricCard label="Daily Spend" value="$44.2K" sub="Labor Budget" icon={<DollarSign color="#22c55e"/>} trend="Stable" />
+      </div>
+      <div style={enterpriseCard}>
+        <h3 style={cardTitle}>Subcontractor Performance</h3>
+        <table style={enterpriseTable}>
+          <thead><tr><th>COMPANY</th><th>TRADE</th><th>HEADCOUNT</th><th>RATING</th></tr></thead>
+          <tbody>
+            <tr><td style={boldTd}>Apex Structural</td><td>Steel</td><td>42</td><td><span style={badgeStyle('#dcfce7', '#166534')}>9.8</span></td></tr>
+            <tr><td style={boldTd}>Build-Right Inc.</td><td>Concrete</td><td>86</td><td><span style={badgeStyle('#dcfce7', '#166534')}>9.5</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+
+  // --- 4. ASSET VAULT & GALLERY (PRESERVED) ---
+  const AssetView = () => (
+    <div style={contentFadeIn}>
+      <div style={sectionHeader}>
+        <h2 style={viewTitle}>Asset Vault</h2>
+        <div style={{display: 'flex', gap: '10px'}}>
+          <button style={vaultView === 'list' ? primaryButtonStyle : secondaryTabBtn} onClick={() => setVaultView('list')}><FileText size={16}/> List</button>
+          <button style={vaultView === 'gallery' ? primaryButtonStyle : secondaryTabBtn} onClick={() => setVaultView('gallery')}><ImageIcon size={16}/> Gallery</button>
+        </div>
+      </div>
+      {vaultView === 'list' ? (
+        <div style={enterpriseCard}>
+          <table style={enterpriseTable}>
+            <thead><tr><th>FILE NAME</th><th>TYPE</th><th>VERSION</th><th>DATE</th></tr></thead>
+            <tbody>
+              <tr><td style={boldTd}>Site_A_Master.dwg</td><td>CAD</td><td>v8.4</td><td>Jan 05</td></tr>
+              <tr><td style={boldTd}>Steel_Specs.pdf</td><td>Specs</td><td>v2.1</td><td>Jan 04</td></tr>
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div style={photoGrid}>
+          {[1, 2].map((i) => (
+            <div key={i} style={photoCard}>
+              <div style={photoPlaceholder}><Construction size={32} color="#cbd5e1"/></div>
+              <div style={{padding: '12px'}}><p style={photoLabel}>Site Photo_00{i}.jpg</p></div>
             </div>
-            <button style={downloadButtonStyle}><Download size={16} /> Download</button>
-          </div>
-        ))}
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  // --- 5. ANALYTICS (PRESERVED) ---
+  const AnalyticsView = () => (
+    <div style={contentFadeIn}>
+       <div style={sectionHeader}><h2 style={viewTitle}>Analytics</h2><button style={primaryButtonStyle} onClick={() => alert('Exporting PDF...')}><FileDown size={18}/> Export PDF</button></div>
+       <div style={metricsGrid}>
+        <MetricCard label="ROI Projected" value="22.4%" sub="Est. $12.4M Gain" icon={<BarChart3 color="#22c55e"/>} trend="+1.2%" />
+        <MetricCard label="Material Risk" value="Low" sub="95% Supply" icon={<Box color="#3b82f6"/>} trend="Stable" />
+      </div>
+      <div style={enterpriseCard}>
+        <h3 style={cardTitle}>Procurement Health</h3>
+        <div style={progressBar}><div style={{width: '95%', height: '100%', backgroundColor: '#e31e24'}}></div></div>
       </div>
     </div>
   );
 
-  const SettingsView = () => (
-    <div style={sectionStyle}>
-      <h3 style={{ marginBottom: '20px', fontWeight: '800' }}>Account Settings</h3>
-      <div style={{ maxWidth: '400px' }}>
-        <label style={labelStyle}>Notification Email</label>
-        <input style={inputStyle} defaultValue="admin@columbiadev.com" />
-        <button style={primaryButtonStyle}>Update Profile</button>
+  // --- 6. SECURITY (PRESERVED) ---
+  const SecurityView = () => (
+    <div style={contentFadeIn}>
+      <div style={enterpriseCard}>
+        <h3 style={cardTitle}>Security Audit Log</h3>
+        <table style={enterpriseTable}>
+          <thead><tr><th>USER ROLE</th><th>LOCATION</th><th>IP ADDRESS</th><th>TIMESTAMP</th></tr></thead>
+          <tbody>
+            <tr><td style={boldTd}>Root Admin</td><td>New York, US</td><td>192.168.1.1</td><td>Jan 06, 15:44</td></tr>
+            <tr><td style={boldTd}>Lead Dev</td><td>Vercel Deployment</td><td>45.22.10.84</td><td>Jan 06, 15:10</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );
+
+  // --- ALERTS SIDEBAR (PRESERVED) ---
+  const AlertsSidebar = () => (
+    <div style={alertsSidebarStyle}>
+      <h4 style={{...cardTitle, color: '#e31e24', display: 'flex', alignItems: 'center', gap: '8px'}}><ShieldAlert size={18}/> CRITICAL ALERTS</h4>
+      <div style={alertNotificationCard}>
+        <div style={{display: 'flex', gap: '10px'}}><HardHat size={20} color="#e31e24"/>
+          <div><p style={alertTextBold}>Safety Pending: Sub-Level 2</p><p style={alertTextSub}>Awaiting ventilation clearance.</p></div>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (!isLoggedIn) {
+    return (
+      <div style={homepageLayout}>
+        <div style={loginContainer}>
+          <div style={logoArea}><div style={logoSquare}><Building2 size={32} color="#fff" /></div><h1 style={{...brandName, fontSize: '32px'}}>COLUMBIA</h1></div>
+          <div style={enterpriseCard}>
+            <button onClick={handleLogin} style={{...primaryButtonStyle, width: '100%', padding: '18px', justifyContent: 'center', marginBottom: '15px'}}>LOG IN</button>
+            <button onClick={redirectToVercelHome} style={secondaryLinkBtn}><ExternalLink size={16}/> RETURN TO COLUMBIA-DEVELOPERS.VERCEL.APP</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f4f4f7', fontFamily: 'Inter, system-ui, sans-serif' }}>
-      {/* Sidebar */}
+    <div style={appLayout}>
       <aside style={sidebarStyle}>
-        <div style={{ marginBottom: '50px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '35px', height: '35px', backgroundColor: '#e31e24', borderRadius: '4px' }}></div>
-            <h2 style={{ color: '#fff', fontSize: '20px', fontWeight: '800', letterSpacing: '-0.5px', margin: 0 }}>COLUMBIA</h2>
-          </div>
-          <p style={{ fontSize: '11px', opacity: 0.5, marginTop: '5px', fontWeight: 'bold' }}>DEVELOPER PORTAL</p>
-        </div>
-
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <button onClick={() => setActiveTab('dashboard')} style={navItemStyle(activeTab === 'dashboard')}>
-            <LayoutDashboard size={18} /> Dashboard
-          </button>
-          <button onClick={() => setActiveTab('files')} style={navItemStyle(activeTab === 'files')}>
-            <FileText size={18} /> Project Files
-          </button>
-          <button onClick={() => setActiveTab('reports')} style={navItemStyle(activeTab === 'reports')}>
-            <TrendingUp size={18} /> Progress Reports
-          </button>
-          <button onClick={() => setActiveTab('settings')} style={navItemStyle(activeTab === 'settings')}>
-            <Settings size={18} /> Settings
-          </button>
-          
-          <div style={{ marginTop: 'auto', paddingTop: '40px' }}>
-             <button onClick={handleLogout} style={logoutButtonStyle}>
-              <LogOut size={18} /> Logout
-            </button>
-          </div>
+        <div style={logoArea}><div style={logoSquare}><Building2 size={24} color="#fff" /></div><div><h2 style={brandName}>COLUMBIA</h2><p style={brandTag}>ELITE OS</p></div></div>
+        <nav style={navContainer}>
+          <SidebarBtn active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} icon={<LayoutDashboard size={18}/>} label="Command Center" />
+          <SidebarBtn active={activeTab === 'safety'} onClick={() => setActiveTab('safety')} icon={<HardHat size={18}/>} label="Safety & OSHA" />
+          <SidebarBtn active={activeTab === 'labor'} onClick={() => setActiveTab('labor')} icon={<Users size={18}/>} label="Labor Force" />
+          <SidebarBtn active={activeTab === 'files'} onClick={() => setActiveTab('files')} icon={<Briefcase size={18}/>} label="Asset Vault" />
+          <SidebarBtn active={activeTab === 'reports'} onClick={() => setActiveTab('reports')} icon={<Activity size={18}/>} label="Analytics" />
+          <SidebarBtn active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} icon={<ShieldCheck size={18}/>} label="Security" />
         </nav>
+        <div onClick={handleLogout} style={logoutButtonCard}><LogOut size={18}/><span>LOGOUT</span></div>
       </aside>
 
-      {/* Main Content */}
-      <main style={{ flex: 1, padding: '40px 60px', overflowY: 'auto' }}>
-        <header style={headerStyle}>
-          <div>
-            <h1 style={{ fontSize: '32px', fontWeight: '800', color: '#1a1a1a', margin: 0, letterSpacing: '-1px' }}>
-              Welcome, {user}
-            </h1>
-            <p style={{ color: '#666', marginTop: '5px' }}>Project: <span style={{ fontWeight: '600', color: '#1a1a1a' }}>Northview Residential Complex</span></p>
-          </div>
-          <div style={dateBoxStyle}>
-            <Clock size={14} />
-            <span>{new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-          </div>
+      <main style={mainContent}>
+        <WeatherAlertBanner />
+        <header style={topHeader}>
+          <div style={searchWrapper}><Search size={18} color="#94a3b8" /><input placeholder="Secure Search..." style={searchField} /></div>
+          <div style={userProfile}><div style={avatar}>AD</div><div><span style={uName}>Admin</span><br/><button onClick={handleLogout} style={logoutLink}>Logout</button></div></div>
         </header>
-
-        {/* Dynamic Content Rendering */}
-        {activeTab === 'dashboard' && <DashboardHome />}
-        {activeTab === 'files' && <FilesView />}
-        {activeTab === 'settings' && <SettingsView />}
-        {activeTab === 'reports' && <div style={sectionStyle}><h3>Charts & Visual Data Loading...</h3></div>}
+        <div style={{display: 'grid', gridTemplateColumns: '1fr 300px', gap: '30px'}}>
+          <div style={{minWidth: 0}}>
+            {activeTab === 'dashboard' && <DashboardView />}
+            {activeTab === 'safety' && <SafetyView />}
+            {activeTab === 'labor' && <LaborView />}
+            {activeTab === 'files' && <AssetView />}
+            {activeTab === 'reports' && <AnalyticsView />}
+            {activeTab === 'settings' && <SecurityView />}
+          </div>
+          <AlertsSidebar />
+        </div>
       </main>
     </div>
   );
 }
 
-// --- Enhanced Styles ---
+// --- SHARED UI COMPONENTS & CSS ---
+const ForecastDay = ({day, icon, temp, wind, risk, active}) => (
+  <div style={{...forecastItem, backgroundColor: active ? '#fef2f2' : 'transparent', border: active ? '1px solid #fee2e2' : 'none'}}>
+    <span style={{fontSize: '11px', fontWeight: '800'}}>{day}</span>{icon}<span style={{fontSize: '14px', fontWeight: '900'}}>{temp}</span>
+    <span style={{fontSize: '10px', color: '#94a3b8'}}>{wind}</span>
+    <span style={{...badgeStyle(risk === 'High' ? '#fee2e2' : '#f1f5f9', risk === 'High' ? '#b91c1c' : '#475569'), marginTop: '8px'}}>{risk}</span>
+  </div>
+);
+const SidebarBtn = ({active, icon, label, onClick}) => (
+  <button onClick={onClick} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 18px', borderRadius: '12px', border: 'none', cursor: 'pointer', textAlign: 'left', backgroundColor: active ? '#e31e24' : 'transparent', color: active ? '#fff' : '#64748b', fontWeight: '700' }}>{icon} {label}</button>
+);
+const MetricCard = ({label, value, sub, icon, trend}) => (
+  <div style={enterpriseCard}>
+    <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '15px'}}>{icon} <span style={{fontSize: '11px', fontWeight: '900', color: '#22c55e'}}>{trend}</span></div>
+    <p style={{margin: 0, fontSize: '12px', fontWeight: '700', color: '#94a3b8'}}>{label}</p>
+    <h2 style={{margin: '4px 0', fontSize: '26px', fontWeight: '900'}}>{value}</h2>
+    <p style={{margin: 0, fontSize: '11px', fontWeight: '600', color: '#64748b'}}>{sub}</p>
+  </div>
+);
 
-const sidebarStyle = {
-  width: '260px', 
-  backgroundColor: '#0f0f10', 
-  color: '#fff', 
-  padding: '40px 24px',
-  display: 'flex',
-  flexDirection: 'column',
-  position: 'sticky',
-  top: 0,
-  height: '100vh'
-};
-
-const navItemStyle = (active) => ({
-  display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', width: '100%',
-  background: active ? '#e31e24' : 'transparent', 
-  color: active ? '#fff' : '#a0a0a0', 
-  border: 'none', borderRadius: '12px', cursor: 'pointer', textAlign: 'left', 
-  fontWeight: '600', transition: 'all 0.3s ease'
-});
-
-const logoutButtonStyle = {
-  ...navItemStyle(false),
-  color: '#ff6b6b',
-  border: '1px solid #333'
-};
-
-const headerStyle = {
-  display: 'flex', 
-  justifyContent: 'space-between', 
-  alignItems: 'flex-start', 
-  marginBottom: '50px' 
-};
-
-const dateBoxStyle = {
-  display: 'flex', alignItems: 'center', gap: '8px',
-  backgroundColor: '#fff', padding: '8px 16px', borderRadius: '100px', 
-  boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', fontSize: '14px', fontWeight: '600'
-};
-
-const gridStyle = {
-  display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '40px'
-};
-
-const cardStyle = () => ({
-  backgroundColor: '#fff', padding: '30px', borderRadius: '20px', 
-  boxShadow: '0 10px 15px -3px rgba(0,0,0,0.04)', textAlign: 'left',
-  border: '1px solid #edf2f7'
-});
-
-const sectionStyle = {
-  backgroundColor: '#fff', borderRadius: '24px', padding: '32px', 
-  boxShadow: '0 10px 15px -3px rgba(0,0,0,0.04)', border: '1px solid #edf2f7'
-};
-
-const fileItemStyle = {
-  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-  padding: '16px', borderRadius: '12px', backgroundColor: '#f8f9fa', border: '1px solid #eee'
-};
-
-const downloadButtonStyle = {
-  display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px',
-  backgroundColor: '#1a1a1a', color: '#fff', border: 'none', borderRadius: '8px',
-  fontSize: '12px', fontWeight: '600', cursor: 'pointer'
-};
-
-const inputStyle = {
-  width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', marginBottom: '20px'
-};
-
-const labelStyle = { display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '600' };
-
-const primaryButtonStyle = {
-  backgroundColor: '#e31e24', color: '#fff', padding: '12px 24px', border: 'none',
-  borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer'
-};
-
-const tableStyle = { width: '100%', borderCollapse: 'collapse' };
-const tableHeaderStyle = { textAlign: 'left', borderBottom: '2px solid #f0f0f0', color: '#a0aec0', fontSize: '12px', letterSpacing: '0.05em' };
-const tableRowStyle = { borderBottom: '1px solid #f7fafc' };
-const tdStyle = { fontWeight: '600', padding: '20px 0', fontSize: '15px' };
-const badgeStyle = (bg, color) => ({
-  backgroundColor: bg, color: color, padding: '6px 14px', borderRadius: '100px', fontSize: '12px', fontWeight: '700'
-});
+// --- CSS CONFIG ---
+const alertBannerStyle = { backgroundColor: '#e31e24', color: '#fff', padding: '12px 24px', borderRadius: '14px', marginBottom: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', animation: 'pulse 2s infinite' };
+const photoGrid = { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' };
+const photoCard = { backgroundColor: '#fff', borderRadius: '20px', overflow: 'hidden', border: '1px solid #e2e8f0' };
+const photoPlaceholder = { height: '140px', backgroundColor: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' };
+const photoLabel = { margin: 0, fontSize: '12px', fontWeight: '800', textAlign: 'center' };
+const secondaryTabBtn = { backgroundColor: '#f1f5f9', color: '#475569', border: 'none', borderRadius: '12px', fontWeight: '800', cursor: 'pointer', padding: '10px 20px' };
+const alertsSidebarStyle = { backgroundColor: '#fff', borderRadius: '24px', padding: '24px', border: '1px solid #e2e8f0', alignSelf: 'start' };
+const alertNotificationCard = { backgroundColor: '#f8fafc', padding: '16px', borderRadius: '16px', marginBottom: '15px', borderLeft: '4px solid #e31e24' };
+const alertTextBold = { margin: 0, fontSize: '13px', fontWeight: '800' };
+const alertTextSub = { margin: '4px 0 0', fontSize: '11px', color: '#64748b' };
+const appLayout = { display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc', fontFamily: 'Inter, sans-serif' };
+const sidebarStyle = { width: '280px', background: '#0f172a', padding: '40px 24px', display: 'flex', flexDirection: 'column' };
+const logoArea = { display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '40px' };
+const logoSquare = { width: '40px', height: '40px', backgroundColor: '#e31e24', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' };
+const brandName = { fontSize: '20px', fontWeight: '900', color: '#fff', margin: 0 };
+const brandTag = { fontSize: '9px', color: '#e31e24', fontWeight: '800', margin: 0, letterSpacing: '1.5px' };
+const navContainer = { display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 };
+const mainContent = { flex: 1, padding: '40px', overflowY: 'auto' };
+const enterpriseCard = { backgroundColor: '#fff', padding: '24px', borderRadius: '24px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', marginBottom: '25px' };
+const metricsGrid = { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '25px', marginBottom: '30px' };
+const cardTitle = { fontSize: '14px', fontWeight: '800', color: '#475569', marginBottom: '20px', textTransform: 'uppercase' };
+const enterpriseTable = { width: '100%', borderCollapse: 'collapse', fontSize: '14px' };
+const badgeStyle = (bg, color) => ({ backgroundColor: bg, color, padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: '800' });
+const boldTd = { padding: '16px 0', fontWeight: '700' };
+const progressBar = { height: '8px', backgroundColor: '#f1f5f9', borderRadius: '10px', overflow: 'hidden' };
+const logoutButtonCard = { marginTop: 'auto', backgroundColor: '#e31e24', color: '#fff', padding: '15px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: '700' };
+const logoutLink = { background: 'none', border: 'none', color: '#e31e24', fontWeight: '800', fontSize: '12px', cursor: 'pointer' };
+const topHeader = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' };
+const searchWrapper = { display: 'flex', alignItems: 'center', gap: '12px', backgroundColor: '#fff', padding: '12px 20px', borderRadius: '14px', border: '1px solid #e2e8f0', width: '300px' };
+const searchField = { border: 'none', outline: 'none', background: 'transparent', width: '100%', fontSize: '14px' };
+const userProfile = { display: 'flex', alignItems: 'center', gap: '12px' };
+const avatar = { width: '36px', height: '36px', borderRadius: '8px', backgroundColor: '#e31e24', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900' };
+const uName = { fontSize: '14px', fontWeight: '800' };
+const contentFadeIn = { animation: 'fadeIn 0.5s ease' };
+const viewTitle = { fontSize: '24px', fontWeight: '900', margin: 0 };
+const sectionHeader = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px' };
+const primaryButtonStyle = { backgroundColor: '#e31e24', color: '#fff', border: 'none', borderRadius: '12px', fontWeight: '800', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px' };
+const secondaryLinkBtn = { background: 'none', border: 'none', color: '#94a3b8', fontSize: '12px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', width: '100%', justifyContent: 'center' };
+const homepageLayout = { height: '100vh', backgroundColor: '#0f172a', display: 'flex', justifyContent: 'center', alignItems: 'center' };
+const loginContainer = { width: '400px', textAlign: 'center' };
+const forecastContainer = { display: 'flex', justifyContent: 'space-between', gap: '10px' };
+const forecastItem = { flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px', borderRadius: '12px' };
