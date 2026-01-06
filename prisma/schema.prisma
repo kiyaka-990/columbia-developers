@@ -8,17 +8,3 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
-model Product {
-  id               Int      @id @default(autoincrement())
-  title            String
-  price            Float
-  oldPrice         Float?
-  img              String   
-  category         String
-  popularity       Int      @default(0)
-  sku              String?  @unique
-  fullDescription  String?  @db.Text
-  shortDescription String?
-  createdAt        DateTime @default(now())
-}
