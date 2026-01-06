@@ -7,7 +7,6 @@
  */
 
 import Product from "~/sections/Shop/Product/Product";
-import ProductDetails from "~/sections/Shop/Product/ProductDetails";
 import FooterFive from "~/sections/Common/Footer/FooterFive";
 import HeaderOne from "~/sections/Common/Header/HeaderOne";
 import Scroll from "~/sections/Common/Scroll";
