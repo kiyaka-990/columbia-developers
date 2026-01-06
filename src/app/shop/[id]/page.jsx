@@ -1,21 +1,21 @@
-import Product from "@/sections/Shop/Product/Product";
-import ProductDetails from "@/sections/Shop-Details/ProductDetails/ProductDetails";
-import FooterFive from "@/sections/Common/Footer/FooterFive";
-import HeaderOne from "@/sections/Common/Header/HeaderOne";
-import Scroll from "@/sections/Common/Scroll";
+export const dynamic = 'force-dynamic';
+import { prisma } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
 
-export default function ProductPage() {
-    return (
-        <main>
-            <HeaderOne />
-            <div className="breadcumb-wrapper" style={{backgroundColor: '#f8f9fa', padding: '40px 0'}}>
-                <div className="container text-center">
-                    <h1 className="h2">Product Details</h1>
-                </div>
-            </div>
-            <ProductDetails />
-            <FooterFive />
-            <Scroll />
-        </main>
-    );
+export async function GET(req, { params }) {
+    try {
+        // Await params in newer Next.js versions to be safe
+        const { id } = params; 
+
+        const product = await prisma.product.findUnique({
+            where: { id: id },
+        });
+
+        if (!product) {
+            return NextResponse.json({ error: "Not found" }, { status: 404 });
+        }
+        return NextResponse.json(product);
+    } catch (error) {
+        return NextResponse.json({ error: "Database error" }, { status: 500 });
+    }
 }

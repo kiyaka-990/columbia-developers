@@ -1,29 +1,37 @@
-/**
- * FIX NOTES:
- * 1. The error "Module not found" for ProductDetails suggests the relative path 
- * '../../sections' is reaching the wrong depth or the casing is wrong.
- * 2. Mixed import styles (~/ vs ../../) can cause webpack resolution errors.
- * 3. Recommendation: Use the absolute alias consistently.
- */
+export const dynamic = 'force-dynamic';
+import { prisma } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
 
-// Replace the old imports with these:
-import Product from "@/sections/Shop/Product/Product";
-import ProductDetails from "@/sections/Shop-Details/ProductDetails/ProductDetails";
-import FooterFive from "@/sections/Common/Footer/FooterFive";
-import HeaderOne from "@/sections/Common/Header/HeaderOne";
-import Scroll from "@/sections/Common/Scroll";
+// GET all products
+export async function GET() {
+    try {
+        const products = await prisma.product.findMany();
+        return NextResponse.json(products);
+    } catch (error) {
+        return NextResponse.json({ error: "Database error" }, { status: 500 });
+    }
+}
 
-export default function ShopPage() {
-    return (
-        <main>
-            <HeaderOne />
-            {/* The build error specifically complained about ProductDetails.
-                Ensure you are using the component you intended to render.
-            */}
-            <Product /> 
-            <ProductDetails />
-            <FooterFive />
-            <Scroll />
-        </main>
-    );
+// POST new product
+export async function POST(req) {
+    try {
+        const body = await req.json();
+        if (!body.title || !body.price) {
+            return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+        }
+
+        const newProduct = await prisma.product.create({
+            data: {
+                title: body.title,
+                price: parseFloat(body.price),
+                oldPrice: body.oldPrice ? parseFloat(body.oldPrice) : null,
+                img: body.img,
+                category: body.category,
+                popularity: 5,
+            },
+        });
+        return NextResponse.json(newProduct, { status: 201 });
+    } catch (error) {
+        return NextResponse.json({ error: "Save failed" }, { status: 500 });
+    }
 }
