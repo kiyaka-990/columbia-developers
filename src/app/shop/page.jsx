@@ -8,7 +8,7 @@
 
 // Replace the old imports with these:
 import Product from "@/sections/Shop/Product/Product";
-import ProductDetails from "@/sections/Shop/Product/ProductDetails";
+import ProductDetails from "@/sections/Shop-Details/ProductDetails/ProductDetails";
 import FooterFive from "@/sections/Common/Footer/FooterFive";
 import HeaderOne from "@/sections/Common/Header/HeaderOne";
 import Scroll from "@/sections/Common/Scroll";
