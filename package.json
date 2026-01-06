@@ -2,15 +2,15 @@
   "name": "server-version",
   "version": "0.1.0",
   "private": true,
- "scripts": {
-  "dev": "next dev",
-  "build": "prisma generate && next build",
-  "start": "next start",
-  "lint": "next lint",
-  "postinstall": "prisma generate || true"
-},
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "prisma generate || true"
+  },
   "dependencies": {
-    "@prisma/client": "^7.2.0",
+    "@prisma/client": "^6.2.1",
     "bootstrap": "^5.3.3",
     "cloudinary": "^2.8.0",
     "dotenv": "^17.2.3",
@@ -37,7 +37,7 @@
   "devDependencies": {
     "eslint": "^8",
     "eslint-config-next": "^16.1.1",
-    "prisma": "^7.2.0"
+    "prisma": "^6.2.1"
   },
   "browserslist": [
     "last 2 versions",
