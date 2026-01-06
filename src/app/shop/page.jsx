@@ -8,7 +8,7 @@
 
 import Product from "~/sections/Shop/Product/Product";
 // Add one more '../'
-import ProductDetails from '~/sections/Shop/Product/ProductDetails';
+import ProductDetails from '../../../sections/Shop/Product/ProductDetails';
 import FooterFive from "~/sections/Common/Footer/FooterFive";
 import HeaderOne from "~/sections/Common/Header/HeaderOne";
 import Scroll from "~/sections/Common/Scroll";
