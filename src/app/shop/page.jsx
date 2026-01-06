@@ -2,28 +2,27 @@ export const dynamic = 'force-dynamic';
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
+// GET all products
 export async function GET() {
     try {
-        // Attempt to fetch, but handle potential connection timeouts during build
+        // Attempt to fetch products
         const products = await prisma.product.findMany();
-        
-        // If products is null/undefined, return empty array to prevent map() errors downstream
         return NextResponse.json(products || []);
     } catch (error) {
-        console.error("Database connection failed during build/runtime:", error.message);
-        
-        // Returning a 200 with an empty array or a 500 with a message 
-        // prevents the 'Failed to collect page data' build crash.
+        console.error("Database connection check failed during build:", error.message);
+        // Returning a 200 with an empty array during build-time 
+        // prevents the 'Failed to collect page data' crash.
         return NextResponse.json([], { status: 200 }); 
     }
 }
 
+// POST new product
 export async function POST(req) {
     try {
         const body = await req.json();
         
         if (!body.title || !body.price) {
-            return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+            return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
 
         const newProduct = await prisma.product.create({
