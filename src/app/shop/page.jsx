@@ -2,13 +2,13 @@ export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-    // If we are in the build phase, exit immediately without loading Prisma
-    if (process.env.NEXT_PHASE === 'phase-production-build' || process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
+    // If we are in the Vercel build phase, return empty and exit before Prisma is even mentioned
+    if (process.env.NEXT_PHASE === 'phase-production-build') {
         return NextResponse.json([]);
     }
 
     try {
-        // Dynamically import prisma only when the function runs
+        // Dynamically import only at runtime
         const { prisma } = await import('@/lib/prisma');
         const products = await prisma.product.findMany();
         return NextResponse.json(products || []);
