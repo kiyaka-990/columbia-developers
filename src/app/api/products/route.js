@@ -1,31 +1,41 @@
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
+
 import { NextResponse } from 'next/server';
 
-/**
- * PATH BREAKDOWN:
- * Current: src/app/api/products/route.js
- * 1. ../ (products -> api)
- * 2. ../../ (api -> app)
- * 3. ../../../ (app -> src)
- * 4. ../../../../lib/prisma (src -> root -> src -> lib)
- * * However, if 'src' is your root, use: ../../../lib/prisma
- */
-
-import prisma from '../../../lib/prisma';
-
 export async function GET() {
-  try {
-    // Basic check to ensure prisma is defined
-    if (!prisma) {
-      throw new Error("Prisma client is not initialized or exported correctly in src/lib/prisma.js");
+    // If we are in the build phase, stop immediately.
+    if (process.env.NEXT_PHASE === 'phase-production-build') {
+        return new Response(JSON.stringify([]), { status: 200 });
     }
 
-    const products = await prisma.product.findMany();
-    return NextResponse.json(products);
-  } catch (error) {
-    console.error("Database Error:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error", message: error.message },
-      { status: 500 }
-    );
-  }
+    try {
+        // We use the import inside the handler to prevent top-level engine boot
+        const { prisma } = await import('@/lib/prisma');
+        const products = await prisma.product.findMany();
+        return NextResponse.json(products || []);
+    } catch (error) {
+        return NextResponse.json([], { status: 200 }); 
+    }
+}
+
+export async function POST(req) {
+    try {
+        const { prisma } = await import('@/lib/prisma');
+        const body = await req.json();
+        const newProduct = await prisma.product.create({
+            data: {
+                title: body.title,
+                price: parseFloat(body.price),
+                oldPrice: body.oldPrice ? parseFloat(body.oldPrice) : null,
+                img: body.img,
+                category: body.category,
+                popularity: 5,
+            },
+        });
+        return NextResponse.json(newProduct, { status: 201 });
+    } catch (error) {
+        return NextResponse.json({ error: "Save failed" }, { status: 500 });
+    }
 }

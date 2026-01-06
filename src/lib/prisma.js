@@ -5,6 +5,7 @@ const prismaClientSingleton = () => {
 };
 
 const globalForPrisma = globalThis;
+
 const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
 
 export { prisma };
