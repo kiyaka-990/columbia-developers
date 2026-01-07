@@ -33,7 +33,7 @@ export default function AddProductPage() {
                 <input className="form-control mb-2" type="number" placeholder="Price" onChange={e => setFormData({...formData, price: e.target.value})} required />
                 <input className="form-control mb-2" placeholder="Category" onChange={e => setFormData({...formData, category: e.target.value})} required />
                 <input className="form-control mb-3" placeholder="Image URL" onChange={e => setFormData({...formData, img: e.target.value})} required />
-                <button type="submit" className="btn btn-primary" style={{backgroundColor: '#EA5501', border: 'none'}}>Save Product</button>
+                <button type="submit" className="btn btn-primary" style={{backgroundColor: '#e23212ff', border: 'none'}}>Save Product</button>
             </form>
         </div>
     );

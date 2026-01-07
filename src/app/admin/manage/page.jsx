@@ -29,7 +29,7 @@ export default function ManageProducts() {
         <div className="container py-5">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h2 style={{fontWeight: '700'}}>Inventory Management</h2>
-                <Link href="/admin/add-product" className="btn btn-primary" style={{backgroundColor: '#EA5501', border: 'none'}}>
+                <Link href="/admin/add-product" className="btn btn-primary" style={{backgroundColor: '#e62a12ff', border: 'none'}}>
                     + Add New Product
                 </Link>
             </div>
