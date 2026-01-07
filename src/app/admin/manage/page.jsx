@@ -17,66 +17,39 @@ export default function ManageProducts() {
     useEffect(() => { fetchProducts(); }, []);
 
     const handleDelete = async (id) => {
-    if (confirm("Delete this product?")) {
-        // This URL matches the folder src/app/api/admin/products/[id]
-        const res = await fetch(`/api/admin/products/${id}`, { 
-            method: "DELETE" 
-        });
-
-        if (res.ok) {
-            fetchProducts(); // This refreshes your list
-        } else {
-            alert("Delete failed on server");
+        if (confirm("Delete this product?")) {
+            const res = await fetch(`/api/admin/products/${id}`, { method: "DELETE" });
+            if (res.ok) fetchProducts();
+            else alert("Delete failed");
         }
-    }
-};
+    };
 
-    if (loading) return <div className="p-5 text-center">Loading Database...</div>;
+    if (loading) return <div className="p-5 text-center">Loading...</div>;
 
     return (
         <div className="container py-5">
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2 style={{fontWeight: '700'}}>Inventory Management</h2>
-                <Link href="/admin/add-product" className="btn btn-primary" style={{backgroundColor: '#e62a12ff', border: 'none'}}>
-                    + Add New Product
-                </Link>
+                <h2>Inventory Management</h2>
+                <Link href="/admin/add-product" className="btn btn-primary" style={{backgroundColor: '#e62a12', border: 'none'}}>+ Add New</Link>
             </div>
-
             <div className="card shadow-sm">
-                <table className="table mb-0 align-middle">
+                <table className="table">
                     <thead className="table-dark">
-                        <tr>
-                            <th>Image</th>
-                            <th>Product Name</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th className="text-end">Actions</th>
-                        </tr>
+                        <tr><th>Image</th><th>Name</th><th>Price</th><th className="text-end">Actions</th></tr>
                     </thead>
                     <tbody>
                         {products.map((p) => (
                             <tr key={p.id}>
-                                <td>
-                                    <div style={{width: '50px', height: '50px', position: 'relative'}}>
-                                        <Image src={p.img} alt={p.title} fill className="rounded object-fit-cover" />
-                                    </div>
-                                </td>
-                                <td><strong>{p.title}</strong></td>
-                                <td><span className="badge bg-light text-dark border">{p.category}</span></td>
+                                <td><Image src={p.img} alt={p.title} width={50} height={50} className="rounded" /></td>
+                                <td>{p.title}</td>
                                 <td>${p.price}</td>
                                 <td className="text-end">
-                                    <button 
-                                        onClick={() => handleDelete(p.id)} 
-                                        className="btn btn-sm btn-outline-danger"
-                                    >
-                                        <i className="ri-delete-bin-line"></i> Delete
-                                    </button>
+                                    <button onClick={() => handleDelete(p.id)} className="btn btn-sm btn-outline-danger">Delete</button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-                {products.length === 0 && <p className="text-center p-5">No products found in Railway.</p>}
             </div>
         </div>
     );
