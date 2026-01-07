@@ -9,22 +9,25 @@ export default function AddProductPage() {
     const router = useRouter();
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+    e.preventDefault();
+    try {
         const res = await fetch("/api/admin/products", {
             method: "POST",
-            body: JSON.stringify({
-                ...formData,
-                price: parseFloat(formData.price) // Ensure price is a number
-            }),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
         });
 
         if (res.ok) {
-            router.push("/admin/manage");
+            // Use window.location for a clean refresh to the list
+            window.location.href = '/admin/manage';
         } else {
-            alert("Error adding product");
+            const data = await res.json();
+            alert(`Error: ${data.error}`);
         }
-    };
-
+    } catch (err) {
+        alert("Could not connect to the server.");
+    }
+};
     return (
         <div className="container py-5">
             <h2>Add New Product</h2>
