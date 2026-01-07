@@ -1,7 +1,7 @@
 generator client {
   provider      = "prisma-client-js"
-  engineType    = "library"
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  engineType    = "library"
 }
 
 datasource db {
@@ -14,11 +14,11 @@ model Product {
   title            String
   price            Float
   oldPrice         Float?
-  img              String   
+  img              String
   category         String
   popularity       Int      @default(0)
   sku              String?  @unique
-  fullDescription  String?  @db.Text
+  fullDescription  String?
   shortDescription String?
   createdAt        DateTime @default(now())
 }
