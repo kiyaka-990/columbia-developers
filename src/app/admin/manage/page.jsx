@@ -8,11 +8,18 @@ export default function ManageProducts() {
     const [loading, setLoading] = useState(true);
 
     const fetchProducts = async () => {
-        const res = await fetch("/api/products");
-        const data = await res.json();
-        setProducts(data);
-        setLoading(false);
-    };
+    // Get the base URL: Use the browser's location if available, 
+    // otherwise default to a relative path for client-side only
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+    
+    const res = await fetch(`${baseUrl}/api/products`, {
+        // Adding cache: 'no-store' ensures you always get fresh data from Railway
+        cache: 'no-store' 
+    });
+    const data = await res.json();
+    setProducts(data);
+    setLoading(false);
+};
 
     useEffect(() => { fetchProducts(); }, []);
 
