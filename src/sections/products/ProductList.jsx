@@ -1,46 +1,41 @@
-async function getProducts() {
-  // We use the absolute URL for server-side fetches in Next.js
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/products`, {
-    cache: 'no-store', // Ensures we always get fresh data from the DB
-  });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch products');
-  }
-
-  return res.json();
-}
+import { prisma } from "@/lib/prisma";
+import Image from "next/image";
 
 export default async function ProductList() {
-  const products = await getProducts();
+    // 1. DIRECT DATABASE CALL (No fetch needed!)
+    const products = await prisma.product.findMany({
+        orderBy: { id: 'desc' } // Shows newest products first
+    });
 
-  return (
-    <div className="row g-4">
-      {products.map((product) => (
-        <div key={product.id} className="col-md-4">
-          <div className="card h-100 shadow-sm">
-            <img 
-              src={product.img} 
-              className="card-img-top" 
-              alt={product.title} 
-              style={{ height: '200px', objectFit: 'cover' }}
-            />
-            <div className="card-body">
-              <h5 className="card-title">{product.title}</h5>
-              <p className="text-muted">{product.category}</p>
-              <div className="d-flex justify-content-between align-items-center">
-                <span className="h5 mb-0">${product.price}</span>
-                {product.oldPrice && (
-                  <span className="text-decoration-line-through text-danger">
-                    ${product.oldPrice}
-                  </span>
-                )}
-              </div>
-              <button className="btn btn-primary w-100 mt-3">Add to Cart</button>
+    if (products.length === 0) {
+        return <p className="text-center py-5">No products found.</p>;
+    }
+
+    return (
+        <section className="product-section py-5">
+            <div className="container">
+                <div className="row">
+                    {products.map((product) => (
+                        <div key={product.id} className="col-md-4 mb-4">
+                            <div className="card h-100 shadow-sm">
+                                <div style={{ position: 'relative', height: '250px' }}>
+                                    <Image 
+                                        src={product.img} 
+                                        alt={product.title} 
+                                        fill 
+                                        className="card-img-top object-fit-cover"
+                                    />
+                                </div>
+                                <div className="card-body">
+                                    <h5 className="card-title">{product.title}</h5>
+                                    <p className="card-text text-danger fw-bold">${product.price}</p>
+                                    <span className="badge bg-light text-dark border">{product.category}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+        </section>
+    );
 }

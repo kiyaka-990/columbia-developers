@@ -8,17 +8,21 @@ export default function ManageProducts() {
     const [loading, setLoading] = useState(true);
 
     const fetchProducts = async () => {
-    // Get the base URL: Use the browser's location if available, 
-    // otherwise default to a relative path for client-side only
-    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-    
-    const res = await fetch(`${baseUrl}/api/products`, {
-        // Adding cache: 'no-store' ensures you always get fresh data from Railway
-        cache: 'no-store' 
-    });
-    const data = await res.json();
-    setProducts(data);
-    setLoading(false);
+    try {
+        // In client components, a relative URL is fine
+        const res = await fetch("/api/products", { 
+            cache: 'no-store' 
+        });
+        
+        if (!res.ok) throw new Error("Failed to load");
+        
+        const data = await res.json();
+        setProducts(Array.isArray(data) ? data : []);
+    } catch (err) {
+        console.error("Fetch error:", err);
+    } finally {
+        setLoading(false);
+    }
 };
 
     useEffect(() => { fetchProducts(); }, []);
