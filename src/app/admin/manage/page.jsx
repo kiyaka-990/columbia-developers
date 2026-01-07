@@ -17,11 +17,19 @@ export default function ManageProducts() {
     useEffect(() => { fetchProducts(); }, []);
 
     const handleDelete = async (id) => {
-        if (confirm("Are you sure you want to delete this product?")) {
-            const res = await fetch(`/api/admin/products/${id}`, { method: "DELETE" });
-            if (res.ok) fetchProducts(); // Refresh the list after deleting
+    if (confirm("Delete this product?")) {
+        // This URL matches the folder src/app/api/admin/products/[id]
+        const res = await fetch(`/api/admin/products/${id}`, { 
+            method: "DELETE" 
+        });
+
+        if (res.ok) {
+            fetchProducts(); // This refreshes your list
+        } else {
+            alert("Delete failed on server");
         }
-    };
+    }
+};
 
     if (loading) return <div className="p-5 text-center">Loading Database...</div>;
 
