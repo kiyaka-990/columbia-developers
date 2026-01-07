@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { Suspense } from 'react';
 import HeaderOne from "~/sections/Common/Header/HeaderOne";
 import About from "~/sections/Home-1/About";

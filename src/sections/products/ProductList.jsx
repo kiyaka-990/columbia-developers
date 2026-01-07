@@ -2,12 +2,10 @@ import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 
 export default async function ProductList() {
-    // 1. DIRECT DATABASE CALL (No fetch needed!)
-    const products = await prisma.product.findMany({
-        orderBy: { id: 'desc' } // Shows newest products first
-    });
+    // 1. Simplest possible call to avoid validation crashes during build
+    const products = await prisma.product.findMany();
 
-    if (products.length === 0) {
+    if (!products || products.length === 0) {
         return <p className="text-center py-5">No products found.</p>;
     }
 
@@ -20,7 +18,7 @@ export default async function ProductList() {
                             <div className="card h-100 shadow-sm">
                                 <div style={{ position: 'relative', height: '250px' }}>
                                     <Image 
-                                        src={product.img} 
+                                        src={product.img || '/placeholder.png'} 
                                         alt={product.title} 
                                         fill 
                                         className="card-img-top object-fit-cover"
