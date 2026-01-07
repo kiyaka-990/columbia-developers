@@ -6,13 +6,18 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('');
   const router = useRouter();
 
-  const handleLogin = (e) => {
+ const handleLogin = (e) => {
     e.preventDefault();
-    // Set a cookie that lasts 24 hours
-    document.cookie = `admin_token=${password}; path=/; max-age=86400; SameSite=Strict`;
     
-    // Attempt to go to the manage page
-    router.push('/admin/manage');
+    // 1. Set the cookie (Ensure SameSite is Lax for better browser support)
+    document.cookie = `admin_token=${password}; path=/; max-age=86400; SameSite=Lax`;
+    
+    // 2. Log to console to verify (Open F12 to see this)
+    console.log("Cookie set. Redirecting to admin...");
+
+    // 3. FORCE a hard refresh to the manage page
+    // Using window.location.href instead of router.push makes the server re-check the cookie.
+    window.location.href = '/admin/manage';
   };
 
   return (
