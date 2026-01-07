@@ -1,41 +1,55 @@
 "use client";
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 
-export default function AdminLogin() {
+function LoginForm() {
   const [password, setPassword] = useState('');
-  const router = useRouter();
+  const searchParams = useSearchParams();
+  const error = searchParams.get('error'); // Checks for ?error=1 in URL
 
- const handleLogin = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
     
-    // 1. Set the cookie (Ensure SameSite is Lax for better browser support)
+    // 1. Set the cookie
     document.cookie = `admin_token=${password}; path=/; max-age=86400; SameSite=Lax`;
     
-    // 2. Log to console to verify (Open F12 to see this)
-    console.log("Cookie set. Redirecting to admin...");
-
-    // 3. FORCE a hard refresh to the manage page
-    // Using window.location.href instead of router.push makes the server re-check the cookie.
+    // 2. Redirect to admin (Middleware will kick us back if the password was wrong)
     window.location.href = '/admin/manage';
   };
 
   return (
+    <form onSubmit={handleLogin} className="card p-4 shadow" style={{maxWidth: '400px', width: '100%'}}>
+      <h3 className="mb-3 text-center font-weight-bold">Admin Access</h3>
+      
+      {/* ERROR MESSAGE ALERT */}
+      {error && (
+        <div className="alert alert-danger py-2 text-center" role="alert" style={{fontSize: '14px'}}>
+          Incorrect password. Please try again.
+        </div>
+      )}
+
+      <input 
+        type="password" 
+        className="form-control mb-3"
+        placeholder="Enter Admin Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <button type="submit" className="btn btn-primary w-100" style={{backgroundColor: '#EA5501', border: 'none'}}>
+        Login to Dashboard
+      </button>
+    </form>
+  );
+}
+
+// Next.js requires Suspense when using useSearchParams in the App Router
+export default function LoginPage() {
+  return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
-      <form onSubmit={handleLogin} className="card p-4 shadow" style={{maxWidth: '400px', width: '100%'}}>
-        <h3 className="mb-3 text-center">Admin Login</h3>
-        <input 
-          type="password" 
-          className="form-control mb-3"
-          placeholder="Enter Admin Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit" className="btn btn-primary w-100" style={{backgroundColor: '#EA5501', border: 'none'}}>
-          Access Dashboard
-        </button>
-      </form>
+      <Suspense fallback={<div>Loading...</div>}>
+        <LoginForm />
+      </Suspense>
     </div>
   );
 }
